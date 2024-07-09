@@ -1,11 +1,13 @@
+import PasskeyModal from "@/components/PasskeyModal";
 import PatientForm from "@/components/forms/PatientForm";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+export default function Home({ searchParams }: SearchParamProps) {
+  const isAdmin = searchParams.admin === "true";
   return (
     <div className="flex h-screen max-h-screen">
-      {/* TODO: OTP Verificaton | PassKey modal */}
+      {isAdmin && <PasskeyModal />}
       <section className="remove-scrollbar container my-auto">
         <div className="sub-container max-w-[496px]">
           <Image
@@ -31,7 +33,7 @@ export default function Home() {
         alt="medicale care"
         height={1000}
         width={1000}
-        className="side-img max-[50%]"
+        className="side-img max-w-[50%]"
       />
     </div>
   );
