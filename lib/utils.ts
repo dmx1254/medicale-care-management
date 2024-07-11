@@ -75,3 +75,15 @@ export function encryptKey(passkey: string) {
 export function decryptKey(passkey: string) {
   return atob(passkey);
 }
+
+export const convertFileToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      const base64 = reader.result as string; // Cast result to string
+      resolve(base64);
+    };
+    reader.onerror = (error) => reject(error);
+  });
+};

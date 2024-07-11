@@ -1,12 +1,13 @@
-export const GenderOptions = ["male", "female", "other"];
+export const GenderOptions = ["homme", "femme", "autre"];
 
 export const PatientFormDefaultValues = {
-  firstName: "",
-  lastName: "",
+  name: "",
   email: "",
   phone: "",
+  bloodgroup: "",
+  vaccination: "",
   birthDate: new Date(Date.now()),
-  gender: "male" as Gender,
+  gender: "homme" as Gender,
   address: "",
   occupation: "",
   emergencyContactName: "",
@@ -14,11 +15,13 @@ export const PatientFormDefaultValues = {
   primaryPhysician: "",
   insuranceProvider: "",
   insurancePolicyNumber: "",
+  password: "",
+  confirmPassword: "",
   allergies: "",
   currentMedication: "",
   familyMedicalHistory: "",
   pastMedicalHistory: "",
-  identificationType: "Birth Certificate",
+  identificationType: "Carte d'identité nationale",
   identificationNumber: "",
   identificationDocument: [],
   treatmentConsent: false,
@@ -27,18 +30,18 @@ export const PatientFormDefaultValues = {
 };
 
 export const IdentificationTypes = [
-  "Birth Certificate",
-  "Driver's License",
-  "Medical Insurance Card/Policy",
-  "Military ID Card",
-  "National Identity Card",
-  "Passport",
-  "Resident Alien Card (Green Card)",
-  "Social Security Card",
-  "State ID Card",
-  "Student ID Card",
-  "Voter ID Card",
-];
+    "Acte de naissance",
+    "Permis de conduire",
+    "Carte d'assurance médicale/Police d'assurance",
+    "Carte d'identité militaire",
+    "Carte d'identité nationale",
+    "Passeport",
+    "Carte de résident permanent (Carte verte)",
+    "Carte de sécurité sociale",
+    "Carte d'identité d'État",
+    "Carte d'identité étudiante",
+    "Carte d'identité de votant",
+  ];
 
 export const Doctors = [
   {

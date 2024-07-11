@@ -10,7 +10,7 @@ import SubmitButton from "../SubmitButton";
 import { useState } from "react";
 import { UserFormValidation } from "@/lib/validation";
 import { useRouter } from "next/navigation";
-import { createUser } from "@/lib/actions/patient.actions";
+import { loginUser } from "@/lib/actions/patient.actions";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -29,28 +29,26 @@ const PatientForm = () => {
   const form = useForm<z.infer<typeof UserFormValidation>>({
     resolver: zodResolver(UserFormValidation),
     defaultValues: {
-      name: "",
-      email: "",
       phone: "",
+      password: "",
     },
   });
 
   // 2. Define a submit handler.
   async function onSubmit({
-    name,
-    email,
     phone,
+    password,
   }: z.infer<typeof UserFormValidation>) {
     setIsLoading(true);
 
     const userData = {
-      name,
-      email,
       phone,
+      password,
     };
 
-    const user = await createUser(userData);
-    if(user) router.push(`/patients/${user.$id}/register`)
+    const user = await loginUser(userData);
+    // if (user) router.push("/patients/profile");
+    // if (user) router.push(`/patients/${user.$id}/register`);
 
     try {
     } catch (error) {
@@ -65,24 +63,7 @@ const PatientForm = () => {
           <h1 className="header">Bonjour 👋</h1>
           <p className="text-dark-700">Planifier votre premier rendez-vous.</p>
         </section>
-        <CustomFormField
-          fieldType={FormFieldType.INPUT}
-          control={form.control}
-          name="name"
-          label="Prenom et Nom"
-          placeholder="Prenom et nom"
-          iconSrc="/assets/icons/user.svg"
-          iconAlt="name"
-        />
-        <CustomFormField
-          fieldType={FormFieldType.INPUT}
-          control={form.control}
-          name="email"
-          label="Email"
-          placeholder="johndoe@gmail.com"
-          iconSrc="/assets/icons/email.svg"
-          iconAlt="email"
-        />
+
         <CustomFormField
           fieldType={FormFieldType.PHONE_INPUT}
           control={form.control}
@@ -91,6 +72,15 @@ const PatientForm = () => {
           placeholder="771234567"
           iconSrc="/assets/icons/email.svg"
           iconAlt="email"
+        />
+        <CustomFormField
+          fieldType={FormFieldType.INPUT}
+          control={form.control}
+          name="password"
+          label="Mot de passe"
+          placeholder="mot de passe"
+          iconSrc="/assets/icons/password.svg"
+          iconAlt="password"
         />
         <SubmitButton isLoading={isLoading}>Commencer</SubmitButton>
       </form>

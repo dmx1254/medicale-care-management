@@ -5,9 +5,11 @@ import {
   APPOINTMENT_COLLECTION_ID,
   DATABASE_ID,
   databases,
+  messaging,
 } from "../appwrite.config";
-import { parseStringify } from "../utils";
+import { formatDateTime, parseStringify } from "../utils";
 import { Appointment } from "@/types/appwrite.types";
+import { revalidatePath } from "next/cache";
 
 export const createAppointment = async (
   appointment: CreateAppointmentParams
@@ -71,6 +73,53 @@ export const getRecentAppointmentList = async () => {
       documents: appointments.documents,
     };
     return parseStringify(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateAppointment = async ({
+  appointmentId,
+  userId,
+  appointment,
+  type,
+}: UpdateAppointmentParams) => {
+  try {
+    const updatedAppointment = await databases.updateDocument(
+      "668ac4440030872f1ffc",
+      "668ac5130005ffa78400",
+      appointmentId,
+      appointment
+    );
+    if (!updatedAppointment) {
+      throw new Error("Rendez-vous introuvable");
+    }
+
+    const smsMessage = `
+    Bonjour, c'est MedicaleCare.
+    ${
+      type === "schedule"
+        ? `Votre rendez-vous a été programmé à ${formatDateTime(
+            appointment.schedule!
+          ).dateTime} avec le Dr. ${appointment.primaryPhysician}`
+        : `Nous avons le regret de vous informer que votre rendez-vous a été annulé pour la raison suivante:
+        ${appointment.cancellationReason}`
+    }
+   `;
+
+    await sendSMSNotification(userId, smsMessage);
+
+    revalidatePath("/admin");
+    return parseStringify(updatedAppointment);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const sendSMSNotification = async (userId: string, content: string) => {
+  try {
+    const message = await messaging.createSms(ID.unique(), content, [userId]);
+    return parseStringify(message);
   } catch (error) {
     console.log(error);
   }

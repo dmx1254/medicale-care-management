@@ -22,8 +22,8 @@ export default function Home({ searchParams }: SearchParamProps) {
             <p className="justify-items-end text-dark-600 xl:text-left">
               &copy; 2024 MedicaleCare
             </p>
-            <Link href="/?admin=true" className="text-green-500">
-              Admin
+            <Link href="/register" className="text-green-500">
+              s'inscrire
             </Link>
           </div>
         </div>

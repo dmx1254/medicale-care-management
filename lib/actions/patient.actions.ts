@@ -3,26 +3,16 @@
 import { ID, Query } from "node-appwrite";
 import { databases, storage, users } from "../appwrite.config";
 import { parseStringify } from "../utils";
-import { InputFile } from "node-appwrite/file";
+import { createPatient, login } from "../api/patient";
+import { CreateUserParams, UserRegister } from "@/types";
 
-export const createUser = async (user: CreateUserParams) => {
+export const loginUser = async (user: CreateUserParams) => {
   try {
-    const newUser = await users.create(
-      ID.unique(),
-      user.email,
-      user.phone,
-      undefined,
-      user.phone
-    );
-    console.log({ newUser });
-    return { newUser };
+    const { phone, password } = user;
+    const response = await login(phone, password);
+    console.log(response);
   } catch (error: any) {
     console.log(error);
-    if (error && error?.code === 409) {
-      const documents = await users.list([Query.equal("email", [user.email])]);
-
-      return documents?.users[0];
-    }
   }
 };
 
@@ -48,35 +38,15 @@ export const getPatient = async (userId: string) => {
   }
 };
 
-export const registerPatient = async ({
-  identificationDocument,
-  ...patient
-}: RegisterUserParams) => {
+export const registerPatient = async (patient: UserRegister) => {
   try {
-    let file;
-    if (identificationDocument) {
-      const inputFile = InputFile.fromBuffer(
-        identificationDocument?.get("blobFile") as Blob,
-        identificationDocument?.get("fileName") as string
-      );
-      file = await storage.createFile(
-        "668ac5a400037f88add4",
-        ID.unique(),
-        inputFile
-      );
+    const response = await createPatient(patient);
+    if (response.error) {
+      throw new Error(response.error);
+    } else {
+      return response;
     }
-    const newPatient = await databases.createDocument(
-      "668ac4440030872f1ffc",
-      "668ac49000107ff71508",
-      ID.unique(),
-      {
-        identificationDocumentId: file?.$id || null,
-        identificationDocumentUrl: `https://cloud.appwrite.io/v1/storage/buckets/668ac5a400037f88add4/files/${file?.$id}/view?project=668abbec0021f4359db7`,
-        ...patient,
-      }
-    );
-    return parseStringify(newPatient);
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    throw new Error(error);
   }
 };

@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { undefined, z } from "zod";
 
 import { Form, FormControl } from "@/components/ui/form";
 import CustomFormField from "../CustomFormField";
@@ -10,7 +10,7 @@ import SubmitButton from "../SubmitButton";
 import { useState } from "react";
 import { PatientFormValidation } from "@/lib/validation";
 import { useRouter } from "next/navigation";
-import { createUser, registerPatient } from "@/lib/actions/patient.actions";
+import { registerPatient } from "@/lib/actions/patient.actions";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import {
   Doctors,
@@ -22,6 +22,8 @@ import { Label } from "../ui/label";
 import { Select, SelectItem } from "../ui/select";
 import Image from "next/image";
 import FileUploader from "../FileUploader";
+import { convertFileToBase64 } from "@/lib/utils";
+import { toast } from "sonner";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -33,7 +35,7 @@ export enum FormFieldType {
   SKELETON = "skeleton",
 }
 
-const RegisterForm = ({ user }: { user: User }) => {
+const RegisterForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // 1. Define your form.
@@ -41,9 +43,6 @@ const RegisterForm = ({ user }: { user: User }) => {
     resolver: zodResolver(PatientFormValidation),
     defaultValues: {
       ...PatientFormDefaultValues,
-      name: "",
-      email: "",
-      phone: "",
     },
   });
 
@@ -56,26 +55,46 @@ const RegisterForm = ({ user }: { user: User }) => {
       values.identificationDocument &&
       values.identificationDocument.length > 0
     ) {
-      const blobFile = new Blob([values.identificationDocument[0]], {
-        type: values.identificationDocument[0].type,
-      });
+      const file = values.identificationDocument[0];
+      const base64 = await convertFileToBase64(file);
 
       formData = new FormData();
-      formData.append("blobFile", blobFile);
-      formData.append("fileName", values.identificationDocument[0].name);
+      formData.append("base64File", base64);
+      formData.append("fileName", file.name);
     }
+
+    const { confirmPassword, ...patientDataWithoutConfirmPassword } = values;
     try {
       const patientData = {
-        ...values,
-        userId: user.$id,
+        ...patientDataWithoutConfirmPassword,
         birthDate: new Date(values.birthDate),
-        identificationDocument: formData,
+        identificationDocument: formData?.get("base64File") as string,
       };
+
       // @ts-ignore
       const patient = await registerPatient(patientData);
-      if (patient) router.push(`/patients/${user.$id}/new-appointment`);
-    } catch (error) {
-      console.log(error);
+      if (patient.user) {
+        toast.success(patient.message, {
+          style: { color: "green" },
+        });
+
+        new Promise((resolve) => {
+          setTimeout(() => {
+            router.push("/");
+            resolve(undefined);
+          }, 2000);
+        });
+      }
+      //   if (patient) router.push(`/patients/${user.$id}/new-appointment`);
+    } catch (error: any) {
+      console.log("error", error);
+      console.log("error message", error.message);
+
+      if (error?.message) {
+        toast.error(error?.message, {
+          style: { color: "red" },
+        });
+      }
     }
     setIsLoading(false);
   }
@@ -238,6 +257,22 @@ const RegisterForm = ({ user }: { user: User }) => {
             placeholder="ABC12457813"
           />
         </div>
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomFormField
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="bloodgroup"
+            label="Groupe sanguin"
+            placeholder="ex: O+"
+          />
+          <CustomFormField
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="vaccination"
+            label="Vaccination(le cas échéant)"
+            placeholder="ex: vaccination contre le paludisme"
+          />
+        </div>
 
         <div className="flex flex-col gap-6 xl:flex-row">
           <CustomFormField
@@ -309,6 +344,24 @@ const RegisterForm = ({ user }: { user: User }) => {
             </FormControl>
           )}
         />
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomFormField
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="password"
+            label="Mot de passe"
+            placeholder="Mot de passe"
+            iconSrc="/assets/icons/password.svg"
+          />
+          <CustomFormField
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="confirmPassword"
+            label="Confirmer votre mot de passe"
+            placeholder="Confirmer votre mot de passe"
+            iconSrc="/assets/icons/password.svg"
+          />
+        </div>
         <section className="space-y-4">
           <div className="mb-9 space-y-1">
             <h2 className="sub-header">Consentement et Confidentialité</h2>
@@ -319,19 +372,19 @@ const RegisterForm = ({ user }: { user: User }) => {
           fieldType={FormFieldType.CHECKBOX}
           control={form.control}
           name="treatmentConsent"
-          label="I consent to treatment"
+          label="Je consens au traitement de mes données"
         />
         <CustomFormField
           fieldType={FormFieldType.CHECKBOX}
           control={form.control}
           name="disclosureConsent"
-          label="I consent to disclosure of information"
+          label="Je consent à la divulgation d'information"
         />
         <CustomFormField
           fieldType={FormFieldType.CHECKBOX}
           control={form.control}
           name="privacyConsent"
-          label="I consent to privacy policy"
+          label="Je consent à la politique de confidentialité"
         />
 
         <SubmitButton isLoading={isLoading}>

@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const Register = async ({ params: { userId } }: SearchParamProps) => {
-  const user = await getUser(userId);
+const Register = async () => {
+  // const user = await getUser(userId);
   return (
     <div className="flex h-screen max-h-screen">
       <section className="remove-scrollbar container">
@@ -17,10 +17,15 @@ const Register = async ({ params: { userId } }: SearchParamProps) => {
             alt="medicale care"
             className="mb-12 h-10 w-fit"
           />
-          <RegisterForm user={user} />
-          <p className="copyright py-12">
-            &copy; 2024 MedicaleCare
-          </p>
+          <RegisterForm />
+          <div className="copyright py-6 text-14-regular mt-2 flex justify-between">
+            <p className="justify-items-end text-dark-600 xl:text-left">
+              &copy; 2024 MedicaleCare
+            </p>
+            <Link href="/" className="text-green-500">
+              se connecter
+            </Link>
+          </div>
         </div>
       </section>
       <Image

@@ -64,6 +64,11 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
           <FormControl>
             <Input
               placeholder={placeholder}
+              type={
+                props.name === "password" || props.name === "confirmPassword"
+                  ? "password"
+                  : "text"
+              }
               {...field}
               className="shad-input border-0"
             />
@@ -110,13 +115,16 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
           />
           <FormControl>
             <DatePicker
-              selected={field.value}
+              selected={field.value || new Date()}
               onChange={(date) => field.onChange(date)}
               dateFormat={dateFormat ?? "dd-MM-yyyy"}
               showTimeSelect={showTimeSelect ?? false}
               timeInputLabel="Heure:"
               wrapperClassName="date-picker"
               locale={fr}
+              showYearDropdown
+              yearDropdownItemNumber={40}
+              scrollableYearDropdown
             />
           </FormControl>
         </div>
@@ -131,7 +139,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
               <SelectTrigger className="shad-select-trigger">
-                <SelectValue  placeholder={props.placeholder} />
+                <SelectValue placeholder={props.placeholder} />
               </SelectTrigger>
             </FormControl>
             <SelectContent className="shad-select-content">
