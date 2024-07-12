@@ -71,7 +71,6 @@ const RegisterForm = () => {
         identificationDocument: formData?.get("base64File") as string,
       };
 
-      // @ts-ignore
       const patient = await registerPatient(patientData);
       if (patient.user) {
         toast.success(patient.message, {
@@ -86,10 +85,7 @@ const RegisterForm = () => {
         });
       }
       //   if (patient) router.push(`/patients/${user.$id}/new-appointment`);
-    } catch (error: any) {
-      console.log("error", error);
-      console.log("error message", error.message);
-
+    } catch (error: any) {  
       if (error?.message) {
         toast.error(error?.message, {
           style: { color: "red" },
@@ -144,7 +140,7 @@ const RegisterForm = () => {
           <CustomFormField
             fieldType={FormFieldType.DATE_PICKER}
             control={form.control}
-            name="birthdate"
+            name="birthDate"
             label="Date de naissance"
           />
           <CustomFormField
@@ -328,7 +324,7 @@ const RegisterForm = () => {
         <CustomFormField
           fieldType={FormFieldType.INPUT}
           control={form.control}
-          name="identicationNumber"
+          name="identificationNumber"
           label="Numéro d'identification"
           placeholder="AO1024578"
         />

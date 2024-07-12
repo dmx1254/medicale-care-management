@@ -46,3 +46,15 @@ export async function login(phone: string, password: string) {
     password: password,
   };
 }
+
+export async function getOnePatient(userId: string) {
+  try {
+    const patientGeting = await PatientModel.findById(userId).select(
+      "-password"
+    );
+    const patient = parseStringify(patientGeting);
+    return patient;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}

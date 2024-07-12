@@ -1,8 +1,8 @@
 import AppointmentForm from "@/components/forms/AppointmentForm";
-import PatientForm from "@/components/forms/PatientForm";
 import { getPatient } from "@/lib/actions/patient.actions";
+import { SearchParamProps } from "@/types";
 import Image from "next/image";
-import Link from "next/link";
+
 
 export default async function NewAppointment({
   params: { userId },
@@ -22,7 +22,7 @@ export default async function NewAppointment({
           <AppointmentForm
             type="create"
             userId={userId}
-            patientId={patient.$id}
+            patientId={"668ed2600035e9bebd1e"}
           />
           <p className="copyright py-8">&copy; 2024 MedicaleCare</p>
         </div>

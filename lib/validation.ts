@@ -37,7 +37,7 @@ export const PatientFormValidation = z
         "Le mot de passe doit contenir au moins un caractère spécial"
       ),
     confirmPassword: z.string(),
-    birthDate: z.coerce.date().default(() => new Date("1999-04-01")),
+    birthDate: z.coerce.date(),
     gender: z.enum(["homme", "femme", "autre"]),
     address: z
       .string()
@@ -71,9 +71,7 @@ export const PatientFormValidation = z
     identificationType: z
       .string()
       .min(2, "Sélectionnez un type d'identification"),
-    identicationNumber: z
-      .string()
-      .min(
+      identificationNumber: z.string().min(
         5,
         "Le numero d'identification doit comporter au moins 5 caractères"
       ),

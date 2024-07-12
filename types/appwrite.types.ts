@@ -1,4 +1,5 @@
 import { Models } from "node-appwrite";
+import { Gender, Status } from ".";
 
 export interface Patient extends Models.Document {
   userId: string;
@@ -14,8 +15,8 @@ export interface Patient extends Models.Document {
   primaryPhysician: string;
   insuranceProvider: string;
   insurancePolicyNumber: string;
-  allergies: string | undefined;
-  currentMedication: string | undefined;
+  allergies: string;
+  currentMedication: string;
   familyMedicalHistory: string | undefined;
   pastMedicalHistory: string | undefined;
   identificationType: string | undefined;

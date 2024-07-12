@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 
-declare type SearchParamProps = {
+export type SearchParamProps = {
   params: { [key: string]: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-declare type Gender = "homme" | "femme" | "autre";
-declare type Status = "pending" | "scheduled" | "cancelled";
+export type Gender = "homme" | "femme" | "autre";
+export type Status = "pending" | "scheduled" | "cancelled";
 
 declare interface CreateUserParams {
   phone: string;
@@ -43,9 +43,9 @@ declare interface RegisterUserParams extends CreateUserParams {
   privacyConsent: boolean;
 }
 
- export interface UserRegister {
+export interface UserRegister {
   address: string;
-  allergies: string;
+  allergies?: string;
   birthDate: Date;
   bloodgroup: string;
   currentMedication: string;
@@ -55,7 +55,7 @@ declare interface RegisterUserParams extends CreateUserParams {
   emergencyContactNumber: string;
   familyMedicalHistory: string;
   gender: string;
-  identicationNumber: string;
+  identificationNumber: string;
   identificationType: string;
   insurancePolicyNumber: string;
   insuranceProvider: string;
@@ -68,9 +68,50 @@ declare interface RegisterUserParams extends CreateUserParams {
   privacyConsent: boolean;
   treatmentConsent: boolean;
   vaccination: string;
+  role?: string;
 }
 
-declare type CreateAppointmentParams = {
+export interface Patient {
+  _id: string;
+  address: string;
+  allergies: string;
+  birthDate: Date;
+  bloodgroup: string;
+  currentMedication: string;
+  disclosureConsent: boolean;
+  email: string;
+  emergencyContactName: string;
+  emergencyContactNumber: string;
+  familyMedicalHistory: string;
+  gender: string;
+  identicationNumber: string;
+  identificationDocument: string;
+  identificationType: string;
+  insurancePolicyNumber: string;
+  insuranceProvider: string;
+  name: string;
+  occupation: string;
+  identificationNumber: string;
+  pastMedicalHistory: string;
+  phone: string;
+  primaryPhysician: string;
+  privacyConsent: boolean;
+  treatmentConsent: boolean;
+  vaccination: string;
+  isEmailVerified: boolean;
+  isPhoneVerified: boolean;
+  isBan: boolean;
+  role?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface User {
+  patient: Patient;
+  userId?: string;
+}
+
+export type CreateAppointmentParams = {
   userId: string;
   patient: string;
   primaryPhysician: string;
@@ -80,7 +121,7 @@ declare type CreateAppointmentParams = {
   note: string | undefined;
 };
 
-declare type UpdateAppointmentParams = {
+export type UpdateAppointmentParams = {
   appointmentId: string;
   userId: string;
   appointment: Appointment;
