@@ -10,17 +10,18 @@ import {
 import { formatDateTime, parseStringify } from "../utils";
 import { Appointment } from "@/types/appwrite.types";
 import { revalidatePath } from "next/cache";
+import { CreateAppointmentParams, UpdateAppointmentParams } from "@/types";
+import {
+  createPatientAppointment,
+  getPatientApppointment,
+  getUserPatientAppointment,
+} from "../api/appointment";
 
 export const createAppointment = async (
   appointment: CreateAppointmentParams
 ) => {
   try {
-    const newAppointment = await databases.createDocument(
-      "668ac4440030872f1ffc",
-      "668ac5130005ffa78400",
-      ID.unique(),
-      appointment
-    );
+    const newAppointment = await createPatientAppointment(appointment);
     return parseStringify(newAppointment);
   } catch (error) {
     console.log(error);
@@ -29,12 +30,18 @@ export const createAppointment = async (
 
 export const getAppointment = async (appointmentId: string) => {
   try {
-    const appointment = await databases.getDocument(
-      DATABASE_ID!,
-      APPOINTMENT_COLLECTION_ID!,
-      appointmentId
-    );
+    const appointment = await getPatientApppointment(appointmentId);
     return parseStringify(appointment);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+export const getUserAppointments = async (userId: string) => {
+  try {
+    const userAppointment = await getUserPatientAppointment(userId);
+    return parseStringify(userAppointment);
   } catch (error) {
     console.log(error);
   }
@@ -99,9 +106,9 @@ export const updateAppointment = async ({
     Bonjour, c'est MedicaleCare.
     ${
       type === "schedule"
-        ? `Votre rendez-vous a été programmé à ${formatDateTime(
-            appointment.schedule!
-          ).dateTime} avec le Dr. ${appointment.primaryPhysician}`
+        ? `Votre rendez-vous a été programmé à ${
+            formatDateTime(appointment.schedule!).dateTime
+          } avec le Dr. ${appointment.primaryPhysician}`
         : `Nous avons le regret de vous informer que votre rendez-vous a été annulé pour la raison suivante:
         ${appointment.cancellationReason}`
     }

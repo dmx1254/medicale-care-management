@@ -49,13 +49,13 @@ const PersonalInformations = ({ patient }: { patient: Patient }) => {
                 </div>
                 <div className="flex items-center gap-1">
                   <span>Status :</span>&nbsp;
-                  {!patient.isEmailVerified ? (
+                  {patient.isEmailVerified ? (
                     <span className="flex items-center gap-1 text-green-500">
                       verified
                       <BadgeCheck size={15} className="mt-0.5" />
                     </span>
                   ) : (
-                    <span className="flex items-center gap-1 text-gray-600 opacity-70">
+                    <span className="flex items-center gap-1 text-red-500 opacity-70">
                       not verified
                       <BadgeCheck size={15} className="mt-0.5" />
                     </span>

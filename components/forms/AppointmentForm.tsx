@@ -11,7 +11,6 @@ import SubmitButton from "../SubmitButton";
 import { useState } from "react";
 import { CreateAppointmentSchema } from "@/lib/validation";
 import { useRouter } from "next/navigation";
-import { createUser } from "@/lib/actions/patient.actions";
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
 import { Doctors } from "@/constants";
@@ -20,6 +19,8 @@ import {
   updateAppointment,
 } from "@/lib/actions/appointment.actions";
 import { Appointment } from "@/types/appwrite.types";
+import { Status } from "@/types";
+import { toast } from "sonner";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -80,19 +81,25 @@ const AppointmentForm = ({
       if (type === "create" && patientId) {
         const appointmentData = {
           userId,
-          patient: patientId,
+          patientId,
           primaryPhysician: values.primaryPhysician,
+          primaryPhysicianId: "6690180f186a3289c93249f5",
           schedule: new Date(values.schedule),
           reason: values.reason,
           note: values.note,
           status: status as Status,
         };
         const appointment = await createAppointment(appointmentData);
+
         if (appointment) {
           form.reset();
           router.push(
-            `/patients/${userId}/new-appointment/success?appointmentId=${appointment.$id}`
+            `/patients/${userId}/success?appointmentId=${appointment._id}`
           );
+        } else {
+          toast.error("Error: Quelque chose s'est mal passée", {
+            style: { color: "red" },
+          });
         }
       } else {
         const appointmentToUpdate = {
@@ -176,7 +183,7 @@ const AppointmentForm = ({
               name="schedule"
               label="Date de rendez-vous prévue"
               showTimeSelect
-              dateFormat="dd/MM/yyyy - h:mm aa"
+              dateFormat="dd/MM/yyyy - HH:mm aa"
             />
             <div className="flex flex-col gap-6 xl:flex-row">
               <CustomFormField

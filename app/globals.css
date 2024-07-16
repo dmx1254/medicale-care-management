@@ -128,6 +128,9 @@
   .sub-container {
     @apply mx-auto flex size-full flex-col py-10;
   }
+  .sub-p-container {
+    @apply flex size-full flex-col py-10;
+  }
 
   .side-img {
     @apply hidden h-full object-cover md:block;

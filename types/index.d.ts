@@ -113,7 +113,8 @@ export interface User {
 
 export type CreateAppointmentParams = {
   userId: string;
-  patient: string;
+  patientId: string;
+  primaryPhysicianId: string;
   primaryPhysician: string;
   reason: string;
   schedule: Date;
@@ -127,3 +128,17 @@ export type UpdateAppointmentParams = {
   appointment: Appointment;
   type: string;
 };
+
+
+export interface AppointmentResponse{
+    _id: string,
+    patientId?: string;
+    userId: string;
+    status: string;
+    primaryPhysician: string;
+    reason: string;
+    primaryPhysicianId: string;
+    note: string;
+    cancellationReason: string;
+    schedule: Date;
+}
