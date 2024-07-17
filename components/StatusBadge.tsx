@@ -9,7 +9,7 @@ const StatusBadge = ({ status }: { status: Status }) => {
     <div
       className={clsx("status-badge", {
         "bg-green-600": status === "scheduled",
-        "bg-blue-600": status === "pending",
+        "bg-yellow-900": status === "pending",
         "bg-red-600": status === "cancelled",
       })}
     >
@@ -20,11 +20,17 @@ const StatusBadge = ({ status }: { status: Status }) => {
         height={24}
         className="h-fit w-3"
       />
-      <p className={clsx("status-12-semibold capitalize", {
-        "text-green-500": status === "scheduled",
-        "text-blue-500": status === "pending",
-        "text-red-500": status === "cancelled",
-      })}>{status}</p>
+      <p
+        className={clsx("status-12-semibold capitalize", {
+          "text-green-500": status === "scheduled",
+          "text-yellow-500": status === "pending",
+          "text-red-500": status === "cancelled",
+        })}
+      >
+        {status === "pending" && "En attente"}
+        {status === "scheduled" && "Programmé"}
+        {status === "cancelled" && "Annulé"}
+      </p>
     </div>
   );
 };

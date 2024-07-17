@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import AppointmentForm from "./forms/AppointmentForm";
-import { AppointModal, Appointment } from "@/types/appwrite.types";
+import { AppointModal } from "@/types/appwrite.types";
 
 const AppointmentModal = ({
   type,
@@ -32,7 +32,8 @@ const AppointmentModal = ({
           variant="ghost"
           className={`capitalize ${type === "schedule" && "text-green-500"}`}
         >
-          {type}
+          {type === "schedule" && "Programmer"}
+          {type === "cancel" && "Annuler"}
         </Button>
       </DialogTrigger>
       <DialogContent className="shad-dialog sm-max-w-md">

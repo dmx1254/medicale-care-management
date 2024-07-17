@@ -10,8 +10,9 @@ import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/DataTable";
 
 const Admin = async () => {
-//   const appointments = await getRecentAppointmentList();
+  //   const appointments = await getRecentAppointmentList();
   const appointments = await getAppointmentList();
+//   console.log(appointments);
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">

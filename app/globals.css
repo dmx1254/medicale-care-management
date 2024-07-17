@@ -151,6 +151,9 @@
   .request-details {
     @apply flex w-full flex-col items-center gap-8 border-y-2 md:justify-between border-dark-400 py-8 md:flex-row;
   }
+  .request-details-success {
+    @apply flex w-full flex-col items-center gap-8 border-y-2 border-dark-400 py-8 md:w-fit md:flex-row;
+  }
 
   /* ===== ADMIN */
   .admin-header {

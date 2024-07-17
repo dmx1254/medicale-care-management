@@ -2,7 +2,6 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,10 +13,11 @@ import {
 import { Button } from "../ui/button";
 import StatusBadge from "../StatusBadge";
 import { formatDateTime, getPrimaryPhysicianPicture } from "@/lib/utils";
-import { Doctors } from "@/constants";
 import Image from "next/image";
 import AppointmentModal from "../AppointmentModal";
 import { Appointment } from "@/types/appwrite.types";
+import { toast } from "sonner";
+import AppointmentAction from "../AppointmentAction";
 
 export const columns: ColumnDef<Appointment>[] = [
   {
@@ -84,6 +84,8 @@ export const columns: ColumnDef<Appointment>[] = [
             userId={data.userId}
             appointment={data}
           />
+
+          <AppointmentAction data={data} />
         </div>
       );
     },

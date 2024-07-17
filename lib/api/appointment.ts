@@ -20,7 +20,9 @@ export async function getPatientApppointment(appointmentId: string) {
     throw new Error("Invalid appointment ID");
   }
   try {
-    const appointment = await AppointmentModel.findById(appointmentId);
+    const appointment = await AppointmentModel.findById(appointmentId).sort({
+      createdAt: -1,
+    });
     return appointment;
   } catch (error) {
     console.log(error);
@@ -33,7 +35,7 @@ export async function getUserPatientAppointment(userId: string) {
   }
   try {
     const usersAppointment = await AppointmentModel.find({ userId }).sort({
-      createdAt: -1,
+      updatedAt: -1,
     });
     return usersAppointment;
   } catch (error) {
@@ -43,7 +45,9 @@ export async function getUserPatientAppointment(userId: string) {
 
 export async function getAllAppointmentList() {
   try {
-    const allAppointmentsResult = AppointmentModel.find();
+    const allAppointmentsResult = AppointmentModel.find().sort({
+      updatedAt: -1,
+    });
     const scheduledCountResult = AppointmentModel.countDocuments({
       status: "scheduled",
     });
@@ -95,6 +99,21 @@ export async function updateSingleAppointment(
       }
     );
     return updatedAppointment;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+export async function deleteSingleAppointment(appointmentId: string) {
+  if (!isValidObjectId(appointmentId)) {
+    throw new Error("Invalid appointment ID");
+  }
+
+  try {
+    const appointmentDel = await AppointmentModel.findByIdAndDelete(
+      appointmentId
+    );
+    return appointmentDel;
   } catch (error: any) {
     throw new Error(error.message);
   }

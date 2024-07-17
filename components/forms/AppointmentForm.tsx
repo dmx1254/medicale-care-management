@@ -218,7 +218,7 @@ const AppointmentForm = ({
             fieldType={FormFieldType.TEXTAREA}
             control={form.control}
             name="cancellationReason"
-            label="Raison pour l'annulation"
+            label="Raison de l'annulation"
             placeholder="Entrez le motif de l'annulation"
           />
         )}

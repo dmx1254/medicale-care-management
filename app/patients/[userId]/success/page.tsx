@@ -43,7 +43,7 @@ const SuccessPage = async ({
           </h2>
           <p>Nous vous contacterons sous peu pour confirmer le rendez-vous</p>
         </section>
-        <section className="request-details">
+        <section className="request-details-success">
           <p>Détails du rendez-vous:</p>
           <div className="flex items-center gap-3">
             <Image

@@ -13,6 +13,7 @@ import { revalidatePath } from "next/cache";
 import { CreateAppointmentParams, UpdateAppointmentParams } from "@/types";
 import {
   createPatientAppointment,
+  deleteSingleAppointment,
   getAllAppointmentList,
   getPatientApppointment,
   getUserPatientAppointment,
@@ -25,8 +26,8 @@ export const createAppointment = async (
   try {
     const newAppointment = await createPatientAppointment(appointment);
     return parseStringify(newAppointment);
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    throw new Error(error.message)
   }
 };
 
@@ -34,8 +35,8 @@ export const getAppointment = async (appointmentId: string) => {
   try {
     const appointment = await getPatientApppointment(appointmentId);
     return parseStringify(appointment);
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    throw new Error(error.message)
   }
 };
 
@@ -43,8 +44,8 @@ export const getUserAppointments = async (userId: string) => {
   try {
     const userAppointment = await getUserPatientAppointment(userId);
     return parseStringify(userAppointment);
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    throw new Error(error.message)
   }
 };
 
@@ -81,8 +82,8 @@ export const getRecentAppointmentList = async () => {
       documents: appointments.documents,
     };
     return parseStringify(data);
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    throw new Error(error.message)
   }
 };
 
@@ -90,8 +91,8 @@ export const getAppointmentList = async () => {
   try {
     const appointments = await getAllAppointmentList();
     return parseStringify(appointments);
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    throw new Error(error.message)
   }
 };
 
@@ -128,8 +129,18 @@ export const updateAppointment = async ({
 
     revalidatePath("/admin");
     return parseStringify(updatedAppointment);
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    throw new Error(error.message)
+  }
+};
+
+export const deleteAppointment = async (appointmentId: string) => {
+  try {
+    const appointmentDeleted = await deleteSingleAppointment(appointmentId);
+    revalidatePath("/admin");
+    return parseStringify(appointmentDeleted);
+  } catch (error: any) {
+    throw new Error(error.message)
   }
 };
 
@@ -137,7 +148,7 @@ export const sendSMSNotification = async (userId: string, content: string) => {
   try {
     const message = await messaging.createSms(ID.unique(), content, [userId]);
     return parseStringify(message);
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    throw new Error(error.message)
   }
 };

@@ -37,14 +37,16 @@ export interface Appointment extends Models.Document {
 }
 
 export interface AppointModal {
-  _id: string;
+  _id?: string;
   userId: string;
   patientId: string;
-  primaryPhysician: string;
+  primaryPhysician?: string;
   primaryPhysicianId: string;
   schedule: Date;
+  status: Status;
   reason: string;
   note: string;
   cancellationReason?: string;
-  name: string;
+  name?: string;
+  phone?: string;
 }
