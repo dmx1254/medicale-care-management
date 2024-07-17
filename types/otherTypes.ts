@@ -27,12 +27,12 @@ export const profileInfo: profilePerso[] = [
     slug: "informations-medicales",
     icon: HeartPulse,
   },
-  {
-    id: "lpqza69",
-    title: "Verification d'identite",
-    slug: "verification-identite",
-    icon: KeySquare,
-  },
+//   {
+//     id: "lpqza69",
+//     title: "Verification d'identite",
+//     slug: "verification-identite",
+//     icon: KeySquare,
+//   },
   {
     id: "zaplq25",
     title: "Mes rendez-vous",

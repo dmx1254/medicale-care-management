@@ -1,3 +1,5 @@
+import { Doctors } from "@/constants";
+import { Doc } from "@/types";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -86,4 +88,12 @@ export const convertFileToBase64 = (file: File): Promise<string> => {
     };
     reader.onerror = (error) => reject(error);
   });
+};
+
+export const getPrimaryPhysicianPicture = (doctorName: string) => {
+  const doctor = Doctors.find((doc: Doc) => doc.name === doctorName);
+
+  if (doctor) {
+    return doctor;
+  }
 };

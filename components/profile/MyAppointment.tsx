@@ -1,5 +1,5 @@
 import { Doctors } from "@/constants";
-import { formatDateTime } from "@/lib/utils";
+import { formatDateTime, getPrimaryPhysicianPicture } from "@/lib/utils";
 import { AppointmentResponse, Doc, Patient } from "@/types";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -18,13 +18,6 @@ const MyAppointment = ({
   const [loading, setLoading] = useState(false);
   //   console.log(userApp);
 
-  const getPrimaryPhysicianPicture = (doctorName: string) => {
-    const doctor = Doctors.find((doc: Doc) => doc.name === doctorName);
-
-    if (doctor) {
-      return doctor;
-    }
-  };
 
   useEffect(() => {
     const fetchUserAppointments = async () => {

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import AppointmentForm from "./forms/AppointmentForm";
-import { Appointment } from "@/types/appwrite.types";
+import { AppointModal, Appointment } from "@/types/appwrite.types";
 
 const AppointmentModal = ({
   type,
@@ -22,7 +22,7 @@ const AppointmentModal = ({
   type: "schedule" | "cancel";
   patientId: string;
   userId: string;
-  appointment?: Appointment;
+  appointment: AppointModal;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   return (

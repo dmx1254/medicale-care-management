@@ -119,13 +119,21 @@ export type CreateAppointmentParams = {
   reason: string;
   schedule: Date;
   status: Status;
+  name: string;
   note: string | undefined;
 };
+
+export interface AppointmentUpdate {
+  primaryPhysician: string;
+  schedule: Date;
+  status: string;
+  cancellationReason: string;
+}
 
 export type UpdateAppointmentParams = {
   appointmentId: string;
   userId: string;
-  appointment: Appointment;
+  appointment: AppointmentUpdate;
   type: string;
 };
 

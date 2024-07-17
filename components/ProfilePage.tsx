@@ -126,12 +126,12 @@ const UserProfile = ({
           </section>
 
           <MedicalesInformations patient={patient} />
-          <section className="space-y-4" id="verification-identite">
+          {/* <section className="space-y-4" id="verification-identite">
             <div className="mb-3 space-y-1">
               <h2 className="sub-header">Verification d'identités</h2>
             </div>
           </section>
-          <IdentityVerification patient={patient} />
+          <IdentityVerification patient={patient} /> */}
           <section
             className="space-y-0 invisible"
             id="mes-rendez-vous"
@@ -166,6 +166,8 @@ const UserProfile = ({
                   type="create"
                   userId={userId}
                   patientId={userId}
+                  name={patient.name}
+                  phone={patient.phone}
                 />
                 {/* <p className="copyright py-8">&copy; 2024 MedicaleCare</p> */}
               </div>

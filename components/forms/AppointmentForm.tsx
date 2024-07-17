@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import CustomFormField from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
@@ -38,12 +37,16 @@ const AppointmentForm = ({
   patientId,
   appointment,
   setOpen,
+  name,
+  phone,
 }: {
   type: "create" | "cancel" | "schedule";
   userId: string;
   patientId: string;
   appointment: Appointment;
   setOpen: (open: boolean) => void;
+  name: string;
+  phone: string;
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -83,10 +86,12 @@ const AppointmentForm = ({
           userId,
           patientId,
           primaryPhysician: values.primaryPhysician,
-          primaryPhysicianId: "6690180f186a3289c93249f5",
+          primaryPhysicianId: "",
           schedule: new Date(values.schedule),
           reason: values.reason,
           note: values.note,
+          name,
+          phone,
           status: status as Status,
         };
         const appointment = await createAppointment(appointmentData);
@@ -104,7 +109,7 @@ const AppointmentForm = ({
       } else {
         const appointmentToUpdate = {
           userId,
-          appointmentId: appointment?.$id!,
+          appointmentId: appointment?._id,
           appointment: {
             primaryPhysician: values?.primaryPhysician,
             schedule: new Date(values?.schedule),
@@ -120,8 +125,12 @@ const AppointmentForm = ({
           form.reset();
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      if (error.message) {
+        toast.error(error.message, {
+          style: { color: "red" },
+        });
+      }
     }
     setIsLoading(false);
   }
@@ -136,7 +145,7 @@ const AppointmentForm = ({
       buttonLabel = "Créer un rendez-vous";
       break;
     case "schedule":
-      buttonLabel = "Planifier un rendez-vous";
+      buttonLabel = "Confirmer un rendez-vous";
       break;
     default:
       break;

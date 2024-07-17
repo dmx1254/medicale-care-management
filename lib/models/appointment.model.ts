@@ -15,7 +15,7 @@ const AppointmentSchema = new mongoose.Schema({
   },
   primaryPhysicianId: {
     type: String,
-    required: true,
+    default: "",
   },
   schedule: {
     type: Date,
@@ -30,7 +30,15 @@ const AppointmentSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  name: {
+    type: String,
+    default: "",
+  },
   note: {
+    type: String,
+    default: "",
+  },
+  phone: {
     type: String,
     default: "",
   },
