@@ -64,10 +64,12 @@ const AppointmentAction = ({ data }: AppointModal) => {
   return (
     <div>
       <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogContent className="bg-dark-200 border-dark-300">
+        <AlertDialogContent className="bg-dark-200 border-dark-300 w-full max-sm:p-2  max-sm:max-w-72 max-md:max-w-96">
           <AlertDialogHeader>
-            <AlertDialogTitle>Êtes-vous absolument sûr ?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className="max-sm:text-base">
+              Êtes-vous absolument sûr ?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="max-sm:text-sm">
               Cette action est irréversible. Cela supprimera définitivement ce
               rendez-vous.
             </AlertDialogDescription>
@@ -123,7 +125,9 @@ const AppointmentAction = ({ data }: AppointModal) => {
           >
             Supprimer
           </DropdownMenuItem>
-          <DropdownMenuItem>View payment details</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer transition-all hover:opacity-80">
+            Télécharger la fiche
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

@@ -119,10 +119,19 @@ const AppointmentForm = ({
           type,
         };
 
-        const updatedAppointment = await updateAppointment(appointmentToUpdate);
-        if (updatedAppointment) {
+        const response = await updateAppointment(appointmentToUpdate);
+        if (response?.updatedApp) {
           setOpen && setOpen(false);
           form.reset();
+          if (!response?.messageR.errorMessage) {
+            toast.success(`Un sms à ete envoye à ${response.updatedApp.name}`, {
+              style: {
+                color: "#22c55e",
+                background: "#0D0F10",
+                border: "1px solid #363A3D",
+              },
+            });
+          }
         }
       }
     } catch (error: any) {

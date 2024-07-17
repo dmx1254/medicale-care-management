@@ -43,7 +43,7 @@ const AppointmentModal = ({
           </DialogTitle>
           <DialogDescription>
             Veuillez remplir les détails suivants pour{" "}
-            {type === "schedule" ? "Programmer" : "Annuler"} le rendez-vou
+            {type === "schedule" ? "Programmer" : "Annuler"} le rendez-vous
           </DialogDescription>
         </DialogHeader>
         <AppointmentForm
