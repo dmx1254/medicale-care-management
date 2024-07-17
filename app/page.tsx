@@ -1,5 +1,6 @@
 import PasskeyModal from "@/components/PasskeyModal";
 import PatientForm from "@/components/forms/PatientForm";
+import { SearchParamProps } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -33,7 +34,7 @@ export default function Home({ searchParams }: SearchParamProps) {
         alt="medicale care"
         height={1000}
         width={1000}
-        className="side-img max-w-[50%]"
+        className="side-img max-w-[50%] sticky top-0 right-0 bottom-0"
       />
     </div>
   );

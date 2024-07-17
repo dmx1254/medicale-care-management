@@ -129,16 +129,20 @@ export type UpdateAppointmentParams = {
   type: string;
 };
 
+export interface AppointmentResponse {
+  _id: string;
+  patientId?: string;
+  userId: string;
+  status: string;
+  primaryPhysician: string;
+  reason: string;
+  primaryPhysicianId: string;
+  note: string;
+  cancellationReason: string;
+  schedule: Date;
+}
 
-export interface AppointmentResponse{
-    _id: string,
-    patientId?: string;
-    userId: string;
-    status: string;
-    primaryPhysician: string;
-    reason: string;
-    primaryPhysicianId: string;
-    note: string;
-    cancellationReason: string;
-    schedule: Date;
+export interface Doc {
+  image: string;
+  name: string;
 }

@@ -116,6 +116,9 @@
   .header {
     @apply text-32-bold md:text-36-bold;
   }
+  .header-prof {
+    @apply text-32-bold md:text-22-bold;
+  }
 
   .sub-header {
     @apply text-18-bold md:text-24-bold;
@@ -146,7 +149,7 @@
   }
 
   .request-details {
-    @apply flex w-full flex-col items-center gap-8 border-y-2 border-dark-400 py-8 md:w-fit md:flex-row;
+    @apply flex w-full flex-col items-center gap-8 border-y-2 md:justify-between border-dark-400 py-8 md:flex-row;
   }
 
   /* ===== ADMIN */
@@ -225,6 +228,9 @@
 
   .text-32-bold {
     @apply text-[32px] leading-[36px] font-bold;
+  }
+  .text-22-bold {
+    @apply text-[22px] leading-[36px] font-bold;
   }
 
   .text-18-bold {

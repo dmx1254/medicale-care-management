@@ -1,4 +1,4 @@
-import { Gender, Status } from "@/types";
+import { Doc, Gender, Status } from "@/types";
 
 export const GenderOptions = ["homme", "femme", "autre"];
 
@@ -32,20 +32,20 @@ export const PatientFormDefaultValues = {
 };
 
 export const IdentificationTypes = [
-    "Acte de naissance",
-    "Permis de conduire",
-    "Carte d'assurance médicale/Police d'assurance",
-    "Carte d'identité militaire",
-    "Carte d'identité nationale",
-    "Passeport",
-    "Carte de résident permanent (Carte verte)",
-    "Carte de sécurité sociale",
-    "Carte d'identité d'État",
-    "Carte d'identité étudiante",
-    "Carte d'identité de votant",
-  ];
+  "Acte de naissance",
+  "Permis de conduire",
+  "Carte d'assurance médicale/Police d'assurance",
+  "Carte d'identité militaire",
+  "Carte d'identité nationale",
+  "Passeport",
+  "Carte de résident permanent (Carte verte)",
+  "Carte de sécurité sociale",
+  "Carte d'identité d'État",
+  "Carte d'identité étudiante",
+  "Carte d'identité de votant",
+];
 
-export const Doctors = [
+export const Doctors: Doc[] = [
   {
     image: "/assets/images/dr-green.png",
     name: "John Green",
@@ -88,4 +88,4 @@ export const StatusIcon = {
   scheduled: "/assets/icons/check.svg",
   pending: "/assets/icons/pending.svg",
   cancelled: "/assets/icons/cancelled.svg",
-}
+};

@@ -1,6 +1,6 @@
 import { Doctors } from "@/constants";
 import { formatDateTime } from "@/lib/utils";
-import { AppointmentResponse, Patient } from "@/types";
+import { AppointmentResponse, Doc, Patient } from "@/types";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import StatusBadge from "../StatusBadge";
@@ -19,8 +19,11 @@ const MyAppointment = ({
   //   console.log(userApp);
 
   const getPrimaryPhysicianPicture = (doctorName: string) => {
-    const doctor = Doctors.find((doc) => doc.name === doctorName);
-    return doctor;
+    const doctor = Doctors.find((doc: Doc) => doc.name === doctorName);
+
+    if (doctor) {
+      return doctor;
+    }
   };
 
   useEffect(() => {
@@ -39,15 +42,16 @@ const MyAppointment = ({
     fetchUserAppointments();
   }, [userId]);
 
-  const doctor = Doctors.find((doc) => doc.name === "Alex Ramirez");
   return (
-    <div className="flex flex-col items-start">
+    <div className="flex flex-col items-start w-full">
       {userApp?.map((app) => (
         <section key={app._id} className="request-details">
           <p>Détails du rendez-vous:</p>
           <div className="flex items-center gap-3">
             <Image
-              src={getPrimaryPhysicianPicture(app.primaryPhysician)?.image}
+              src={
+                getPrimaryPhysicianPicture(app.primaryPhysician)?.image || ""
+              }
               height={100}
               width={100}
               alt="doctor"
