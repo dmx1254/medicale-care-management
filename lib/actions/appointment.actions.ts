@@ -1,21 +1,10 @@
 "use server";
 
 const twilio = require("twilio");
-import { ID, Query } from "node-appwrite";
-import {
-  APPOINTMENT_COLLECTION_ID,
-  DATABASE_ID,
-  databases,
-  messaging,
-} from "../appwrite.config";
+
 import { formatDateTime, parseStringify } from "../utils";
-import { Appointment } from "@/types/appwrite.types";
 import { revalidatePath } from "next/cache";
-import {
-  AppointmentResponse,
-  CreateAppointmentParams,
-  UpdateAppointmentParams,
-} from "@/types";
+import { CreateAppointmentParams, UpdateAppointmentParams } from "@/types";
 import {
   createPatientAppointment,
   deleteSingleAppointment,
@@ -54,43 +43,43 @@ export const getUserAppointments = async (userId: string) => {
   }
 };
 
-export const getRecentAppointmentList = async () => {
-  try {
-    const appointments = await databases.listDocuments(
-      "668ac4440030872f1ffc",
-      "668ac5130005ffa78400",
-      [Query.orderDesc("$createdAt")]
-    );
+// export const getRecentAppointmentList = async () => {
+//   try {
+//     const appointments = await databases.listDocuments(
+//       "668ac4440030872f1ffc",
+//       "668ac5130005ffa78400",
+//       [Query.orderDesc("$createdAt")]
+//     );
 
-    const initialCounts = {
-      scheduledCount: 0,
-      pendingCount: 0,
-      cancelledCount: 0,
-    };
+//     const initialCounts = {
+//       scheduledCount: 0,
+//       pendingCount: 0,
+//       cancelledCount: 0,
+//     };
 
-    const counts = (appointments.documents as Appointment[]).reduce(
-      (acc, appointment) => {
-        if (appointment.status === "scheduled") {
-          acc.scheduledCount += 1;
-        } else if (appointment.status === "pending") {
-          acc.pendingCount += 1;
-        } else if (appointment.status === "cancelled") {
-          acc.cancelledCount += 1;
-        }
-        return acc;
-      },
-      initialCounts
-    );
-    const data = {
-      totalCount: appointments.total,
-      ...counts,
-      documents: appointments.documents,
-    };
-    return parseStringify(data);
-  } catch (error: any) {
-    throw new Error(error.message);
-  }
-};
+//     const counts = (appointments.documents as Appointment[]).reduce(
+//       (acc, appointment) => {
+//         if (appointment.status === "scheduled") {
+//           acc.scheduledCount += 1;
+//         } else if (appointment.status === "pending") {
+//           acc.pendingCount += 1;
+//         } else if (appointment.status === "cancelled") {
+//           acc.cancelledCount += 1;
+//         }
+//         return acc;
+//       },
+//       initialCounts
+//     );
+//     const data = {
+//       totalCount: appointments.total,
+//       ...counts,
+//       documents: appointments.documents,
+//     };
+//     return parseStringify(data);
+//   } catch (error: any) {
+//     throw new Error(error.message);
+//   }
+// };
 
 export const getAppointmentList = async () => {
   try {
