@@ -1,3 +1,4 @@
+import { isValidObjectId } from "mongoose";
 import { UserRegister } from "@/types";
 import { connectDB } from "../db";
 import PatientModel from "../models/patient.model";
@@ -54,6 +55,63 @@ export async function getOnePatient(userId: string) {
     );
     const patient = parseStringify(patientGeting);
     return patient;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+export async function upadteEmailString(codeEmail: string, userId: string) {
+  if (!isValidObjectId(userId)) {
+    throw new Error("Invalid appointment ID");
+  }
+
+  const upadtedUserEmailString = await PatientModel.findByIdAndUpdate(
+    userId,
+    {
+      emailStringVerified: codeEmail,
+    },
+    {
+      new: true,
+    }
+  );
+  return upadtedUserEmailString;
+}
+
+export async function iSEmailVerified(codeVerif: string, userId: string) {
+  if (!isValidObjectId(userId)) {
+    throw new Error("Invalid appointment ID");
+  }
+
+  try {
+    const isUpadtedUser = await PatientModel.findById(userId);
+    const isAlreadyEmailVerified = isUpadtedUser.isEmailVerified;
+    if (isAlreadyEmailVerified)
+      return {
+        successMessage: "Votre adresse E-mail est déjà vérifié",
+        errorMessage: "",
+      };
+
+    const emailString = isUpadtedUser.emailStringVerified;
+    if (emailString === codeVerif) {
+      const upadtedIsVerifEmail = await PatientModel.findByIdAndUpdate(
+        userId,
+        {
+          isEmailVerified: true,
+        },
+        {
+          new: true,
+        }
+      );
+      return {
+        successMessage: "Votre adresse E-mail a été vérifié avec succès",
+        errorMessage: "",
+      };
+    }else{
+        return {
+            successMessage: "",
+            errorMessage: "Le code que vous avez saisi est incorrect",
+          };
+    }
   } catch (error: any) {
     throw new Error(error);
   }

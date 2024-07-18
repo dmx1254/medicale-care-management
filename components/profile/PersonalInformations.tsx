@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 
 import ModalImage from "react-modal-image";
+import EmailVerification from "../EmailVerification";
 
 const PersonalInformations = ({ patient }: { patient: Patient }) => {
   //   console.log(patient);
@@ -47,20 +48,13 @@ const PersonalInformations = ({ patient }: { patient: Patient }) => {
                   <Mail className="text-gray-600" size={16} />
                   <span>{patient.email}</span>
                 </div>
-                <div className="flex items-center gap-1">
-                  <span>Status :</span>&nbsp;
-                  {patient.isEmailVerified ? (
-                    <span className="flex items-center gap-1 text-green-500">
-                      verified
-                      <BadgeCheck size={15} className="mt-0.5" />
-                    </span>
-                  ) : (
-                    <span className="flex items-center gap-1 text-red-500 opacity-70">
-                      not verified
-                      <BadgeCheck size={15} className="mt-0.5" />
-                    </span>
-                  )}
-                </div>
+
+                <EmailVerification
+                  email={patient.email}
+                  isEmailVerified={patient.isEmailVerified}
+                  name={patient.name}
+                  userId={patient._id}
+                />
               </div>
             ) : (
               "N/A"

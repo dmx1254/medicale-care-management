@@ -49,6 +49,16 @@ const AppointmentForm = ({
   name: string;
   phone: string;
 }) => {
+  const translateStatusToFr = (status: string): string => {
+    return status === "pending"
+      ? "En attente"
+      : status === "scheduled"
+      ? "Programmé"
+      : status === "cancelled"
+      ? "Annulé"
+      : "";
+  };
+
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // 1. Define your form.
@@ -125,13 +135,20 @@ const AppointmentForm = ({
         if (updatedAppointment) {
           setOpen(false);
           form.reset();
-          toast.success(`Le rendez-vous avec ${updatedAppointment.name} a été mis à jour avec succès.`, {
-            style: {
-              color: "#22c55e",
-              background: "#0D0F10",
-              border: "1px solid #363A3D",
-            },
-          });
+          toast.success(
+            `Le rendez-vous avec ${
+              updatedAppointment.name
+            } a été ${translateStatusToFr(
+              updatedAppointment.status
+            )} avec succès.`,
+            {
+              style: {
+                color: "#22c55e",
+                background: "#0D0F10",
+                border: "1px solid #363A3D",
+              },
+            }
+          );
         }
       }
     } catch (error: any) {
