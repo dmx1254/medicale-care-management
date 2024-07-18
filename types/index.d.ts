@@ -133,6 +133,7 @@ export interface AppointmentUpdate {
 export type UpdateAppointmentParams = {
   appointmentId: string;
   userId: string;
+  phone: string;
   appointment: AppointmentUpdate;
   type: string;
 };
@@ -148,6 +149,8 @@ export interface AppointmentResponse {
   note: string;
   cancellationReason: string;
   schedule: Date;
+  createdAt?:string;
+  updatedAt?:string;
 }
 
 export interface Doc {

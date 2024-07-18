@@ -76,6 +76,7 @@ export const columns: ColumnDef<Appointment>[] = [
             type="schedule"
             patientId={data.patientId}
             userId={data.userId}
+            phone={data.phone}
             appointment={data}
           />
           <AppointmentModal
@@ -83,6 +84,7 @@ export const columns: ColumnDef<Appointment>[] = [
             patientId={data.patientId}
             userId={data.userId}
             appointment={data}
+            phone={data.phone}
           />
 
           <AppointmentAction data={data} />

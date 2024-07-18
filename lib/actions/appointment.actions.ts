@@ -11,7 +11,11 @@ import {
 import { formatDateTime, parseStringify } from "../utils";
 import { Appointment } from "@/types/appwrite.types";
 import { revalidatePath } from "next/cache";
-import { CreateAppointmentParams, UpdateAppointmentParams } from "@/types";
+import {
+  AppointmentResponse,
+  CreateAppointmentParams,
+  UpdateAppointmentParams,
+} from "@/types";
 import {
   createPatientAppointment,
   deleteSingleAppointment,
@@ -102,10 +106,11 @@ export const updateAppointment = async ({
   userId,
   appointment,
   type,
+  phone,
 }: UpdateAppointmentParams) => {
   try {
     // console.log(appointmentId, appointment);
-    const updatedAppointment = updateSingleAppointment(
+    const updatedAppointment = await updateSingleAppointment(
       appointmentId,
       appointment
     );
@@ -114,33 +119,23 @@ export const updateAppointment = async ({
       throw new Error("Rendez-vous introuvable");
     }
 
-    const accountSid = "AC609626b84b3215ac358bd2aefbe3ca91";
-    const authToken = "475ee3789dcafefbfde0ce93160cfa08";
-    const client = new twilio(accountSid, authToken);
-
-    const smsMessage = `
-        Bonjour, c'est MedicaleCare.${
-          type === "schedule"
-            ? `Votre rendez-vous a été programmé le ${
-                formatDateTime(appointment.schedule!).dateTime
-              } avec le Dr. ${appointment.primaryPhysician}`
-            : `Nous avons le regret de vous informer que votre rendez-vous a été annulé pour la raison suivante:${appointment.cancellationReason}`
-        }`;
-
-    const messageR = await client.messages.create({
-      body: smsMessage,
-      to: "+212645456531", // Numéro de téléphone du destinataire
-      from: "+13374014773", // Numéro de téléphone Twilio
-    });
-
     revalidatePath("/admin");
-    const updatedApp = parseStringify(updatedAppointment);
-    const updateandmess = { updatedApp, messageR };
-    return updateandmess;
-    // return parseStringify(updatedAppointment);
+
+    // Utiliser JSON.stringify et JSON.parse pour le débogage
+    const updatedAppStringified = JSON.stringify(updatedAppointment);
+    const updatedAppParsed = JSON.parse(updatedAppStringified);
+    await sendSMSNotification(
+      phone,
+      type,
+      updatedAppParsed.schedule,
+      updatedAppParsed.primaryPhysician,
+      updatedAppParsed.cancellationReason
+    );
+    return updatedAppParsed;
   } catch (error: any) {
-    // throw new Error(error.message);
-    console.log(error);
+    // Utiliser console.error pour une meilleure visibilité des erreurs
+    console.error("Erreur lors de la mise à jour du rendez-vous:", error);
+    throw new Error(error.message);
   }
 };
 
@@ -154,10 +149,31 @@ export const deleteAppointment = async (appointmentId: string) => {
   }
 };
 
-export const sendSMSNotification = async (userId: string, content: string) => {
+export const sendSMSNotification = async (
+  phone: string,
+  type: string,
+  schedule: Date,
+  primaryPhysician: string,
+  cancellationReason: string
+) => {
   try {
-    const message = await messaging.createSms(ID.unique(), content, [userId]);
-    return parseStringify(message);
+    const client = new twilio(process.env.ACCOUNTSID, process.env.AUTHTOKEN);
+
+    const smsMessage = `
+        Bonjour, c'est MedicaleCare.${
+          type === "schedule"
+            ? `Votre rendez-vous a été programmé le ${
+                formatDateTime(schedule!).dateTime
+              } avec le Dr. ${primaryPhysician}`
+            : `Nous avons le regret de vous informer que votre rendez-vous a été annulé pour la raison suivante:${cancellationReason}`
+        }`;
+
+    const messageR = await client.messages.create({
+      body: smsMessage,
+      to: phone,
+      from: "+13374014773",
+    });
+    return messageR;
   } catch (error: any) {
     throw new Error(error.message);
   }

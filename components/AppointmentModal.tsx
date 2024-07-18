@@ -18,11 +18,13 @@ const AppointmentModal = ({
   patientId,
   userId,
   appointment,
+  phone
 }: {
   type: "schedule" | "cancel";
   patientId: string;
   userId: string;
   appointment: AppointModal;
+  phone: string;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   return (
@@ -52,6 +54,7 @@ const AppointmentModal = ({
           type={type}
           appointment={appointment}
           setOpen={setOpen}
+          phone={phone}
         />
       </DialogContent>
     </Dialog>

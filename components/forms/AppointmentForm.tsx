@@ -15,6 +15,7 @@ import Image from "next/image";
 import { Doctors } from "@/constants";
 import {
   createAppointment,
+  sendSMSNotification,
   updateAppointment,
 } from "@/lib/actions/appointment.actions";
 import { Appointment } from "@/types/appwrite.types";
@@ -110,6 +111,7 @@ const AppointmentForm = ({
         const appointmentToUpdate = {
           userId,
           appointmentId: appointment?._id,
+          phone,
           appointment: {
             primaryPhysician: values?.primaryPhysician,
             schedule: new Date(values?.schedule),
@@ -119,19 +121,17 @@ const AppointmentForm = ({
           type,
         };
 
-        const response = await updateAppointment(appointmentToUpdate);
-        if (response?.updatedApp) {
-          setOpen && setOpen(false);
+        const updatedAppointment = await updateAppointment(appointmentToUpdate);
+        if (updatedAppointment) {
+          setOpen(false);
           form.reset();
-          if (!response?.messageR.errorMessage) {
-            toast.success(`Un sms à ete envoye à ${response.updatedApp.name}`, {
-              style: {
-                color: "#22c55e",
-                background: "#0D0F10",
-                border: "1px solid #363A3D",
-              },
-            });
-          }
+          toast.success(`Le rendez-vous avec ${updatedAppointment.name} a été mis à jour avec succès.`, {
+            style: {
+              color: "#22c55e",
+              background: "#0D0F10",
+              border: "1px solid #363A3D",
+            },
+          });
         }
       }
     } catch (error: any) {
