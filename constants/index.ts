@@ -49,38 +49,56 @@ export const Doctors: Doc[] = [
   {
     image: "/assets/images/dr-green.png",
     name: "John Green",
+    speciality: "Généraliste",
+    color: "#ef4444",
   },
   {
     image: "/assets/images/dr-cameron.png",
     name: "Leila Cameron",
+    speciality: "Gynécologue",
+    color: "#8b5cf6",
   },
   {
     image: "/assets/images/dr-livingston.png",
     name: "David Livingston",
+    speciality: "Dermatologue",
+    color: "#06b6d4",
   },
   {
     image: "/assets/images/dr-peter.png",
     name: "Evan Peter",
+    speciality: "Ophtalmologue",
+    color: "#3b82f6",
   },
   {
     image: "/assets/images/dr-powell.png",
     name: "Jane Powell",
+    speciality: "Cardiologue",
+    color: "#d946ef",
   },
   {
     image: "/assets/images/dr-remirez.png",
     name: "Alex Ramirez",
+    speciality: "Oncologue",
+    color: "#6366f1",
   },
   {
     image: "/assets/images/dr-lee.png",
     name: "Jasmine Lee",
+    speciality: "Dentiste",
+    color: "#ec4899",
   },
   {
     image: "/assets/images/dr-cruz.png",
     name: "Alyana Cruz",
+    speciality: "Neurologue",
+    color: "#f43f5e",
   },
   {
     image: "/assets/images/dr-sharma.png",
     name: "Hardik Sharma",
+    speciality: "Pédiatre",
+    color: "#14b8a6",
   },
 ];
 

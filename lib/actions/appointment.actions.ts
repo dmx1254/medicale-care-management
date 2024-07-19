@@ -8,6 +8,7 @@ import { CreateAppointmentParams, UpdateAppointmentParams } from "@/types";
 import {
   createPatientAppointment,
   deleteSingleAppointment,
+  fiveRecentAppointments,
   getAllAppointmentList,
   getPatientApppointment,
   getUserPatientAppointment,
@@ -164,6 +165,16 @@ export const sendSMSNotification = async (
     });
     return messageR;
   } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+export const getFiveRecentAppointments = async () => {
+  try {
+    const fiveRecentApps = await fiveRecentAppointments();
+    return parseStringify(fiveRecentApps);
+  } catch (error: any) {
+    console.log(error);
     throw new Error(error.message);
   }
 };

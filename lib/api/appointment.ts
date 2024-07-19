@@ -118,3 +118,15 @@ export async function deleteSingleAppointment(appointmentId: string) {
     throw new Error(error.message);
   }
 }
+
+export async function fiveRecentAppointments() {
+  try {
+    const recentFiveAppointment = await AppointmentModel.find()
+      .sort({ updatedAt: -1 })
+      .limit(5);
+
+    return recentFiveAppointment;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}

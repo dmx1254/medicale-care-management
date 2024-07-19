@@ -92,7 +92,7 @@ const patientSchema = new mongoose.Schema(
     },
     identificationDocument: {
       type: String,
-      default: "", 
+      default: "",
     },
     isEmailVerified: {
       type: Boolean,
@@ -133,6 +133,10 @@ const patientSchema = new mongoose.Schema(
     role: {
       type: String,
       default: "PATIENT",
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
     },
   },
   {

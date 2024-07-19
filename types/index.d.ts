@@ -156,4 +156,6 @@ export interface AppointmentResponse {
 export interface Doc {
   image: string;
   name: string;
+  speciality: string;
+  color?: string;
 }

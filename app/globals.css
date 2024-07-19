@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  /* :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -64,7 +64,7 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
     --radius: 0.5rem;
-  }
+  } */
 }
 
 /* ========================================== TAILWIND STYLES */
@@ -151,7 +151,7 @@
   .request-details {
     @apply flex w-full flex-col items-center gap-8 border-y-2 md:justify-between border-dark-400 py-8 md:flex-row;
   }
-  
+
   .request-details-success {
     @apply flex w-full flex-col items-center gap-8 border-y-2 border-dark-400 py-8 md:w-fit md:flex-row;
   }
@@ -196,6 +196,9 @@
   /* ==== Stat Card */
   .stat-card {
     @apply flex flex-1 flex-col gap-6 rounded-2xl bg-cover p-6 shadow-lg;
+  }
+  .stat-card-admin {
+    @apply bg-cover p-2 shadow-lg;
   }
 
   /* ==== Status Badge */
