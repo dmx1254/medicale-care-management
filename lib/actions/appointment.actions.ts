@@ -147,7 +147,10 @@ export const sendSMSNotification = async (
   cancellationReason: string
 ) => {
   try {
-    const client = new twilio(process.env.ACCOUNTSID, process.env.AUTHTOKEN);
+    const client = new twilio(
+      "AC609626b84b3215ac358bd2aefbe3ca91",
+      "3ecf14017eca0a042a8e43f0a8becb90"
+    );
 
     const smsMessage = `
         Bonjour, c'est MedicaleCare.${
@@ -165,6 +168,7 @@ export const sendSMSNotification = async (
     });
     return messageR;
   } catch (error: any) {
+    console.log(error);
     throw new Error(error.message);
   }
 };

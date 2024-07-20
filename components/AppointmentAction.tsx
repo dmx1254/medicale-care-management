@@ -64,7 +64,7 @@ const AppointmentAction = ({ data }: AppointModal) => {
   return (
     <div>
       <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogContent className="bg-dark-200 border-dark-300 w-full max-sm:p-2  max-sm:max-w-72 max-md:max-w-96">
+        <AlertDialogContent className="bg-dark-200 border-dark-300 w-full">
           <AlertDialogHeader>
             <AlertDialogTitle className="max-sm:text-base">
               Êtes-vous absolument sûr ?

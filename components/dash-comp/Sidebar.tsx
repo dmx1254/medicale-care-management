@@ -12,17 +12,26 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="admin-profile-cop h-screen max-h-screen min-w-60">
+    <div className="admin-profile-cop h-screen max-h-screen max-md:hidden md:w-60">
       <div className="flex flex-col items-start gap-4">
-        <div>
+        <Link href="/dashboard" className="max-md:hidden">
           <Image
             src="/assets/icons/logo-full.svg"
             height={100}
             width={100}
             alt="medicale care"
-            className="mb-6 h-10 w-fit"
+            className="mb-3 h-10 w-fit"
           />
-        </div>
+        </Link>
+        <Link href="/dashboard" className="flex self-center md:hidden">
+          <Image
+            src="/assets/icons/logo-icon.svg"
+            height={100}
+            width={100}
+            alt="medicale care"
+            className="mb-3 h-10 w-fit"
+          />
+        </Link>
 
         {sidebarInfo.map((profil) => (
           <Button

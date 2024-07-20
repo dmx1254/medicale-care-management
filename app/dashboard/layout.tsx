@@ -9,6 +9,7 @@ import { UserNav } from "@/components/dash-comp/user-nav";
 import { CalendarDateRangePicker } from "@/components/dash-comp/date-range-picker";
 import { Button } from "@/components/ui/button";
 import Sidebar from "@/components/dash-comp/Sidebar";
+import MobileBar from "@/components/MobileBar";
 // import { Toaster as DefaultToaster } from "@/components/ui/toaster";
 // import { Toaster as NewYorkSonner } from "@/components/ui/sonner";
 // import { Toaster as NewYorkToaster } from "@/components/ui/toaster";
@@ -71,30 +72,45 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <div className={cn("min-h-screen flex bg-dark-300 font-sans antialiased")}>
+    // <div className={cn("min-h-screen flex bg-dark-300 font-sans antialiased")}>
+    //   <Sidebar />
+    //   <div className="flex flex-col flex-1">
+    //     <div className="flex-1 space-y-4 p-8 pt-6 sticky top-0 left-0 right-0 z-50">
+    //       <div className="">
+    //         <div className="flex h-16 items-center">
+    //           {/* <TeamSwitcher /> */}
+    //           {/* <MainNav className="mx-2" /> */}
+    //           <div className="ml-auto flex items-center space-x-4">
+    //             <Search />
+    //             <UserNav />
+    //           </div>
+    //         </div>
+    //       </div>
+    //       {/* <div className="flex items-end justify-end space-y-2">
+    //       <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+    //       <div className="flex items-end space-x-2">
+    //         <CalendarDateRangePicker />
+    //         <Button className="bg-green-600 text-green-500">Download</Button>
+    //       </div>
+    //     </div> */}
+    //     </div>
+    //     <div className="relative flex min-h-screen flex-col">{children}</div>
+    //   </div>
+    // </div>
+    <main className="w-full flex bg-dark-300">
       <Sidebar />
-      <div className="flex flex-col flex-1">
-        <div className="flex-1 space-y-4 p-8 pt-6 sticky top-0 left-0 right-0 z-50">
-          <div className="">
-            <div className="flex h-16 items-center">
-              {/* <TeamSwitcher /> */}
-              {/* <MainNav className="mx-2" /> */}
-              <div className="ml-auto flex items-center space-x-4">
-                <Search />
-                <UserNav />
-              </div>
-            </div>
+      <section className="w-full">
+        <div className="flex bg-dark-300 w-full border border-b border-dark-400 md:border-transparent sticky right-0 p-3 top-0 bottom-8 items-center justify-between space-x-4 z-30">
+          <MobileBar />
+          <div className="flex items-center gap-4">
+            <Search />
+            <UserNav />
           </div>
-          {/* <div className="flex items-end justify-end space-y-2">
-          <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-          <div className="flex items-end space-x-2">
-            <CalendarDateRangePicker />
-            <Button className="bg-green-600 text-green-500">Download</Button>
-          </div>
-        </div> */}
         </div>
-        <div className="relative flex min-h-screen flex-col">{children}</div>
-      </div>
-    </div>
+        <div className="p-4 relative w-full flex min-h-screen flex-col">
+          {children}
+        </div>
+      </section>
+    </main>
   );
 }
