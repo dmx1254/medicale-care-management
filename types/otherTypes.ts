@@ -59,7 +59,7 @@ export const sidebarInfo: profilePerso[] = [
   },
   {
     id: "lpqza69",
-    title: "Patienst",
+    title: "Patients",
     slug: "/dashboard/patients",
     icon: HeartPulse,
   },

@@ -1,6 +1,6 @@
 "use server";
 
-const twilio = require("twilio");
+import { client } from "../db";
 
 import { formatDateTime, parseStringify } from "../utils";
 import { revalidatePath } from "next/cache";
@@ -147,11 +147,6 @@ export const sendSMSNotification = async (
   cancellationReason: string
 ) => {
   try {
-    const client = new twilio(
-      "AC609626b84b3215ac358bd2aefbe3ca91",
-      "3ecf14017eca0a042a8e43f0a8becb90"
-    );
-
     const smsMessage = `
         Bonjour, c'est MedicaleCare.${
           type === "schedule"
