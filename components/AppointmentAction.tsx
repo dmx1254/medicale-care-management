@@ -106,7 +106,7 @@ const AppointmentAction = ({ data }: AppointModal) => {
           <DropdownMenuItem
             className="cursor-pointer transition-transform hover:opacity-80"
             onClick={() => {
-              navigator.clipboard.writeText(data.name);
+              navigator.clipboard.writeText(data.phone);
               toast.success("Numéro de téléphone copié dans la presse papier", {
                 style: {
                   color: "#22c55e",

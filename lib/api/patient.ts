@@ -106,13 +106,41 @@ export async function iSEmailVerified(codeVerif: string, userId: string) {
         successMessage: "Votre adresse E-mail a été vérifié avec succès",
         errorMessage: "",
       };
-    }else{
-        return {
-            successMessage: "",
-            errorMessage: "Le code que vous avez saisi est incorrect",
-          };
+    } else {
+      return {
+        successMessage: "",
+        errorMessage: "Le code que vous avez saisi est incorrect",
+      };
     }
   } catch (error: any) {
     throw new Error(error);
+  }
+}
+
+export async function getPatients() {
+  try {
+    const patients = await PatientModel.find({
+      isAdmin: false,
+      isBan: false,
+      role: "PATIENT",
+    })
+      .sort({ createdAt: -1 })
+      .select("-password")
+      .select("-identificationDocument");
+    return patients;
+  } catch (error: any) {
+    console.error(`Error fetching patients: ${error}`);
+  }
+}
+
+export async function deleteOnePatient(patientId: string) {
+  if (!isValidObjectId(patientId)) {
+    throw new Error("Invalid appointment ID");
+  }
+  try {
+    const patientDeleted = await PatientModel.findByIdAndDelete(patientId);
+    return patientDeleted;
+  } catch (error: any) {
+    throw new Error(`Error to deleting patient: ${error.message}`);
   }
 }

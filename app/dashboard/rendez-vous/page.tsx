@@ -23,24 +23,24 @@ const RendezvousPage = async () => {
         <section className="admin-stat">
           <StatCard
             type="appointments"
-            count={appointments.scheduledCount}
+            count={appointments?.scheduledCount}
             label="Rendez-vous programmés"
             icon="/assets/icons/appointments.svg"
           />
           <StatCard
             type="pending"
-            count={appointments.pendingCount}
+            count={appointments?.pendingCount}
             label="Rendez-vous en attente"
             icon="/assets/icons/pending.svg"
           />
           <StatCard
             type="cancelled"
-            count={appointments.cancelledCount}
+            count={appointments?.cancelledCount}
             label="Rendez-vous annulés"
             icon="/assets/icons/cancelled.svg"
           />
         </section>
-        <DataTable columns={columns} data={appointments.allAppointments} />
+        <DataTable columns={columns} data={appointments?.allAppointments} />
       </main>
     </div>
   );

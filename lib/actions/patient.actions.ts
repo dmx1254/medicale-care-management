@@ -3,8 +3,15 @@
 import { ID, Query } from "node-appwrite";
 import { databases, storage, users } from "../appwrite.config";
 import { parseStringify } from "../utils";
-import { createPatient, getOnePatient, login } from "../api/patient";
+import {
+  createPatient,
+  deleteOnePatient,
+  getOnePatient,
+  getPatients,
+  login,
+} from "../api/patient";
 import { CreateUserParams, UserRegister } from "@/types";
+import { revalidatePath } from "next/cache";
 
 export const loginUser = async (user: CreateUserParams) => {
   try {
@@ -43,6 +50,25 @@ export const registerPatient = async (patient: UserRegister) => {
     } else {
       return response;
     }
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const getAllPatients = async () => {
+  try {
+    const patients = await getPatients();
+    return parseStringify(patients);
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const deletePatient = async (patientId: string) => {
+  try {
+    const patientDeleted = await deleteOnePatient(patientId);
+    revalidatePath("/dashboard/patients");
+    return parseStringify(patientDeleted);
   } catch (error: any) {
     throw new Error(error);
   }

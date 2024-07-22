@@ -8,7 +8,7 @@ export async function RecentAppointments() {
     await getFiveRecentAppointments();
   return (
     <div className="space-y-8">
-      {FiveRecentsApps.map((apps) => (
+      {FiveRecentsApps?.map((apps) => (
         <FiveAppointments key={apps._id} recentAppointments={apps} />
       ))}
     </div>

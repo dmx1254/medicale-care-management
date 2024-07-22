@@ -22,7 +22,7 @@ export const createAppointment = async (
     const newAppointment = await createPatientAppointment(appointment);
     return parseStringify(newAppointment);
   } catch (error: any) {
-    throw new Error(error.message);
+    console.error(error);
   }
 };
 
@@ -40,7 +40,7 @@ export const getUserAppointments = async (userId: string) => {
     const userAppointment = await getUserPatientAppointment(userId);
     return parseStringify(userAppointment);
   } catch (error: any) {
-    throw new Error(error.message);
+    console.error(error);
   }
 };
 
@@ -87,7 +87,7 @@ export const getAppointmentList = async () => {
     const appointments = await getAllAppointmentList();
     return parseStringify(appointments);
   } catch (error: any) {
-    throw new Error(error.message);
+    console.error(error);
   }
 };
 
@@ -125,7 +125,7 @@ export const updateAppointment = async ({
   } catch (error: any) {
     // Utiliser console.error pour une meilleure visibilité des erreurs
     console.error("Erreur lors de la mise à jour du rendez-vous:", error);
-    throw new Error(error.message);
+    console.error(error);
   }
 };
 
@@ -135,7 +135,7 @@ export const deleteAppointment = async (appointmentId: string) => {
     revalidatePath("/admin");
     return parseStringify(appointmentDeleted);
   } catch (error: any) {
-    throw new Error(error.message);
+    console.error(error);
   }
 };
 
@@ -164,7 +164,7 @@ export const sendSMSNotification = async (
     return messageR;
   } catch (error: any) {
     console.log(error);
-    throw new Error(error.message);
+    console.error(error);
   }
 };
 
@@ -174,6 +174,6 @@ export const getFiveRecentAppointments = async () => {
     return parseStringify(fiveRecentApps);
   } catch (error: any) {
     console.log(error);
-    throw new Error(error.message);
+    console.error(error);
   }
 };

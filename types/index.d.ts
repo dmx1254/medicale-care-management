@@ -101,6 +101,7 @@ export interface Patient {
   isEmailVerified: boolean;
   isPhoneVerified: boolean;
   isBan: boolean;
+  isAdmin: boolean;
   role?: string;
   createdAt: string;
   updatedAt: string;
