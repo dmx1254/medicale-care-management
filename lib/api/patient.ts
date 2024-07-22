@@ -119,15 +119,37 @@ export async function iSEmailVerified(codeVerif: string, userId: string) {
 
 export async function getPatients() {
   try {
-    const patients = await PatientModel.find({
+    const patientsFinding = await PatientModel.find({
       isAdmin: false,
-      isBan: false,
       role: "PATIENT",
     })
       .sort({ createdAt: -1 })
       .select("-password")
       .select("-identificationDocument");
-    return patients;
+    const allPatientCount = PatientModel.countDocuments({
+      isAdmin: false,
+      role: "PATIENT",
+    });
+
+    const allPatientBan = PatientModel.countDocuments({
+      isBan: true,
+      isAdmin: false,
+      role: "PATIENT",
+    });
+    const allPatientActif = PatientModel.countDocuments({
+      isBan: false,
+      isAdmin: false,
+      role: "PATIENT",
+    });
+
+    const [patients, patientsCount, patientsBan, patientsActif] =
+      await Promise.all([
+        patientsFinding,
+        allPatientCount,
+        allPatientBan,
+        allPatientActif,
+      ]);
+    return { patients, patientsCount, patientsBan, patientsActif };
   } catch (error: any) {
     console.error(`Error fetching patients: ${error}`);
   }
@@ -142,5 +164,45 @@ export async function deleteOnePatient(patientId: string) {
     return patientDeleted;
   } catch (error: any) {
     throw new Error(`Error to deleting patient: ${error.message}`);
+  }
+}
+
+export async function BanOnePatient(patientId: string) {
+  if (!isValidObjectId(patientId)) {
+    throw new Error("Invalid appointment ID");
+  }
+  try {
+    const patientBan = await PatientModel.findByIdAndUpdate(
+      patientId,
+      {
+        isBan: true,
+      },
+      {
+        new: true,
+      }
+    );
+    return patientBan;
+  } catch (error: any) {
+    throw new Error(`Error to ban patient: ${error.message}`);
+  }
+}
+
+export async function deBanOnePatient(patientId: string) {
+  if (!isValidObjectId(patientId)) {
+    throw new Error("Invalid appointment ID");
+  }
+  try {
+    const patientDeban = await PatientModel.findByIdAndUpdate(
+      patientId,
+      {
+        isBan: false,
+      },
+      {
+        new: true,
+      }
+    );
+    return patientDeban;
+  } catch (error: any) {
+    throw new Error(`Error to ban patient: ${error.message}`);
   }
 }

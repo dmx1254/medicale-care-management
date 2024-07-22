@@ -4,7 +4,9 @@ import { ID, Query } from "node-appwrite";
 import { databases, storage, users } from "../appwrite.config";
 import { parseStringify } from "../utils";
 import {
+  BanOnePatient,
   createPatient,
+  deBanOnePatient,
   deleteOnePatient,
   getOnePatient,
   getPatients,
@@ -69,6 +71,26 @@ export const deletePatient = async (patientId: string) => {
     const patientDeleted = await deleteOnePatient(patientId);
     revalidatePath("/dashboard/patients");
     return parseStringify(patientDeleted);
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const banPatient = async (patientId: string) => {
+  try {
+    const patientBan = await BanOnePatient(patientId);
+    revalidatePath("/dashboard/patients");
+    return parseStringify(patientBan);
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const deBanPatient = async (patientId: string) => {
+  try {
+    const patientDeban = await deBanOnePatient(patientId);
+    revalidatePath("/dashboard/patients");
+    return parseStringify(patientDeban);
   } catch (error: any) {
     throw new Error(error);
   }

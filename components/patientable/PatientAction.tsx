@@ -10,15 +10,54 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-
 import { toast } from "sonner";
 import { MoreHorizontal } from "lucide-react";
 import { AppointModal } from "@/types/appwrite.types";
 import { deleteAppointment } from "@/lib/actions/appointment.actions";
 import { Patient } from "@/types";
+import { banPatient, deBanPatient } from "@/lib/actions/patient.actions";
 
 const PatientAction = ({ data }: Patient) => {
   const [open, setOpen] = useState<boolean>(false);
+
+  const handleBanPatient = async (patientId: string) => {
+    try {
+      const isbanPatient = await banPatient(patientId);
+      if (isbanPatient) {
+        toast.success(
+          `Le patient ${isbanPatient.name} à été banni avec succès`,
+          {
+            style: {
+              color: "#22c55e",
+              background: "#0D0F10",
+              border: "1px solid #363A3D",
+            },
+          }
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleDebanPatient = async (patientId: string) => {
+    try {
+      const isbanPatient = await deBanPatient(patientId);
+      if (isbanPatient) {
+        toast.success(
+          `Le patient ${isbanPatient.name} à été Débloqué avec succès`,
+          {
+            style: {
+              color: "#22c55e",
+              background: "#0D0F10",
+              border: "1px solid #363A3D",
+            },
+          }
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div>
@@ -49,13 +88,23 @@ const PatientAction = ({ data }: Patient) => {
           >
             Copier le téléphone
           </DropdownMenuItem>
-          {/* <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className="cursor-pointer transition-all hover:opacity-80"
-            onClick={() => setOpen(true)}
-          >
-            Supprimer
-          </DropdownMenuItem> */}
+          <DropdownMenuSeparator />
+          {data.isBan ? (
+            <DropdownMenuItem
+              className="cursor-pointer transition-all hover:opacity-80"
+              onClick={() => handleDebanPatient(data._id)}
+            >
+              Réactiver l'accès
+            </DropdownMenuItem>
+          ) : (
+            <DropdownMenuItem
+              className="cursor-pointer transition-all hover:opacity-80"
+              onClick={() => handleBanPatient(data._id)}
+            >
+              Bannir
+            </DropdownMenuItem>
+          )}
+
           <DropdownMenuItem className="cursor-pointer transition-all hover:opacity-80">
             Télécharger la fiche
           </DropdownMenuItem>

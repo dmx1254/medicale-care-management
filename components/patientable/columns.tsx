@@ -71,6 +71,23 @@ export const columns: ColumnDef<Patient>[] = [
     cell: ({ row }) => <p className="text-14-medium">{row?.original.email}</p>,
   },
   {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => (
+      <div className="">
+        {row?.original.isBan ? (
+          <span className="status-badge bg-yellow-900 text-yellow-500">
+            Banni
+          </span>
+        ) : (
+          <span className="status-badge bg-blue-600 text-blue-500">
+            Actif
+          </span>
+        )}
+      </div>
+    ),
+  },
+  {
     accessorKey: "primaryPhysician",
     header: () => <div className="text-left">Docteur</div>,
     cell: ({ row }) => {
@@ -97,7 +114,7 @@ export const columns: ColumnDef<Patient>[] = [
         <div className="flex gap-1 max-xl:ml-4">
           <div className="flex items-center gap-3">
             <DeletePatient id={data._id} />
-            <UpdatePatient id={data._id} />
+            <UpdatePatient data={data} />
           </div>
           {/* <AppointmentModal
             type="schedule"
