@@ -16,7 +16,7 @@ const PatientPage = async () => {
         <section className="w-full space-y-4">
           <h1 className="header">Bienvenue 👋</h1>
           <p className="text-dark-700">
-            Gerer et personnaliser le patient de votre choix.
+            Gerer et personnaliser les patients de votre choix.
           </p>
         </section>
         <section className="admin-stat">
@@ -24,6 +24,8 @@ const PatientPage = async () => {
             type="appointments"
             count={patientsCount}
             label="Total Patients"
+            w={100}
+            h={100}
             icon="/assets/patients.png"
           />
           <PatientStatCard
@@ -31,12 +33,16 @@ const PatientPage = async () => {
             count={patientsActif}
             label="Patients Actif"
             icon="/assets/actif.png"
+            w={32}
+            h={32}
           />
           <PatientStatCard
             type="cancelled"
             count={patientsBan}
             label="Patients Bannis"
             icon="/assets/icons/ban.svg"
+            w={32}
+            h={32}
           />
         </section>
         <DataTable columns={columns} data={patients} />

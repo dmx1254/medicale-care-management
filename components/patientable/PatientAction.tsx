@@ -106,7 +106,7 @@ const PatientAction = ({ data }: Patient) => {
           )}
 
           <DropdownMenuItem className="cursor-pointer transition-all hover:opacity-80">
-            Télécharger la fiche
+            Télécharger la fichier
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

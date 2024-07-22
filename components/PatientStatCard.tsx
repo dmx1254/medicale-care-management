@@ -7,9 +7,18 @@ interface StatCardProps {
   count: number;
   label: string;
   icon: string;
+  w: number;
+  h: number;
 }
 
-const PatientStatCard = ({ type, count = 0, label, icon }: StatCardProps) => {
+const PatientStatCard = ({
+  type,
+  count = 0,
+  label,
+  icon,
+  w,
+  h,
+}: StatCardProps) => {
   return (
     <div
       className={clsx("stat-card", {
@@ -21,8 +30,8 @@ const PatientStatCard = ({ type, count = 0, label, icon }: StatCardProps) => {
       <div className="flex items-center gap-4 ">
         <Image
           src={icon}
-          height={32}
-          width={32}
+          height={w}
+          width={h}
           alt={label}
           className="size-8 w-fit"
         />
@@ -34,4 +43,3 @@ const PatientStatCard = ({ type, count = 0, label, icon }: StatCardProps) => {
 };
 
 export default PatientStatCard;
-

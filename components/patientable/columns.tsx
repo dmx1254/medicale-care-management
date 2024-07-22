@@ -68,7 +68,7 @@ export const columns: ColumnDef<Patient>[] = [
   {
     accessorKey: "email",
     header: "Email",
-    cell: ({ row }) => <p className="text-14-medium">{row?.original.email}</p>,
+    cell: ({ row }) => <p className="text-14-medium whitespace-nowrap">{row?.original.email}</p>,
   },
   {
     accessorKey: "status",

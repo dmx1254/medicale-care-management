@@ -25,9 +25,12 @@ import {
 } from "../ui/select";
 import { Doctors } from "@/constants";
 import Image from "next/image";
+import { updateMedicalePatient } from "@/lib/actions/patient.actions";
+import { toast } from "sonner";
 
 const UpdatePatient = ({ data }: Patient) => {
   const [open, setOpen] = useState<boolean>(false);
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [bloodgroup, setBloodgroup] = useState<string>(data.bloodgroup);
   const [insuranceProvider, setInsuranceProvider] = useState<string>(
     data.insuranceProvider
@@ -40,15 +43,35 @@ const UpdatePatient = ({ data }: Patient) => {
     data.primaryPhysician
   );
 
-  const handleUpdatePatient = (patientId: string) => {
-    console.log(patientId);
-    console.log(
-      bloodgroup,
-      insuranceProvider,
-      insurancePolicyNumber,
-      allergies,
-      primaryPhysician
-    );
+  const handleUpdatePatient = async (patientId: string) => {
+    try {
+      setIsUpdating(true);
+      const updatePatien = await updateMedicalePatient(
+        patientId,
+        bloodgroup,
+        insuranceProvider,
+        insurancePolicyNumber,
+        allergies,
+        primaryPhysician
+      );
+      if (patientId) {
+        toast.success(
+          `Le patient ${updatePatien.name} a été mis à jour avec succès`,
+          {
+            style: {
+              color: "#22c55e",
+              background: "#0D0F10",
+              border: "1px solid #363A3D",
+            },
+          }
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsUpdating(false);
+      setOpen(false);
+    }
   };
 
   return (
@@ -163,7 +186,7 @@ const UpdatePatient = ({ data }: Patient) => {
               className="text-sm text-green-500 font-extrabold transition-all hover:opacity-80"
               onClick={() => handleUpdatePatient(data._id)}
             >
-              Mettre à jour
+              {isUpdating ? "Updating..." : "Mettre à jour"}
             </button>
           </AlertDialogFooter>
         </AlertDialogContent>

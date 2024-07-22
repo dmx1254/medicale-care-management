@@ -5,6 +5,7 @@ import { databases, storage, users } from "../appwrite.config";
 import { parseStringify } from "../utils";
 import {
   BanOnePatient,
+  UpdatePatientMedi,
   createPatient,
   deBanOnePatient,
   deleteOnePatient,
@@ -60,7 +61,15 @@ export const registerPatient = async (patient: UserRegister) => {
 export const getAllPatients = async () => {
   try {
     const patients = await getPatients();
-    return parseStringify(patients);
+    if (patients) {
+      return parseStringify(patients);
+    }
+    return {
+      patients: 0,
+      patientsCount: 0,
+      patientsBan: 0,
+      patientsActif: [],
+    };
   } catch (error: any) {
     throw new Error(error);
   }
@@ -93,5 +102,29 @@ export const deBanPatient = async (patientId: string) => {
     return parseStringify(patientDeban);
   } catch (error: any) {
     throw new Error(error);
+  }
+};
+
+export const updateMedicalePatient = async (
+  patientId: string,
+  bloodgroup: string,
+  insuranceProvider: string,
+  insurancePolicyNumber: string,
+  allergies: string,
+  primaryPhysician: string
+) => {
+  try {
+    const medicalUpdate = await UpdatePatientMedi(
+      patientId,
+      bloodgroup,
+      insuranceProvider,
+      insurancePolicyNumber,
+      allergies,
+      primaryPhysician
+    );
+    revalidatePath("/dashboard/patients");
+    return parseStringify(medicalUpdate);
+  } catch (error: any) {
+    throw new Error(`Error updating medicale patient: ${error.message}`);
   }
 };

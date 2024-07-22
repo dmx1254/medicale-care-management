@@ -206,3 +206,34 @@ export async function deBanOnePatient(patientId: string) {
     throw new Error(`Error to ban patient: ${error.message}`);
   }
 }
+
+export async function UpdatePatientMedi(
+  patientId: string,
+  bloodgroup: string,
+  insuranceProvider: string,
+  insurancePolicyNumber: string,
+  allergies: string,
+  primaryPhysician: string
+) {
+  if (!isValidObjectId(patientId)) {
+    throw new Error("Invalid appointment ID");
+  }
+  try {
+    const medicalPatientUpdate = await PatientModel.findByIdAndUpdate(
+      patientId,
+      {
+        bloodgroup,
+        insuranceProvider,
+        insurancePolicyNumber,
+        allergies,
+        primaryPhysician,
+      },
+      {
+        new: true,
+      }
+    );
+    return medicalPatientUpdate;
+  } catch (error: any) {
+    throw new Error(`Error to update medicale patient: ${error.message}`);
+  }
+}
