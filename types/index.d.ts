@@ -142,6 +142,7 @@ export type UpdateAppointmentParams = {
 export interface AppointmentResponse {
   _id: string;
   patientId?: string;
+  name?: string;
   userId: string;
   status: string;
   primaryPhysician: string;

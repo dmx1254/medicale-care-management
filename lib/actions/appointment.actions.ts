@@ -1,6 +1,6 @@
 "use server";
 
-import { client } from "../db";
+import { client, pusher } from "../db";
 
 import { formatDateTime, parseStringify } from "../utils";
 import { revalidatePath } from "next/cache";
@@ -20,6 +20,7 @@ export const createAppointment = async (
 ) => {
   try {
     const newAppointment = await createPatientAppointment(appointment);
+    pusher.trigger("notifications", "appointment", { message: newAppointment });
     return parseStringify(newAppointment);
   } catch (error: any) {
     console.error(error);

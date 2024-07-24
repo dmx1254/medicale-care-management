@@ -42,7 +42,7 @@ const PasskeyModal = () => {
     if (path) {
       if (accessKey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
         setOpen(false);
-        router.push("/admin");
+        router.push("/dashboard");
       } else {
         setOpen(true);
       }
@@ -58,7 +58,7 @@ const PasskeyModal = () => {
       const encryptedKey = encryptKey(passkey);
       localStorage.setItem("accessKey", encryptedKey);
       setOpen(false);
-      router.push("/admin");
+      router.push("/dashboard");
     } else {
       setError("Mot de passe invalide. Veuillez réessayer.");
     }

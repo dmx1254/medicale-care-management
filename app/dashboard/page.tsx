@@ -13,16 +13,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { Overview } from "@/components/dash-comp/overview";
 import { RecentAppointments } from "@/components/dash-comp/RecentAppointments";
+import { SearchParamProps } from "@/types";
+import PasskeyModal from "@/components/PasskeyModal";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Dashboard",
   description: "Example dashboard app built using the components.",
 };
 
-export default function DashboardPage() {
+export default function DashboardPage({ searchParams }: SearchParamProps) {
+  const isAdmin = true;
   return (
     <>
       <div className="flex-col md:flex">
+        {isAdmin ? <PasskeyModal /> : redirect("/")}
         <div className="flex-1 space-y-4 p-4 md:p-8 pt-8 md:pt-6">
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsList className="bg-dark-400">
