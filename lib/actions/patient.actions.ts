@@ -1,19 +1,19 @@
 "use server";
 
-import { ID, Query } from "node-appwrite";
-import { databases, storage, users } from "../appwrite.config";
 import { parseStringify } from "../utils";
 import {
   BanOnePatient,
   UpdatePatientMedi,
   createPatient,
   deBanOnePatient,
+  deleteOneDoctor,
   deleteOnePatient,
   getOnePatient,
   getPatients,
   login,
 } from "../api/patient";
-import { CreateUserParams, UserRegister } from "@/types";
+import { createNewDoctor, getDocteurAndDetails } from "../api/doctor";
+import { CreateUserParams, DoctorCreating, UserRegister } from "@/types";
 import { revalidatePath } from "next/cache";
 
 export const loginUser = async (user: CreateUserParams) => {
@@ -22,15 +22,6 @@ export const loginUser = async (user: CreateUserParams) => {
     const response = await login(phone, password);
     // console.log(response);
   } catch (error: any) {
-    console.log(error);
-  }
-};
-
-export const getUser = async (userId: string) => {
-  try {
-    const user = await users.get(userId);
-    return parseStringify(user);
-  } catch (error) {
     console.log(error);
   }
 };
@@ -126,5 +117,41 @@ export const updateMedicalePatient = async (
     return parseStringify(medicalUpdate);
   } catch (error: any) {
     throw new Error(`Error updating medicale patient: ${error.message}`);
+  }
+};
+
+// DOCTORS CODE MANAGEMENTS
+
+export async function getAllDoctors() {
+  try {
+    const docteursAndDetails = await getDocteurAndDetails();
+    return parseStringify(docteursAndDetails);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function createDoctor(doctorData: DoctorCreating) {
+  try {
+    const response = await createNewDoctor(doctorData);
+    if (response.error) {
+      return response;
+    } else {
+      revalidatePath("/dashboard/docteurs");
+      return response;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+export const deleteDoctor = async (patientId: string) => {
+  try {
+    const patientDeleted = await deleteOneDoctor(patientId);
+    revalidatePath("/dashboard/docteurs");
+    return parseStringify(patientDeleted);
+  } catch (error: any) {
+    throw new Error(error);
   }
 };

@@ -8,7 +8,6 @@ const patientSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
       lowercase: true,
       unique: true,
       trim: true,
@@ -27,7 +26,7 @@ const patientSchema = new mongoose.Schema(
     },
     birthDate: {
       type: Date,
-      required: true,
+      default: new Date(Date.now()),
     },
     profile: {
       type: String,
@@ -86,6 +85,10 @@ const patientSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    speciality: {
+      type: String,
+      default: "",
+    },
     identificationNumber: {
       type: String,
       default: "",
@@ -133,6 +136,10 @@ const patientSchema = new mongoose.Schema(
     role: {
       type: String,
       default: "PATIENT",
+    },
+    doctorStatus: {
+      type: Boolean,
+      default: true,
     },
     isAdmin: {
       type: Boolean,

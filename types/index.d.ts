@@ -103,6 +103,8 @@ export interface Patient {
   isBan: boolean;
   isAdmin: boolean;
   role?: string;
+  profile?: string;
+  doctorStatus?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -151,8 +153,8 @@ export interface AppointmentResponse {
   note: string;
   cancellationReason: string;
   schedule: Date;
-  createdAt?:string;
-  updatedAt?:string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Doc {
@@ -160,4 +162,16 @@ export interface Doc {
   name: string;
   speciality: string;
   color?: string;
+}
+
+export interface DoctorCreating {
+  name: string;
+  email?: string;
+  phone: string;
+  role: string;
+  isPhoneVerified: boolean;
+  doctorStatus: boolean;
+  isAdmin: boolean;
+  profile: string;
+  password: string;
 }

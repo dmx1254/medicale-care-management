@@ -237,3 +237,17 @@ export async function UpdatePatientMedi(
     throw new Error(`Error to update medicale patient: ${error.message}`);
   }
 }
+
+
+export async function deleteOneDoctor(patientId: string) {
+  if (!isValidObjectId(patientId)) {
+    throw new Error("Invalid appointment ID");
+  }
+  try {
+    const doctorDeleted = await PatientModel.findByIdAndDelete(patientId);
+    return doctorDeleted;
+  } catch (error: any) {
+    throw new Error(`Error to deleting patient: ${error.message}`);
+  }
+}
+
