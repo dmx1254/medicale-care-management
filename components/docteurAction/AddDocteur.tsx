@@ -97,6 +97,7 @@ const AddDocteur = () => {
         isAdmin,
         profile: formData?.get("base64File") as string,
         password,
+        speciality,
       };
 
       try {
@@ -138,6 +139,9 @@ const AddDocteur = () => {
         <button
           className="fixed bottom-4 z-[30] bg-green-900 p-2 right-10 items-center justify-center border rounded border-green-500 text-green-400 transition-all hover:text-green-600"
           onClick={() => setOpen(true)}
+          style={{
+            boxShadow: "rgba(0, 180, 0, 0.35) 0px 5px 15px",
+          }}
         >
           <Plus size={17} />
         </button>
@@ -205,7 +209,11 @@ const AddDocteur = () => {
             </div>
             <div className="w-full flex flex-col items-start gap-2">
               <Label>Photo de profile</Label>
-              <DocteurProfileUploader files={picture} onChange={setPicture} />
+              <DocteurProfileUploader
+                files={picture}
+                onChange={setPicture}
+                profile=""
+              />
             </div>
             <div className="w-full flex flex-col items-start gap-2">
               <Label>Mot de passe</Label>

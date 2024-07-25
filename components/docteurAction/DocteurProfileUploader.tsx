@@ -8,9 +8,14 @@ import { useDropzone } from "react-dropzone";
 type FileUploaderProps = {
   files: File[] | undefined;
   onChange: (files: File[]) => void;
+  profile: string;
 };
 
-const DocteurProfileUploader = ({ files, onChange }: FileUploaderProps) => {
+const DocteurProfileUploader = ({
+  files,
+  onChange,
+  profile,
+}: FileUploaderProps) => {
   const onDrop = useCallback((acceptedFiles: File[]) => {
     onChange(acceptedFiles);
   }, []);
@@ -22,6 +27,14 @@ const DocteurProfileUploader = ({ files, onChange }: FileUploaderProps) => {
       {files && files?.length > 0 ? (
         <Image
           src={convertFileToUrl(files[0])}
+          width={200}
+          height={200}
+          alt="uploaded image"
+          className="w-full max-h-[200px] overflow-hidden object-cover"
+        />
+      ) : profile ? (
+        <Image
+          src={profile}
           width={200}
           height={200}
           alt="uploaded image"
@@ -49,7 +62,7 @@ const DocteurProfileUploader = ({ files, onChange }: FileUploaderProps) => {
       {isDragActive ? (
         <p>Déposez le(s) fichier(s) ici ...</p>
       ) : (
-        <p>cliquez pour sélectionner un ou des fichier</p>
+        <p>cliquez pour sélectionner un fichier</p>
       )}
     </div>
   );

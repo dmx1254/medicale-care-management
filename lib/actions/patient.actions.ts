@@ -11,9 +11,16 @@ import {
   getOnePatient,
   getPatients,
   login,
+  updateOneSingleDoctor,
+  updateSingleDoctorStatus,
 } from "../api/patient";
 import { createNewDoctor, getDocteurAndDetails } from "../api/doctor";
-import { CreateUserParams, DoctorCreating, UserRegister } from "@/types";
+import {
+  CreateUserParams,
+  DoctorCreating,
+  DoctorUpdate,
+  UserRegister,
+} from "@/types";
 import { revalidatePath } from "next/cache";
 
 export const loginUser = async (user: CreateUserParams) => {
@@ -145,12 +152,43 @@ export async function createDoctor(doctorData: DoctorCreating) {
   }
 }
 
-
 export const deleteDoctor = async (patientId: string) => {
   try {
     const patientDeleted = await deleteOneDoctor(patientId);
     revalidatePath("/dashboard/docteurs");
     return parseStringify(patientDeleted);
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const updateNewDoctor = async (
+  patientId: string,
+  doctorDataUpdate: DoctorUpdate
+) => {
+  try {
+    const doctorUpdated = await updateOneSingleDoctor(
+      patientId,
+      doctorDataUpdate
+    );
+    revalidatePath("/dashboard/docteurs");
+    return parseStringify(doctorUpdated);
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const updateIsDoctorStatus = async (
+  patientId: string,
+  doctorStatus: boolean
+) => {
+  try {
+    const doctorStatusUpdated = await updateSingleDoctorStatus(
+      patientId,
+      doctorStatus
+    );
+    revalidatePath("/dashboard/docteurs");
+    return parseStringify(doctorStatusUpdated);
   } catch (error: any) {
     throw new Error(error);
   }

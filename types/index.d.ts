@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { E164Number } from "libphonenumber-js/core";
 
 export type SearchParamProps = {
   params: { [key: string]: string };
@@ -104,7 +105,8 @@ export interface Patient {
   isAdmin: boolean;
   role?: string;
   profile?: string;
-  doctorStatus?: string;
+  doctorStatus?: boolean;
+  speciality?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -167,6 +169,7 @@ export interface Doc {
 export interface DoctorCreating {
   name: string;
   email?: string;
+  speciality: string;
   phone: string;
   role: string;
   isPhoneVerified: boolean;
@@ -174,4 +177,12 @@ export interface DoctorCreating {
   isAdmin: boolean;
   profile: string;
   password: string;
+}
+
+export interface DoctorUpdate {
+  name: string;
+  email: string;
+  phone: E164Number | undefined;
+  profile: string;
+  speciality: string;
 }

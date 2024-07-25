@@ -35,10 +35,10 @@ export function Search() {
     <div className="flex items-center gap-4">
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
-          <button className="relative cursor-pointer outline-none border-none">
-            <Bell size={26} className="text-dark-500" />
-            {totalNotif > 0 ? (
-              <span className="absolute flex items-center justify-center h-4 w-4 rounded-full bg-[#dc2626] text-white/80 text-xs top-[-30%] left-[45%]">
+          <button className="relative cursor-pointer outline-none border-none mt-0.5">
+            <Bell size={24} className="text-dark-500" />
+            {totalNotif >= 0 ? (
+              <span className="absolute flex items-center justify-center h-3.5 w-3.5 rounded-full bg-[#dc2626] text-white/80 text-[10px] top-[-25%] left-[50%]">
                 {totalNotif}
               </span>
             ) : null}
@@ -76,11 +76,11 @@ export function Search() {
           </div>
         </DropdownMenuContent>
       </DropdownMenu>
-      <Input
+      {/* <Input
         type="search"
         placeholder="Search..."
         className="w-[250] md:w-[350px] bg-transparent border-dark-500 text-white placeholder:text-dark-500"
-      />
+      /> */}
     </div>
   );
 }

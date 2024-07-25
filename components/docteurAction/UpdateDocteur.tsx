@@ -1,62 +1,78 @@
+"use client";
+
 import React, { ChangeEvent, useState } from "react";
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { FilePenLine } from "lucide-react";
-import { Patient } from "@/types";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import { Doctors } from "@/constants";
-import Image from "next/image";
-import { updateMedicalePatient } from "@/lib/actions/patient.actions";
+import { updateNewDoctor } from "@/lib/actions/patient.actions";
 import { toast } from "sonner";
 
-const UpdateDocteur = ({ data }: Patient) => {
-  const [open, setOpen] = useState<boolean>(false);
-  const [isUpdating, setIsUpdating] = useState<boolean>(false);
-  const [bloodgroup, setBloodgroup] = useState<string>(data.bloodgroup);
-  const [insuranceProvider, setInsuranceProvider] = useState<string>(
-    data.insuranceProvider
-  );
-  const [insurancePolicyNumber, setInsurancePolicyNumber] = useState<string>(
-    data.insurancePolicyNumber
-  );
-  const [allergies, setAllergies] = useState<string>(data.allergies);
-  const [primaryPhysician, setPrimaryPhysician] = useState<string>(
-    data.primaryPhysician
-  );
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
-  const handleUpdatePatient = async (patientId: string) => {
+import { E164Number } from "libphonenumber-js/core";
+import { convertFileToBase64 } from "@/lib/utils";
+import DocteurProfileUploader from "./DocteurProfileUploader";
+import { Patient } from "@/types";
+
+const UpdateDocteur = ({ data }: Patient) => {
+  let phoneNumber = data.phone as E164Number;
+  const [open, setOpen] = useState<boolean>(false);
+  //   const [isUpdating, setIsUpdating] = useState<boolean>(false);
+  const [name, setName] = useState<string>(data.name);
+  const [email, setEmail] = useState<string>(data.email);
+  const [picture, setPicture] = useState<File[] | undefined>();
+  const [newPhone, setNewPhone] = useState<E164Number | undefined>(phoneNumber);
+  const [speciality, setSpeciality] = useState<string>(data.speciality);
+
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
+
+  //   const file = values.identificationDocument[0];
+  //   const base64 = await convertFileToBase64(file);
+
+  //   formData = new FormData();
+  //   formData.append("base64File", base64);
+  //   formData.append("fileName", file.name);
+  // identificationDocument: formData?.get("base64File") as string,
+
+  const handleCreateDoctor = async () => {
+    let file;
+    let formData;
+    if (picture) {
+      file = picture[0];
+      const base64 = await convertFileToBase64(file);
+      formData = new FormData();
+      formData.append("base64File", base64);
+      formData.append("fileName", file.name);
+    }
+
+    let newProfile = formData?.get("base64File") as string;
+
+    let profile = newProfile ? newProfile : data.profile;
+
+    let phone = newPhone ? newPhone : data.phone;
+
+    const docteurDataUpdate = {
+      name,
+      email,
+      phone,
+      profile,
+      speciality,
+    };
+
     try {
       setIsUpdating(true);
-      const updatePatien = await updateMedicalePatient(
-        patientId,
-        bloodgroup,
-        insuranceProvider,
-        insurancePolicyNumber,
-        allergies,
-        primaryPhysician
-      );
-      if (patientId) {
+      const updatedUser = await updateNewDoctor(data._id, docteurDataUpdate);
+      if (updatedUser) {
         toast.success(
-          `Le patient ${updatePatien.name} a été mis à jour avec succès`,
+          `Le docteur ${updatedUser.name} a été mis jour avec succès`,
           {
             style: {
               color: "#22c55e",
@@ -65,12 +81,12 @@ const UpdateDocteur = ({ data }: Patient) => {
             },
           }
         );
+        setIsUpdating(false);
+        setOpen(false);
       }
     } catch (error) {
       console.error(error);
-    } finally {
       setIsUpdating(false);
-      setOpen(false);
     }
   };
 
@@ -84,98 +100,83 @@ const UpdateDocteur = ({ data }: Patient) => {
           <FilePenLine size={18} />
         </button>
 
-        <AlertDialogContent className="bg-dark-200 border-dark-300 w-full">
+        <AlertDialogContent className="bg-dark-200 border-dark-300 w-full max-sm:h-full overflow-y-auto">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-sm text-white/70">
-              Vous pouvez mettre à jour que les informations medicales de{" "}
-              {data.name}
+            <AlertDialogTitle className="text-sm max-md:hidden self-start text-white/70">
+              Mettre à jour les informations de{" "}
+              <strong className="underline">{data.name}</strong>
             </AlertDialogTitle>
           </AlertDialogHeader>
           <div className="w-full flex flex-col items-start gap-4">
-            <div className="w-full flex items-center gap-4 justify-between">
+            <div className="w-full flex max-md:flex-col items-center gap-4 justify-between">
               <div className="w-full flex flex-col items-start gap-2">
-                <Label>Groupe sanguin</Label>
+                <Label>Prenom et nom</Label>
                 <Input
                   type="text"
-                  placeholder="Groupe sanguin"
-                  value={bloodgroup}
+                  placeholder={data.name ? data.name : "Prenom et nom"}
+                  value={name}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setBloodgroup(e.target.value)
+                    setName(e.target.value)
                   }
-                  className="bg-transparent border-dark-500"
+                  className="bg-dark-400 placeholder:text-dark-600 border-dark-500"
                 />
               </div>
               <div className="w-full flex flex-col items-start gap-2">
-                <Label>Assurance</Label>
-                <Input
-                  type="text"
-                  placeholder="Assurance"
-                  value={insuranceProvider}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setInsuranceProvider(e.target.value)
-                  }
-                  className="bg-transparent border-dark-500"
+                <Label>Téléphone</Label>
+                <PhoneInput
+                  defaultCountry="SN"
+                  international
+                  withCountryCallingCode
+                  name="phone"
+                  label="Telephone"
+                  placeholder={newPhone}
+                  value={newPhone as E164Number | undefined}
+                  onChange={setNewPhone}
+                  className="input-phone-add-docteur w-full"
                 />
               </div>
             </div>
-            <div className="w-full flex items-center gap-4 justify-between">
+            <div className="w-full flex  max-md:flex-col items-center gap-4 justify-between">
               <div className="w-full flex flex-col items-start gap-2">
-                <Label>Numero d'assurance</Label>
+                <Label>Adresse E-mail</Label>
+                <Input
+                  type="email"
+                  placeholder={
+                    data?.email ? data?.email : "docteur@example.com"
+                  }
+                  value={email}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setEmail(e.target.value)
+                  }
+                  className="bg-dark-400 placeholder:text-dark-600 border-dark-500"
+                />
+              </div>
+              <div className="w-full flex flex-col items-start gap-2">
+                <Label>Spécialité</Label>
                 <Input
                   type="text"
-                  placeholder="Numero d'assurance"
-                  value={insurancePolicyNumber}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setInsurancePolicyNumber(e.target.value)
+                  placeholder={
+                    data?.speciality ? data?.speciality : "Spécialité"
                   }
-                  className="bg-transparent border-dark-500"
+                  value={speciality}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setSpeciality(e.target.value)
+                  }
+                  className="bg-dark-400 placeholder:text-dark-600 border-dark-500"
                 />
               </div>
             </div>
             <div className="w-full flex flex-col items-start gap-2">
-              <Label>Allergies</Label>
-              <Textarea
-                placeholder="exemple: cacahuètes, poussières"
-                value={allergies}
-                onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-                  setAllergies(e.target.value)
-                }
-                className="bg-transparent border-dark-500 focus-visible:ring-0 focus-visible:ring-offset-0"
+              <Label>Photo de profile</Label>
+              <DocteurProfileUploader
+                files={picture}
+                onChange={setPicture}
+                profile={data.profile}
               />
-            </div>
-            <div className="w-full flex flex-col items-start gap-2">
-              <Label>Medecin principal</Label>
-              <Select
-                name="primaryPhysician"
-                value={primaryPhysician}
-                onValueChange={(value) => setPrimaryPhysician(value)}
-              >
-                <SelectTrigger className="shad-select-trigger-dash">
-                  <SelectValue className="" placeholder="Choisir le medecin" />
-                </SelectTrigger>
-                <SelectContent className="shad-select-content-dash">
-                  <SelectGroup className="">
-                    {Doctors.map((doctor, i) => (
-                      <SelectItem key={doctor.name + i} value={doctor.name}>
-                        <div className="flex cursor-pointer items-center gap-2">
-                          <Image
-                            src={doctor.image}
-                            width={32}
-                            height={32}
-                            alt="doctor"
-                            className="rounded-full border border-dark-500"
-                          />
-                          <p>{doctor.name}</p>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
             </div>
           </div>
 
-          <AlertDialogFooter className="flex gap-4">
+          <AlertDialogFooter className="flex flex-row justify-end gap-4">
             <button
               className="text-sm text-red-500 font-extrabold transition-all hover:opacity-80"
               onClick={() => setOpen(false)}
@@ -184,9 +185,9 @@ const UpdateDocteur = ({ data }: Patient) => {
             </button>
             <button
               className="text-sm text-green-500 font-extrabold transition-all hover:opacity-80"
-              onClick={() => handleUpdatePatient(data._id)}
+              onClick={handleCreateDoctor}
             >
-              {isUpdating ? "Updating..." : "Mettre à jour"}
+              {isUpdating ? "En cours de mise à jour..." : "Mettre à jour"}
             </button>
           </AlertDialogFooter>
         </AlertDialogContent>

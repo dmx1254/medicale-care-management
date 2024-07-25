@@ -1,13 +1,14 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-
-import { getPrimaryPhysicianPicture } from "@/lib/utils";
 import Image from "next/image";
 import { Patient } from "@/types";
 import DeleteDocteur from "../docteurAction/DeleteDocteur";
 import UpdateDocteur from "../docteurAction/UpdateDocteur";
 import DocteurAction from "../docteurAction/DocteurAction";
+import UpdateDoctorStatus from "../docteurAction/UpdateDoctorStatus";
+import { Button } from "../ui/button";
+import { CaretSortIcon } from "@radix-ui/react-icons";
 
 export const columns: ColumnDef<Patient>[] = [
   {
@@ -16,9 +17,18 @@ export const columns: ColumnDef<Patient>[] = [
   },
   {
     accessorKey: "name",
-    header: () => <div className="text-left">Docteur</div>,
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Docteur
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
-      const doctor = getPrimaryPhysicianPicture(row?.original.name);
       return (
         <div className="flex items-center gap-3">
           <Image
@@ -28,7 +38,7 @@ export const columns: ColumnDef<Patient>[] = [
             height={100}
             className="size-8"
           />
-          <p className="whitespace-nowrap">Dr. {doctor?.name}</p>
+          <p className="whitespace-nowrap">Dr. {row.getValue("name")}</p>
         </div>
       );
     },
@@ -38,37 +48,14 @@ export const columns: ColumnDef<Patient>[] = [
     header: "Téléphone",
     cell: ({ row }) => <p className="text-14-medium">{row?.original.phone}</p>,
   },
-  // {
-  //   accessorKey: "gender",
-  //   header: "Genre",
-  //   cell: ({ row }) => (
-  //     <p
-  //       style={{
-  //         color:
-  //           row?.original.gender === "homme"
-  //             ? "#a78bfa"
-  //             : row.original.gender === "femme"
-  //             ? "#f472b6"
-  //             : "#22c55e",
-  //         backgroundColor:
-  //           row?.original.gender === "homme"
-  //             ? "#4c1d95"
-  //             : row.original.gender === "femme"
-  //             ? "#831843"
-  //             : "#14532d",
-  //       }}
-  //       className="status-12-semibold  capitalize status-badge"
-  //     >
-  //       {row?.original.gender}
-  //     </p>
-  //   ),
-  // },
 
   {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: "speciality",
+    header: "Spécialité",
     cell: ({ row }) => (
-      <p className="text-14-medium whitespace-nowrap">{row?.original.email}</p>
+      <p className="text-14-medium whitespace-nowrap">
+        {row?.original?.speciality}
+      </p>
     ),
   },
   {
@@ -81,7 +68,7 @@ export const columns: ColumnDef<Patient>[] = [
             En service
           </span>
         ) : (
-          <span className="status-badge bg-blue-600 text-blue-500">
+          <span className="status-badge bg-red-600 text-red-500">
             Hors service
           </span>
         )}
@@ -96,6 +83,10 @@ export const columns: ColumnDef<Patient>[] = [
       return (
         <div className="flex gap-1 max-xl:ml-4">
           <div className="flex items-center gap-3">
+            <UpdateDoctorStatus
+              id={data?._id}
+              doctorStatus={data?.doctorStatus}
+            />
             <DeleteDocteur id={data._id} />
             <UpdateDocteur data={data} />
           </div>

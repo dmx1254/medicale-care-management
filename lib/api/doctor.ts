@@ -13,9 +13,11 @@ export async function getDocteurAndDetails() {
     const allDoctorsCountFind = PatientModel.countDocuments({ role: "DOCTOR" });
 
     const docteursInServiceCountFind = PatientModel.countDocuments({
+      role: "DOCTOR",
       doctorStatus: true,
     });
     const docteursOutServiceCountFind = PatientModel.countDocuments({
+      role: "DOCTOR",
       doctorStatus: false,
     });
 

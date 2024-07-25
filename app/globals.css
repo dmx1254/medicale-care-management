@@ -164,7 +164,7 @@
     @apply sticky top-0 left-0 bottom-0 z-20 mr-3 flex flex-col items-start justify-between rounded-none bg-dark-200 py-5 shadow-lg px-4;
   }
   .admin-profile-cop {
-    @apply sticky top-0 left-0 bottom-0 z-20 mr-1 md:mr-3 flex flex-col items-start justify-between rounded-none bg-dark-200 py-5 shadow-lg px-2 md:px-4;
+    @apply sticky top-0 left-0 bottom-0 z-20 flex flex-col items-start justify-between rounded-none bg-dark-200 py-5 shadow-lg px-2 md:px-4;
   }
 
   .admin-main {

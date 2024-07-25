@@ -1,5 +1,5 @@
 import { isValidObjectId } from "mongoose";
-import { UserRegister } from "@/types";
+import { DoctorUpdate, UserRegister } from "@/types";
 import { connectDB } from "../db";
 import PatientModel from "../models/patient.model";
 import bcrypt from "bcrypt";
@@ -238,7 +238,6 @@ export async function UpdatePatientMedi(
   }
 }
 
-
 export async function deleteOneDoctor(patientId: string) {
   if (!isValidObjectId(patientId)) {
     throw new Error("Invalid appointment ID");
@@ -251,3 +250,46 @@ export async function deleteOneDoctor(patientId: string) {
   }
 }
 
+export async function updateOneSingleDoctor(
+  patientId: string,
+  doctorDataUpdate: DoctorUpdate
+) {
+  if (!isValidObjectId(patientId)) {
+    throw new Error("Invalid appointment ID");
+  }
+  try {
+    const doctorUpdated = await PatientModel.findByIdAndUpdate(
+      patientId,
+      doctorDataUpdate,
+      {
+        new: true,
+      }
+    );
+    return doctorUpdated;
+  } catch (error: any) {
+    throw new Error(`Error to updating doctor: ${error.message}`);
+  }
+}
+
+export async function updateSingleDoctorStatus(
+  patientId: string,
+  doctorStatus: boolean
+) {
+  if (!isValidObjectId(patientId)) {
+    throw new Error("Invalid appointment ID");
+  }
+  try {
+    const doctorStatusUpdated = await PatientModel.findByIdAndUpdate(
+      patientId,
+      {
+        doctorStatus,
+      },
+      {
+        new: true,
+      }
+    );
+    return doctorStatusUpdated;
+  } catch (error: any) {
+    throw new Error(`Error to updating doctor status: ${error.message}`);
+  }
+}
