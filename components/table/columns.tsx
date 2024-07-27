@@ -8,6 +8,8 @@ import Image from "next/image";
 import AppointmentModal from "../AppointmentModal";
 import { Appointment } from "@/types/appwrite.types";
 import AppointmentAction from "../AppointmentAction";
+import { Button } from "../ui/button";
+import { CaretSortIcon } from "@radix-ui/react-icons";
 
 export const columns: ColumnDef<Appointment>[] = [
   {
@@ -16,8 +18,18 @@ export const columns: ColumnDef<Appointment>[] = [
   },
   {
     accessorKey: "name",
-    header: "Patient",
-    cell: ({ row }) => <p className="text-14-medium">{row?.original.name}</p>,
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Patient
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <p className="text-14-medium">{row.getValue("name")}</p>,
   },
   {
     accessorKey: "status",

@@ -99,11 +99,24 @@ export const getPrimaryPhysicianPicture = (doctorName: string) => {
 };
 
 export function generateVerificationCode() {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let code = '';
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let code = "";
   for (let i = 0; i < 6; i++) {
     const randomIndex = Math.floor(Math.random() * characters.length);
     code += characters[randomIndex];
   }
   return code;
 }
+
+export const dateFrToConvert = (date: Date) => {
+  const convertedDate = new Date(date).toLocaleDateString("fr-Fr", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hourCycle: "h23",
+  });
+  return convertedDate;
+};

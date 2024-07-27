@@ -8,6 +8,8 @@ import { Patient } from "@/types";
 import DeletePatient from "../patientActtion/DeletePatient";
 import UpdatePatient from "../patientActtion/UpdatePatient";
 import PatientAction from "./PatientAction";
+import { Button } from "../ui/button";
+import { CaretSortIcon } from "@radix-ui/react-icons";
 
 export const columns: ColumnDef<Patient>[] = [
   {
@@ -16,8 +18,18 @@ export const columns: ColumnDef<Patient>[] = [
   },
   {
     accessorKey: "name",
-    header: "Patient",
-    cell: ({ row }) => <p className="text-14-medium">{row?.original.name}</p>,
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Patient
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <p className="text-14-medium">{row.getValue("name")}</p>,
   },
   // {
   //   accessorKey: "phone",
@@ -68,7 +80,9 @@ export const columns: ColumnDef<Patient>[] = [
   {
     accessorKey: "phone",
     header: "Téléphone",
-    cell: ({ row }) => <p className="text-14-medium whitespace-nowrap">{row?.original.phone}</p>,
+    cell: ({ row }) => (
+      <p className="text-14-medium whitespace-nowrap">{row?.original.phone}</p>
+    ),
   },
   {
     accessorKey: "status",
@@ -80,9 +94,7 @@ export const columns: ColumnDef<Patient>[] = [
             Banni
           </span>
         ) : (
-          <span className="status-badge bg-blue-600 text-blue-500">
-            Actif
-          </span>
+          <span className="status-badge bg-blue-600 text-blue-500">Actif</span>
         )}
       </div>
     ),

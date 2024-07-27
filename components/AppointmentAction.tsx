@@ -12,21 +12,18 @@ import {
 
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
 
 import { toast } from "sonner";
 import { MoreHorizontal } from "lucide-react";
 import { AppointModal } from "@/types/appwrite.types";
 import { deleteAppointment } from "@/lib/actions/appointment.actions";
+import SeeAppointment from "./SeeDocuments/SeeAppointment";
 
 const AppointmentAction = ({ data }: AppointModal) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -120,11 +117,12 @@ const AppointmentAction = ({ data }: AppointModal) => {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            className="cursor-pointer transition-all hover:opacity-80"
+            className="cursor-pointer transition-all hover:opacity-80 text-red-500"
             onClick={() => setOpen(true)}
           >
             Supprimer
           </DropdownMenuItem>
+          <SeeAppointment data={data} />
           <DropdownMenuItem className="cursor-pointer transition-all hover:opacity-80">
             Télécharger la fiche
           </DropdownMenuItem>

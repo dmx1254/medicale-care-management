@@ -1,4 +1,5 @@
 "use client";
+import {useState} from "react";
 
 import {
   ColumnDef,
@@ -31,7 +32,6 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
-import React from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -42,13 +42,13 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
   );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+    useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     data,
@@ -73,7 +73,7 @@ export function DataTable<TData, TValue>({
     <div className="w-full">
       <div className="flex items-center gap-4 py-4">
         <Input
-          placeholder="Filtrer par prenom..."
+          placeholder="Rechercher un docteur..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(e) =>
             table.getColumn("name")?.setFilterValue(e.target.value)
@@ -86,7 +86,7 @@ export function DataTable<TData, TValue>({
               variant="outline"
               className="ml-auto border-dark-500 text-14-regular focus-visible:ring-0 focus-visible:ring-offset-0"
             >
-              Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
+              Filtrer <ChevronDownIcon className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
