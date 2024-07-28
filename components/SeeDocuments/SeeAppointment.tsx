@@ -15,12 +15,12 @@ import { dateFrToConvert, formatDateTime } from "@/lib/utils";
 
 const SeeAppointment = ({ data }: AppointModal) => {
   const [open, setOpen] = useState<boolean>(false);
-  console.log(data);
+//   console.log(data);
   return (
     <div>
       <AlertDialog open={open} onOpenChange={setOpen}>
         <button
-          className="border-none outline-none text-green-500 cursor-pointer transition-all hover:opacity-80 text-sm mx-2"
+          className="border-none outline-none cursor-pointer transition-all hover:opacity-80 text-sm mx-2"
           onClick={() => setOpen(true)}
         >
           Voir le rendez-vous
@@ -95,62 +95,7 @@ const SeeAppointment = ({ data }: AppointModal) => {
                 </span>
               </p>
             </div>
-            {/* <div className="text-gray-300">
-              <p>
-                <strong>Prénom et Nom :</strong>{" "}
-                <span className="text-white">{data.name}</span>
-              </p>
-              <p>
-                <strong>Téléphone :</strong>{" "}
-                <span className="text-white">{data.phone}</span>
-              </p>
-              <p>
-                <strong>Rendez-vous prévu :</strong>{" "}
-                <span className="text-white">
-                  {formatDateTime(data.schedule).dateTime}
-                </span>{" "}
-                avec le médecin principal{" "}
-                <span className="text-white">{data.primaryPhysician}</span> pour
-                la raison suivante :{" "}
-                <span className="text-white">{data.reason}</span>.
-              </p>
-              <p>
-                <strong>Note :</strong>{" "}
-                <span className="text-white">{data.note}</span>
-              </p>
-              <p>
-                <strong>Status :</strong>{" "}
-                <span
-                  className={clsx("font-semibold capitalize", {
-                    "text-green-500": data.status === "scheduled",
-                    "text-yellow-500": data.status === "pending",
-                    "text-red-500": data.status === "cancelled",
-                  })}
-                >
-                  {data.status === "pending" && "En attente"}
-                  {data.status === "scheduled" && "Programmé"}
-                  {data.status === "cancelled" && "Annulé"}
-                </span>
-              </p>
-              {data.cancellationReason && (
-                <p>
-                  <strong>Raison d'annulation :</strong>{" "}
-                  <span className="text-white">{data.cancellationReason}</span>
-                </p>
-              )}
-              <p>
-                <strong>Créé le :</strong>{" "}
-                <span className="text-white">
-                  {formatDateTime(data.createdAt).dateTime}
-                </span>
-              </p>
-              <p>
-                <strong>Mise à jour le :</strong>{" "}
-                <span className="text-white">
-                  {formatDateTime(data.updatedAt).dateTime}
-                </span>
-              </p>
-            </div> */}
+           
           </div>
           <AlertDialogFooter className="flex w-full items-start justify-between gap-4">
             <button
