@@ -1,16 +1,18 @@
 // import { DoctorCreating } from "@/types";
+import { getActifDoctors } from "../api/doctor";
+import { parseStringify } from "../utils";
 // import { createNewDoctor, getDocteurAndDetails } from "../api/doctor";
 // import { parseStringify } from "../utils";
 // import { revalidatePath } from "next/cache";
 
-// export async function getAllDoctors() {
-//   try {
-//     const docteursAndDetails = await getDocteurAndDetails();
-//     return parseStringify(docteursAndDetails);
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
+export async function getDoctorsInService() {
+  try {
+    const actifDoctors = await getActifDoctors();
+    return parseStringify(actifDoctors);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 // export async function createDoctor(doctorData: DoctorCreating) {
 //   try {

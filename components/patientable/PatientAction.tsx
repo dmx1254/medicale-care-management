@@ -16,9 +16,12 @@ import { AppointModal } from "@/types/appwrite.types";
 import { deleteAppointment } from "@/lib/actions/appointment.actions";
 import { Patient } from "@/types";
 import { banPatient, deBanPatient } from "@/lib/actions/patient.actions";
+import PatientPDF from "../pdf/PatientPdf";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
 const PatientAction = ({ data }: Patient) => {
   const [open, setOpen] = useState<boolean>(false);
+  //   console.log(data)
 
   const handleBanPatient = async (patientId: string) => {
     try {
@@ -105,9 +108,19 @@ const PatientAction = ({ data }: Patient) => {
             </DropdownMenuItem>
           )}
 
-          <DropdownMenuItem className="cursor-pointer transition-all hover:opacity-80">
-            Télécharger la fichier
-          </DropdownMenuItem>
+          <button className="cursor-pointer mx-2 text-sm border-none outline-none">
+            <PDFDownloadLink
+              document={<PatientPDF patient={data} />}
+              fileName={`patient_fiche_${data?._id}.pdf`}
+              className="text-white transition-all hover:opacity-80"
+            >
+              {({ loading }) =>
+                loading
+                  ? "Téléchargement en cours..."
+                  : "Télécharger le fichier"
+              }
+            </PDFDownloadLink>
+          </button>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

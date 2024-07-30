@@ -12,14 +12,12 @@ import { CreateAppointmentSchema } from "@/lib/validation";
 import { useRouter } from "next/navigation";
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
-import { Doctors } from "@/constants";
 import {
   createAppointment,
-  sendSMSNotification,
   updateAppointment,
 } from "@/lib/actions/appointment.actions";
 import { Appointment } from "@/types/appwrite.types";
-import { Status } from "@/types";
+import { ActifRegisterDoctor, Status } from "@/types";
 import { toast } from "sonner";
 
 export enum FormFieldType {
@@ -40,6 +38,7 @@ const AppointmentForm = ({
   setOpen,
   name,
   phone,
+  doctors,
 }: {
   type: "create" | "cancel" | "schedule";
   userId: string;
@@ -48,6 +47,7 @@ const AppointmentForm = ({
   setOpen: (open: boolean) => void;
   name: string;
   phone: string;
+  doctors: ActifRegisterDoctor[];
 }) => {
   const translateStatusToFr = (status: string): string => {
     return status === "pending"
@@ -197,11 +197,11 @@ const AppointmentForm = ({
               label="Docteur"
               placeholder="Choisir un docteur"
             >
-              {Doctors.map((doctor, i) => (
+              {doctors.map((doctor, i) => (
                 <SelectItem key={doctor.name + i} value={doctor.name}>
                   <div className="flex cursor-pointer items-center gap-2">
                     <Image
-                      src={doctor.image}
+                      src={doctor.profile}
                       width={32}
                       height={32}
                       alt="doctor"

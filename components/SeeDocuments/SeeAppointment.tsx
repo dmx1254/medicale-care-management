@@ -43,7 +43,7 @@ const SeeAppointment = ({ data }: AppointModal) => {
             {data.status === "scheduled" || data.status === "scheduled"
               ? "a été"
               : "est en"}
-            <span
+            &nbsp;<span
               className={clsx("underline", {
                 "text-[#15803d]": data.status === "scheduled",
                 "text-[#a16207]": data.status === "pending",

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Link, scroller } from "react-scroll";
 import { Button } from "./ui/button";
 import { LogOut } from "lucide-react";
-import { Patient, User } from "@/types";
+import { ActifRegisterDoctor, Patient, User } from "@/types";
 import PersonalInformations from "./profile/PersonalInformations";
 import MedicalesInformations from "./profile/MedicalesInformations";
 import IdentityVerification from "./profile/IdentityVerification";
@@ -23,9 +23,11 @@ import { useRouter } from "next/navigation";
 const UserProfile = ({
   userId,
   patient,
+  doctors,
 }: {
   userId: string;
   patient: Patient;
+  doctors: ActifRegisterDoctor;
 }) => {
   const router = useRouter();
   const [isSlugActive, setIsSlugActive] = useState<string>(
@@ -168,6 +170,7 @@ const UserProfile = ({
                   patientId={userId}
                   name={patient.name}
                   phone={patient.phone}
+                  doctors={doctors}
                 />
                 {/* <p className="copyright py-8">&copy; 2024 MedicaleCare</p> */}
               </div>

@@ -25,7 +25,7 @@ import { AppointModal } from "@/types/appwrite.types";
 import { deleteAppointment } from "@/lib/actions/appointment.actions";
 import SeeAppointment from "./SeeDocuments/SeeAppointment";
 
-const AppointmentAction = ({ data }: AppointModal) => {
+const AppointmentAction = ({ data }: { data: AppointModal[] }) => {
   const [open, setOpen] = useState<boolean>(false);
   //   console.log(data);
 

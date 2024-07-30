@@ -24,6 +24,7 @@ import Image from "next/image";
 import FileUploader from "../FileUploader";
 import { convertFileToBase64 } from "@/lib/utils";
 import { toast } from "sonner";
+import { ActifRegisterDoctor } from "@/types";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -35,7 +36,7 @@ export enum FormFieldType {
   SKELETON = "skeleton",
 }
 
-const RegisterForm = () => {
+const RegisterForm = ({ doctors }: { doctors: ActifRegisterDoctor }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // 1. Define your form.
@@ -85,7 +86,7 @@ const RegisterForm = () => {
         });
       }
       //   if (patient) router.push(`/patients/${user.$id}/new-appointment`);
-    } catch (error: any) {  
+    } catch (error: any) {
       if (error?.message) {
         toast.error(error?.message, {
           style: { color: "red" },
@@ -221,11 +222,11 @@ const RegisterForm = () => {
           label="Medecin principal"
           placeholder="Choisir un medecin"
         >
-          {Doctors.map((doctor, i) => (
+          {doctors.map((doctor: ActifRegisterDoctor, i: number) => (
             <SelectItem key={doctor.name + i} value={doctor.name}>
               <div className="flex cursor-pointer items-center gap-2">
                 <Image
-                  src={doctor.image}
+                  src={doctor.profile}
                   width={32}
                   height={32}
                   alt="doctor"

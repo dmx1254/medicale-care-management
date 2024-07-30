@@ -72,3 +72,21 @@ export async function createNewDoctor(doctorData: DoctorCreating) {
     throw new Error(error);
   }
 }
+
+export async function getActifDoctors() {
+  try {
+    const isActifDoctors = await PatientModel.find({
+      role: "DOCTOR",
+      doctorStatus: true,
+    })
+      .select("_id")
+      .select("name")
+      .select("speciality")
+      .select("profile")
+      .select("createdAt")
+      .select("updatedAt");
+    return isActifDoctors;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}

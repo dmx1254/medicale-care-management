@@ -186,3 +186,12 @@ export interface DoctorUpdate {
   profile: string;
   speciality: string;
 }
+
+export interface ActifRegisterDoctor {
+  _id: string;
+  name: string;
+  speciality: string;
+  profile: string;
+  createdAt: string;
+  updatedAt: string;
+}

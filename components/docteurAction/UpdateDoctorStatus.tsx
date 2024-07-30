@@ -19,22 +19,26 @@ const UpdateDoctorStatus = ({
     try {
       const updatedDoctorStatus = await updateIsDoctorStatus(id, isChecked);
       if (updatedDoctorStatus) {
-        toast.success(
-          `Le status du docteur ${updatedDoctorStatus.name} a été mis jour`,
-          {
-            style: {
-              color: "#22c55e",
-              background: "#0D0F10",
-              border: "1px solid #363A3D",
-            },
-          }
-        );
+        new Promise((resolve) => {
+          setTimeout(() => {
+            toast.success(
+              `Le status du docteur ${updatedDoctorStatus.name} a été mis jour`,
+              {
+                style: {
+                  color: "#22c55e",
+                  background: "#0D0F10",
+                  border: "1px solid #363A3D",
+                },
+              }
+            );
+            resolve(undefined);
+          }, 1000);
+        });
       }
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
   };
-
 
   return (
     <div>

@@ -2,7 +2,6 @@ import { LucideIcon } from "lucide-react";
 import {
   UserRound,
   HeartPulse,
-  KeySquare,
   Calendar,
   House,
   CalendarCheck,
@@ -29,12 +28,7 @@ export const profileInfo: profilePerso[] = [
     slug: "informations-medicales",
     icon: HeartPulse,
   },
-  //   {
-  //     id: "lpqza69",
-  //     title: "Verification d'identite",
-  //     slug: "verification-identite",
-  //     icon: KeySquare,
-  //   },
+
   {
     id: "zaplq25",
     title: "Mes rendez-vous",
@@ -69,10 +63,5 @@ export const sidebarInfo: profilePerso[] = [
     slug: "/dashboard/docteurs",
     icon: BriefcaseMedical,
   },
-  {
-    id: "zaplq72",
-    title: "Settings",
-    slug: "/dashboard/settings",
-    icon: Calendar,
-  },
+  
 ];
