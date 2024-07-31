@@ -1,6 +1,6 @@
 // store/notificationStore.ts
 import { create } from "zustand";
-import { AppointmentResponse } from "@/types";
+import { ActifRegisterDoctor, AppointmentResponse } from "@/types";
 
 // Interface pour le store
 interface NotificationState {
@@ -9,8 +9,15 @@ interface NotificationState {
   addNotification: (notification: AppointmentResponse) => void;
 }
 
+interface Doctors {
+  doctors: ActifRegisterDoctor[];
+  getAllDoctorsFromZustand: (alldoctors: ActifRegisterDoctor[]) => void;
+}
+
+type CombineState = NotificationState & Doctors;
+
 // Créez le store Zustand
-const useNotificationStore = create<NotificationState>((set) => ({
+const useNotificationStore = create<CombineState>((set) => ({
   appointmentsNotifs: [],
   totalNotif: 0,
   addNotification: (notification: AppointmentResponse) =>
@@ -20,6 +27,14 @@ const useNotificationStore = create<NotificationState>((set) => ({
       return {
         appointmentsNotifs: newNotifications,
         totalNotif: newNotifications.length,
+      };
+    }),
+
+  doctors: [],
+  getAllDoctorsFromZustand: (alldoctors: ActifRegisterDoctor[]) =>
+    set(() => {
+      return {
+        doctors: alldoctors,
       };
     }),
 }));

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,13 +12,14 @@ import {
 import { Button } from "./ui/button";
 import AppointmentForm from "./forms/AppointmentForm";
 import { AppointModal } from "@/types/appwrite.types";
+import { getDoctorsInService } from "@/lib/actions/doctor.actions";
 
 const AppointmentModal = ({
   type,
   patientId,
   userId,
   appointment,
-  phone
+  phone,
 }: {
   type: "schedule" | "cancel";
   patientId: string;
@@ -27,6 +28,8 @@ const AppointmentModal = ({
   phone: string;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
+  
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>

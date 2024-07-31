@@ -32,6 +32,8 @@ import {
 } from "../ui/dropdown-menu";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
+import { ActifRegisterDoctor } from "@/types";
+
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

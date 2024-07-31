@@ -1,7 +1,5 @@
 import StatCard from "@/components/StatCard";
 import { getAppointmentList } from "@/lib/actions/appointment.actions";
-import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/DataTable";

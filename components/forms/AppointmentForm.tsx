@@ -197,7 +197,7 @@ const AppointmentForm = ({
               label="Docteur"
               placeholder="Choisir un docteur"
             >
-              {doctors.map((doctor, i) => (
+              {doctors?.map((doctor, i) => (
                 <SelectItem key={doctor.name + i} value={doctor.name}>
                   <div className="flex cursor-pointer items-center gap-2">
                     <Image

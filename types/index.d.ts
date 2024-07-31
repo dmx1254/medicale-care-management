@@ -195,3 +195,10 @@ export interface ActifRegisterDoctor {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ActifDoctor {
+  _id: string;
+  name: string;
+  speciality: string;
+  profile: string;
+}

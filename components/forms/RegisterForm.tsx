@@ -13,7 +13,6 @@ import { useRouter } from "next/navigation";
 import { registerPatient } from "@/lib/actions/patient.actions";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import {
-  Doctors,
   GenderOptions,
   IdentificationTypes,
   PatientFormDefaultValues,
@@ -36,7 +35,7 @@ export enum FormFieldType {
   SKELETON = "skeleton",
 }
 
-const RegisterForm = ({ doctors }: { doctors: ActifRegisterDoctor }) => {
+const RegisterForm = ({ doctors }: { doctors: ActifRegisterDoctor[] }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // 1. Define your form.
@@ -222,7 +221,7 @@ const RegisterForm = ({ doctors }: { doctors: ActifRegisterDoctor }) => {
           label="Medecin principal"
           placeholder="Choisir un medecin"
         >
-          {doctors.map((doctor: ActifRegisterDoctor, i: number) => (
+          {doctors?.map((doctor, i) => (
             <SelectItem key={doctor.name + i} value={doctor.name}>
               <div className="flex cursor-pointer items-center gap-2">
                 <Image
