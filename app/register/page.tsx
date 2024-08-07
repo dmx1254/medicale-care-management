@@ -6,7 +6,7 @@ import React from "react";
 
 const Register = async () => {
   const actifsDoctors = await getDoctorsInService();
-  console.log(actifsDoctors);
+  // console.log(actifsDoctors);
   return (
     <div className="flex h-screen max-h-screen">
       <section className="remove-scrollbar container">

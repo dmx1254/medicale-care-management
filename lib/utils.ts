@@ -1,6 +1,7 @@
 import { Doctors } from "@/constants";
-import { Doc } from "@/types";
+import { Doc, SESSIONAUTH } from "@/types";
 import { type ClassValue, clsx } from "clsx";
+import { redirect } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -120,3 +121,17 @@ export const dateFrToConvert = (date: Date) => {
   });
   return convertedDate;
 };
+
+// export async function getSessionAndRedirect(session: SESSIONAUTH) {
+//   if (session) {
+//     if (session.role === "DOCTOR") {
+//       redirect("/dashboard");
+//     } else if (session.role === "PATIENT") {
+//       redirect(`/patient/${session.id}/profile#informations-personnelles`);
+//     } else {
+//       redirect("/");
+//     }
+//   } else {
+//     redirect("/");
+//   }
+// }

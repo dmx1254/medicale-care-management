@@ -13,6 +13,11 @@ declare interface CreateUserParams {
   phone: string;
   password: string;
 }
+
+export interface AuthSignInProvider {
+  phone: string;
+  password: string;
+}
 declare interface User extends CreateUserParams {
   $id: string;
 }
@@ -201,4 +206,11 @@ export interface ActifDoctor {
   name: string;
   speciality: string;
   profile: string;
+}
+
+export interface SESSIONAUTH {
+  id: string;
+  role: string;
+  email: string;
+  name: string;
 }

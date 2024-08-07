@@ -28,7 +28,7 @@ import Image from "next/image";
 import { updateMedicalePatient } from "@/lib/actions/patient.actions";
 import { toast } from "sonner";
 
-const UpdatePatient = ({ data }: Patient) => {
+const UpdatePatient = ({ data }: { data: Patient }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [bloodgroup, setBloodgroup] = useState<string>(data.bloodgroup);

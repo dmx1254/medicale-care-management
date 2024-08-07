@@ -49,4 +49,6 @@ export interface AppointModal {
   cancellationReason?: string;
   name?: string;
   phone?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

@@ -10,7 +10,8 @@ import SubmitButton from "../SubmitButton";
 import { useState } from "react";
 import { UserFormValidation } from "@/lib/validation";
 import { useRouter } from "next/navigation";
-import { loginUser } from "@/lib/actions/patient.actions";
+import { signIn } from "next-auth/react";
+import { toast } from "sonner";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -46,7 +47,24 @@ const PatientForm = () => {
       password,
     };
 
-    const user = await loginUser(userData);
+    const user = await signIn("credentials", {
+      phone: userData.phone,
+      password: userData.password,
+      redirect: false,
+    });
+
+    if (user?.ok === false) {
+      toast.error(user?.error, {
+        style: {
+          color: "#ef4444",
+          background: "#0D0F10",
+          border: "1px solid #363A3D",
+        },
+      });
+    } else {
+      router.refresh();
+    }
+
     // if (user) router.push("/patients/profile");
     // if (user) router.push(`/patients/${user.$id}/register`);
 

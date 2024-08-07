@@ -25,7 +25,7 @@ import { AppointModal } from "@/types/appwrite.types";
 import { deleteAppointment } from "@/lib/actions/appointment.actions";
 import SeeAppointment from "./SeeDocuments/SeeAppointment";
 
-const AppointmentAction = ({ data }: { data: AppointModal[] }) => {
+const AppointmentAction = ({ data }: { data: AppointModal }) => {
   const [open, setOpen] = useState<boolean>(false);
   //   console.log(data);
 
@@ -48,7 +48,7 @@ const AppointmentAction = ({ data }: { data: AppointModal[] }) => {
       if (error.message) {
         toast.error(error.message, {
           style: {
-            color: "red",
+            color: "#ef4444",
             background: "#0D0F10",
             border: "1px solid #363A3D",
           },

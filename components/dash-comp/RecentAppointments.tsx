@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getFiveRecentAppointments } from "@/lib/actions/appointment.actions";
 import FiveAppointments from "../ui/FiveAppointments";
 import { AppointmentResponse } from "@/types";

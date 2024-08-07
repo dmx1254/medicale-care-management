@@ -77,6 +77,22 @@ export async function upadteEmailString(codeEmail: string, userId: string) {
   return upadtedUserEmailString;
 }
 
+export async function upadteEmailPasswordString(
+  codeEmail: string,
+  email: string
+) {
+  const upadtedUserEmailString = await PatientModel.updateOne(
+    { email: email },
+    {
+      emailStringVerified: codeEmail,
+    },
+    {
+      new: true,
+    }
+  );
+  return upadtedUserEmailString;
+}
+
 export async function iSEmailVerified(codeVerif: string, userId: string) {
   if (!isValidObjectId(userId)) {
     throw new Error("Invalid appointment ID");
@@ -97,6 +113,7 @@ export async function iSEmailVerified(codeVerif: string, userId: string) {
         userId,
         {
           isEmailVerified: true,
+          emailStringVerified: "",
         },
         {
           new: true,

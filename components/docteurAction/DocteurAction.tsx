@@ -17,7 +17,7 @@ import { deleteAppointment } from "@/lib/actions/appointment.actions";
 import { Patient } from "@/types";
 import { banPatient, deBanPatient } from "@/lib/actions/patient.actions";
 
-const DocteurAction = ({ data }: Patient) => {
+const DocteurAction = ({ data }: { data: Patient }) => {
   const [open, setOpen] = useState<boolean>(false);
 
   const handleBanPatient = async (patientId: string) => {
@@ -105,9 +105,9 @@ const DocteurAction = ({ data }: Patient) => {
             </DropdownMenuItem>
           )}
 
-          <DropdownMenuItem className="cursor-pointer transition-all hover:opacity-80">
+          {/* <DropdownMenuItem className="cursor-pointer transition-all hover:opacity-80">
             Télécharger la fichier
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

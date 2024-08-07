@@ -22,7 +22,7 @@ import { convertFileToBase64 } from "@/lib/utils";
 import DocteurProfileUploader from "./DocteurProfileUploader";
 import { Patient } from "@/types";
 
-const UpdateDocteur = ({ data }: Patient) => {
+const UpdateDocteur = ({ data }: { data: Patient }) => {
   let phoneNumber = data.phone as E164Number;
   const [open, setOpen] = useState<boolean>(false);
   //   const [isUpdating, setIsUpdating] = useState<boolean>(false);

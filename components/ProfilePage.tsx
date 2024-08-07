@@ -20,6 +20,8 @@ import {
 import AppointmentForm from "./forms/AppointmentForm";
 import { useRouter } from "next/navigation";
 
+import { signOut } from "next-auth/react";
+
 const UserProfile = ({
   userId,
   patient,
@@ -58,6 +60,10 @@ const UserProfile = ({
   //   const handleSetActive = (slug: string) => {
   //     console.log(to);
   //   };
+
+  const logout = async () => {
+    await signOut();
+  };
 
   return (
     <div className="flex space-y-14" id="informations-personnelles">
@@ -100,6 +106,7 @@ const UserProfile = ({
         <Button
           variant="ghost"
           className="flex items-center gap-2 outline-none hover:text-red-500 text-white/70"
+          onClick={logout}
         >
           <LogOut />
           <span className="max-md:hidden">Logout</span>

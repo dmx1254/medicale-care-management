@@ -3,7 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from 'sonner';
+import { Toaster } from "sonner";
 
 const fontSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -16,11 +16,19 @@ export const metadata: Metadata = {
   description: "A healthcare management system",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  //   if (session.user.role === "DOCTOR") {
+  //     redirect("/dashboard");
+  //   } else {
+  //     redirect(`/patient/${session.user.id}/profile#informations-personnelles`);
+  //   }
+  // } else {
+  //   redirect("/");
+  // }
   return (
     <html lang="en">
       <body

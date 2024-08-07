@@ -7,9 +7,14 @@ import { LogOut } from "lucide-react";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { signOut } from "next-auth/react";
 
 const Sidebar = () => {
   const pathname = usePathname();
+
+  const logout = async () => {
+    await signOut();
+  };
 
   return (
     <div className="admin-profile-cop h-screen max-h-screen max-md:hidden md:w-60">
@@ -69,6 +74,7 @@ const Sidebar = () => {
       <Button
         variant="ghost"
         className="flex items-center gap-2 outline-none hover:text-red-500 text-[#7A7C7E]"
+        onClick={logout}
       >
         <LogOut />
         <span className="max-md:hidden">Logout</span>

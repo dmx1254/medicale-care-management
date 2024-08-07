@@ -85,25 +85,11 @@ export const columns: ColumnDef<Patient>[] = [
           <div className="flex items-center gap-3">
             <UpdateDoctorStatus
               id={data?._id}
-              doctorStatus={data?.doctorStatus}
+              doctorStatus={data?.doctorStatus!}
             />
             <DeleteDocteur id={data._id} />
             <UpdateDocteur data={data} />
           </div>
-          {/* <AppointmentModal
-            type="schedule"
-            patientId={data?.patientId}
-            userId={data?.userId}
-            phone={data?.phone}
-            appointment={data}
-          />
-          <AppointmentModal
-            type="cancel"
-            patientId={data?.patientId}
-            userId={data?.userId}
-            appointment={data}
-            phone={data?.phone}
-          /> */}
 
           <DocteurAction data={data} />
         </div>
