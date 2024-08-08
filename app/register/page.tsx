@@ -1,10 +1,16 @@
 import RegisterForm from "@/components/forms/RegisterForm";
 import { getDoctorsInService } from "@/lib/actions/doctor.actions";
+import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { options } from "../api/auth/[...nextauth]/option";
+import { redirect } from "next/navigation";
 
 const Register = async () => {
+  const session = await getServerSession(options);
+  if (session)
+    redirect(`/patients/${session?.user.id}/profile#informations-personnelles`);
   const actifsDoctors = await getDoctorsInService();
   // console.log(actifsDoctors);
   return (
