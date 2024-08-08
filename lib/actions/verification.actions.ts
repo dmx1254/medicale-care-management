@@ -2,8 +2,15 @@
 
 import { EmailTemplate } from "@/components/email-template";
 import { Resend } from "resend";
-import { iSEmailVerified, upadteEmailPasswordString, upadteEmailString } from "../api/patient";
-import { generateVerificationCode } from "../utils";
+import {
+  findUserByEmail,
+  iSEmailVerified,
+  isUserPassowrdCodeVerified,
+  resetUserPassword,
+  upadteEmailPasswordString,
+  upadteEmailString,
+} from "../api/patient";
+import { generateVerificationCode, parseStringify } from "../utils";
 import { revalidatePath } from "next/cache";
 import { PasswordTemplate } from "@/components/password-template";
 
@@ -46,20 +53,19 @@ export async function isEmailIsVErified(codeVerif: string, userId: string) {
   return response;
 }
 
-
-
-export async function verificationEmailForPasswordForget(
-  email: string,
-) {
+export async function verificationEmailForPasswordForget(email: string) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   const codetoSend = generateVerificationCode();
+
+  const response = await findUserByEmail(email);
+  if (response.message) return { errorMessage: response.message };
 
   const { data, error } = await resend.emails.send({
     from: "Medicale Care <support@ibendouma.com>",
     to: [email],
     subject: "Réinitialisation de votre mot de passe MedicaleCare",
     text: "",
-    react: PasswordTemplate({ codeVerification: codetoSend}),
+    react: PasswordTemplate({ codeVerification: codetoSend }),
   });
   if (error) {
     console.log(error);
@@ -69,7 +75,20 @@ export async function verificationEmailForPasswordForget(
   //   return data;
 
   if (data && data.id) {
-    const upatedStringEmail = await upadteEmailPasswordString(codetoSend, email);
-    return data;
+    const upatedStringEmail = await upadteEmailPasswordString(
+      codetoSend,
+      email
+    );
+    return parseStringify(response);
   }
+}
+
+export async function restPasswordAndNew(
+  userId: string,
+  code: string,
+  password: string
+) {
+  const response = await resetUserPassword(userId, code, password);
+
+  return parseStringify(response);
 }

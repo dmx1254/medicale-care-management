@@ -310,3 +310,58 @@ export async function updateSingleDoctorStatus(
     throw new Error(`Error to updating doctor status: ${error.message}`);
   }
 }
+
+export async function findUserByEmail(email: string) {
+  try {
+    const user = await PatientModel.findOne({
+      email: email,
+    });
+    if (user) return { user: user, message: "" };
+    return { user: {}, message: "Pas d'utilisateur trouvé avec cet Email" };
+  } catch (error: any) {
+    throw new Error(`Error to retrieve user: ${error.message}`);
+  }
+}
+
+export async function resetUserPassword(
+  userId: string,
+  code: string,
+  password: string
+) {
+  if (!isValidObjectId(userId)) {
+    throw new Error("Invalid User ID");
+  }
+
+  try {
+    const isUpadtedUser = await PatientModel.findById(userId);
+
+    const emailString = isUpadtedUser.emailStringVerified;
+    if (emailString === code) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const upadtedUserPassword = await PatientModel.findByIdAndUpdate(
+        userId,
+        {
+          password: hashedPassword,
+          emailStringVerified: "",
+        },
+        {
+          new: true,
+        }
+      );
+
+      return {
+        successMessage: "Votre mot de passe a été réinitialisé avec succès",
+        errorMessage: "",
+      };
+    } else {
+      return {
+        successMessage: "",
+        errorMessage: "Le code que vous avez saisi est incorrect",
+        user: null,
+      };
+    }
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
