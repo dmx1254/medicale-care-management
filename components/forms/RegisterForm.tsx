@@ -25,6 +25,13 @@ import { convertFileToBase64 } from "@/lib/utils";
 import { toast } from "sonner";
 import { ActifRegisterDoctor } from "@/types";
 
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+
 export enum FormFieldType {
   INPUT = "input",
   TEXTAREA = "textarea",
@@ -45,6 +52,8 @@ const RegisterForm = ({ doctors }: { doctors: ActifRegisterDoctor[] }) => {
       ...PatientFormDefaultValues,
     },
   });
+
+  // console.log(doctors);
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof PatientFormValidation>) {
@@ -223,16 +232,37 @@ const RegisterForm = ({ doctors }: { doctors: ActifRegisterDoctor[] }) => {
         >
           {doctors?.map((doctor, i) => (
             <SelectItem key={doctor.name + i} value={doctor.name}>
-              <div className="flex cursor-pointer items-center gap-2">
-                <Image
-                  src={doctor.profile}
-                  width={32}
-                  height={32}
-                  alt="doctor"
-                  className="rounded-full border border-dark-500"
-                />
-                <p>{doctor.name}</p>
-              </div>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <div className="flex cursor-pointer items-center gap-2">
+                    <Image
+                      src={doctor.profile}
+                      width={32}
+                      height={32}
+                      alt="doctor"
+                      className="rounded-full border border-dark-500"
+                    />
+                    <p>{doctor.name}</p>
+                  </div>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-full bg-dark-400 border-dark-500 ml-2">
+                  <div className="flex justify-between space-x-2">
+                    <Avatar>
+                      <AvatarImage src={doctor.profile} />
+                      <AvatarFallback className="uppercase">
+                        {doctor.name.split(" ")[0][0]}
+                        {doctor.name.split(" ")[1][0]}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="space-y-1">
+                      <h4 className="text-sm font-semibold">{doctor.name}</h4>
+                      <p className="text-sm bg-dark-500 text-green-500 p-1 rounded-lg font-bold">
+                        {doctor.speciality}
+                      </p>
+                    </div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             </SelectItem>
           ))}
         </CustomFormField>

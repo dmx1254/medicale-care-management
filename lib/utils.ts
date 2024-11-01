@@ -121,17 +121,3 @@ export const dateFrToConvert = (date: Date) => {
   });
   return convertedDate;
 };
-
-// export async function getSessionAndRedirect(session: SESSIONAUTH) {
-//   if (session) {
-//     if (session.role === "DOCTOR") {
-//       redirect("/dashboard");
-//     } else if (session.role === "PATIENT") {
-//       redirect(`/patient/${session.id}/profile#informations-personnelles`);
-//     } else {
-//       redirect("/");
-//     }
-//   } else {
-//     redirect("/");
-//   }
-// }

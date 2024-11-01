@@ -101,28 +101,30 @@ export const updateAppointment = async ({
 }: UpdateAppointmentParams) => {
   try {
     // console.log(appointmentId, appointment);
-    const updatedAppointment = await updateSingleAppointment(
-      appointmentId,
-      appointment
-    );
+    if (appointmentId) {
+      const updatedAppointment = await updateSingleAppointment(
+        appointmentId,
+        appointment
+      );
 
-    if (!updatedAppointment) {
-      throw new Error("Rendez-vous introuvable");
+      if (!updatedAppointment) {
+        throw new Error("Rendez-vous introuvable");
+      }
+
+      revalidatePath("/admin");
+
+      // Utiliser JSON.stringify et JSON.parse pour le débogage
+      const updatedAppStringified = JSON.stringify(updatedAppointment);
+      const updatedAppParsed = JSON.parse(updatedAppStringified);
+      await sendSMSNotification(
+        phone,
+        type,
+        updatedAppParsed.schedule,
+        updatedAppParsed.primaryPhysician,
+        updatedAppParsed.cancellationReason
+      );
+      return updatedAppParsed;
     }
-
-    revalidatePath("/admin");
-
-    // Utiliser JSON.stringify et JSON.parse pour le débogage
-    const updatedAppStringified = JSON.stringify(updatedAppointment);
-    const updatedAppParsed = JSON.parse(updatedAppStringified);
-    await sendSMSNotification(
-      phone,
-      type,
-      updatedAppParsed.schedule,
-      updatedAppParsed.primaryPhysician,
-      updatedAppParsed.cancellationReason
-    );
-    return updatedAppParsed;
   } catch (error: any) {
     // Utiliser console.error pour une meilleure visibilité des erreurs
     console.error("Erreur lors de la mise à jour du rendez-vous:", error);

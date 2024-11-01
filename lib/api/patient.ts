@@ -339,15 +339,13 @@ export async function resetUserPassword(
     if (emailString === code) {
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      const upadtedUserPassword = await PatientModel.findByIdAndUpdate(
+      await PatientModel.findByIdAndUpdate(
         userId,
         {
-          password: hashedPassword,
-          emailStringVerified: "",
+          $set: { password: hashedPassword, emailStringVerified: "" },
         },
-        {
-          new: true,
-        }
+
+        { new: true, runValidators: true }
       );
 
       return {

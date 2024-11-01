@@ -127,6 +127,7 @@ export default function ResetPasswordPage({
                 id="password"
                 placeholder="Nouveau mot de passe"
                 value={password}
+                type="password"
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setPassword(e.target.value)
                 }
@@ -141,6 +142,7 @@ export default function ResetPasswordPage({
               <Input
                 id="confirmpassword"
                 placeholder="Confirmation du nouveau mot de passe"
+                type="password"
                 value={confirmPassword}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setConfirmPassword(e.target.value)

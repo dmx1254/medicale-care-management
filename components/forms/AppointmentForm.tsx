@@ -17,7 +17,7 @@ import {
   updateAppointment,
 } from "@/lib/actions/appointment.actions";
 import { Appointment } from "@/types/appwrite.types";
-import { ActifRegisterDoctor, Status } from "@/types";
+import { ActifRegisterDoctor, DoctorResponse, Status } from "@/types";
 import { toast } from "sonner";
 
 export enum FormFieldType {
@@ -47,7 +47,7 @@ const AppointmentForm = ({
   setOpen: (open: boolean) => void;
   name: string;
   phone: string;
-  doctors: ActifRegisterDoctor[];
+  doctors: DoctorResponse[];
 }) => {
   const translateStatusToFr = (status: string): string => {
     return status === "pending"

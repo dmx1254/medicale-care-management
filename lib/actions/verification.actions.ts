@@ -5,7 +5,6 @@ import { Resend } from "resend";
 import {
   findUserByEmail,
   iSEmailVerified,
-  isUserPassowrdCodeVerified,
   resetUserPassword,
   upadteEmailPasswordString,
   upadteEmailString,

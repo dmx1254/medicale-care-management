@@ -53,27 +53,27 @@ export interface UserRegister {
   address: string;
   allergies?: string;
   birthDate: Date;
-  bloodgroup: string;
-  currentMedication: string;
+  bloodgroup?: string;
+  currentMedication?: string;
   disclosureConsent: boolean;
   email: string;
   emergencyContactName: string;
   emergencyContactNumber: string;
-  familyMedicalHistory: string;
+  familyMedicalHistory?: string;
   gender: string;
   identificationNumber: string;
   identificationType: string;
-  insurancePolicyNumber: string;
-  insuranceProvider: string;
+  insurancePolicyNumber?: string;
+  insuranceProvider?: string;
   name: string;
   occupation: string;
   password: string;
-  pastMedicalHistory: string;
+  pastMedicalHistory?: string;
   phone: string;
   primaryPhysician: string;
   privacyConsent: boolean;
   treatmentConsent: boolean;
-  vaccination: string;
+  vaccination?: string;
   role?: string;
 }
 
@@ -137,11 +137,11 @@ export interface AppointmentUpdate {
   primaryPhysician: string;
   schedule: Date;
   status: string;
-  cancellationReason: string;
+  cancellationReason?: string;
 }
 
 export type UpdateAppointmentParams = {
-  appointmentId: string;
+  appointmentId?: string;
   userId: string;
   phone: string;
   appointment: AppointmentUpdate;
@@ -213,4 +213,13 @@ export interface SESSIONAUTH {
   role: string;
   email: string;
   name: string;
+}
+
+export interface DoctorResponse {
+  _id: string;
+  name: string;
+  speciality: string;
+  profile: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
