@@ -103,6 +103,10 @@ const UserProfile = ({
   //   };
 
   const logout = async () => {
+    await axios.post("/api/users-status-changed", {
+      userId: patient._id,
+      online: false,
+    });
     await signOut();
   };
 
