@@ -81,25 +81,25 @@ const RegisterForm = ({ doctors }: { doctors: ActifRegisterDoctor[] }) => {
       };
 
       const patient = await registerPatient(patientData);
-      if (patient.user) {
-        toast.success(patient.message, {
-          style: { color: "green" },
-        });
-
-        new Promise((resolve) => {
-          setTimeout(() => {
-            router.push("/");
-            resolve(undefined);
-          }, 2000);
-        });
-      }
-      //   if (patient) router.push(`/patients/${user.$id}/new-appointment`);
-    } catch (error: any) {
-      if (error?.message) {
-        toast.error(error?.message, {
+      if (patient.error) {
+        toast.error(patient.error, {
           style: { color: "red" },
         });
+      } else {
+        if (patient.user) {
+          toast.success(patient.message, {
+            style: { color: "green" },
+          });
+          new Promise((resolve) => {
+            setTimeout(() => {
+              router.push("/");
+              resolve(undefined);
+            }, 2000);
+          });
+        } else return;
       }
+    } catch (error: any) {
+      console.log(error);
     }
     setIsLoading(false);
   }

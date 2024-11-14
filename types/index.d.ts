@@ -112,6 +112,7 @@ export interface Patient {
   profile?: string;
   doctorStatus?: boolean;
   speciality?: string;
+  online: boolean;
   createdAt: string;
   updatedAt: string;
 }

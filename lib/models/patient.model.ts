@@ -139,7 +139,11 @@ const patientSchema = new mongoose.Schema(
     },
     doctorStatus: {
       type: Boolean,
-      default: true,
+      default: false,
+    },
+    online: {
+      type: Boolean,
+      default: false,
     },
     isAdmin: {
       type: Boolean,

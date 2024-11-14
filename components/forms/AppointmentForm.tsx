@@ -17,7 +17,7 @@ import {
   updateAppointment,
 } from "@/lib/actions/appointment.actions";
 import { Appointment } from "@/types/appwrite.types";
-import { ActifRegisterDoctor, DoctorResponse, Status } from "@/types";
+import { DoctorResponse, Status } from "@/types";
 import { toast } from "sonner";
 
 export enum FormFieldType {

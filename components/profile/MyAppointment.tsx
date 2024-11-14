@@ -18,7 +18,6 @@ const MyAppointment = ({
   const [loading, setLoading] = useState(false);
   //   console.log(userApp);
 
-
   useEffect(() => {
     const fetchUserAppointments = async () => {
       setLoading(true);

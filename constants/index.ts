@@ -38,7 +38,7 @@ export const IdentificationTypes = [
   "Carte d'identité militaire",
   "Carte d'identité nationale",
   "Passeport",
-  "Carte de résident permanent (Carte verte)",
+  "Carte de résident permanent (Carte séjour)",
   "Carte de sécurité sociale",
   "Carte d'identité d'État",
   "Carte d'identité étudiante",

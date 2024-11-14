@@ -2,13 +2,14 @@
 
 import { profileInfo } from "@/types/otherTypes";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Link, scroller } from "react-scroll";
 import { Button } from "./ui/button";
 import { LogOut } from "lucide-react";
-import { ActifRegisterDoctor, Patient, User } from "@/types";
+import { ActifRegisterDoctor, DoctorResponse, Patient, User } from "@/types";
 import PersonalInformations from "./profile/PersonalInformations";
 import MedicalesInformations from "./profile/MedicalesInformations";
-import IdentityVerification from "./profile/IdentityVerification";
+import Pusher from "pusher-js";
 import MyAppointment from "./profile/MyAppointment";
 import clsx from "clsx";
 import {
@@ -22,6 +23,10 @@ import { useRouter } from "next/navigation";
 
 import { signOut } from "next-auth/react";
 
+// const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
+//   cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+// });
+
 const UserProfile = ({
   userId,
   patient,
@@ -29,12 +34,48 @@ const UserProfile = ({
 }: {
   userId: string;
   patient: Patient;
-  doctors: ActifRegisterDoctor;
+  doctors: DoctorResponse[];
 }) => {
   const router = useRouter();
   const [isSlugActive, setIsSlugActive] = useState<string>(
     "informations-personnelles"
   );
+
+  useEffect(() => {
+    const updatePresence = async () => {
+      try {
+        await axios.post("/api/users-status-changed", {
+          userId: patient._id,
+          online: true,
+        });
+      } catch (error) {
+        console.error("Erreur lors de la mise à jour de la présence:", error);
+      }
+    };
+
+    updatePresence();
+    const interval = setInterval(updatePresence, 60000); // Heartbeat toutes les 30 secondes
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        updatePresence();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      // Mettre le statut à 'offline' lors de la déconnexion
+      axios
+        .post("/api/users-status-changed", {
+          userId: patient._id,
+          online: false,
+        })
+        .catch((error: any) => console.log(error));
+    };
+  }, [patient._id]);
 
   useEffect(() => {
     const hash =
