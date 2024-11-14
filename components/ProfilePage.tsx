@@ -90,17 +90,12 @@ const UserProfile = ({
     }
   }, []);
 
-  //   console.log(patient);
   const handleSlug = (activeSlug: string) => {
     setIsSlugActive(activeSlug);
     const currentPath = window.location.pathname;
     const newPath = `${currentPath}#${activeSlug}`;
     router.push(newPath);
   };
-
-  //   const handleSetActive = (slug: string) => {
-  //     console.log(to);
-  //   };
 
   const logout = async () => {
     await axios.post("/api/users-status-changed", {
