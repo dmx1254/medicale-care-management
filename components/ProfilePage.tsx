@@ -98,11 +98,16 @@ const UserProfile = ({
   };
 
   const logout = async () => {
-    await axios.post("/api/users-status-changed", {
-      userId: patient._id,
-      online: false,
-    });
-    await signOut();
+    try {
+      await axios.post("/api/users-status-changed", {
+        userId: patient._id,
+        online: false,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      await signOut();
+    }
   };
 
   return (
