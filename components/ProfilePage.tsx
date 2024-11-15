@@ -22,6 +22,7 @@ import AppointmentForm from "./forms/AppointmentForm";
 import { useRouter } from "next/navigation";
 
 import { signOut } from "next-auth/react";
+import { useUserPresence } from "@/app/hooks/userPresence";
 
 // const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
 //   cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
@@ -40,6 +41,13 @@ const UserProfile = ({
   const [isSlugActive, setIsSlugActive] = useState<string>(
     "informations-personnelles"
   );
+
+  useUserPresence({
+    userId: patient._id,
+    onError: (error) => {
+      console.error("Erreur de présence:", error);
+    },
+  });
 
   useEffect(() => {
     const updatePresence = async () => {
@@ -98,16 +106,9 @@ const UserProfile = ({
   };
 
   const logout = async () => {
-    try {
-      await axios.post("/api/users-status-changed", {
-        userId: patient._id,
-        online: false,
-      });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      await signOut();
-    }
+    const data = JSON.stringify({ userId, online: false });
+    await navigator.sendBeacon("/api/users-status-changed", data);
+    await signOut();
   };
 
   return (
@@ -180,12 +181,7 @@ const UserProfile = ({
           </section>
 
           <MedicalesInformations patient={patient} />
-          {/* <section className="space-y-4" id="verification-identite">
-            <div className="mb-3 space-y-1">
-              <h2 className="sub-header">Verification d'identités</h2>
-            </div>
-          </section>
-          <IdentityVerification patient={patient} /> */}
+
           <section
             className="space-y-0 invisible"
             id="mes-rendez-vous"
@@ -209,13 +205,6 @@ const UserProfile = ({
           <div className="flex">
             <section className="w-full max-w-[860px] remove-scrollbar my-auto -mt-6">
               <div className="sub-p-container flex-1 justify-between">
-                {/* <Image
-                  src="/assets/icons/logo-full.svg"
-                  height={1000}
-                  width={1000}
-                  alt="medicale care"
-                  className="mb-12 h-10 w-fit"
-                /> */}
                 <AppointmentForm
                   type="create"
                   userId={userId}
@@ -224,7 +213,6 @@ const UserProfile = ({
                   phone={patient.phone}
                   doctors={doctors}
                 />
-                {/* <p className="copyright py-8">&copy; 2024 MedicaleCare</p> */}
               </div>
             </section>
           </div>
