@@ -2,14 +2,12 @@
 
 import { profileInfo } from "@/types/otherTypes";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Link, scroller } from "react-scroll";
 import { Button } from "./ui/button";
 import { LogOut } from "lucide-react";
-import { ActifRegisterDoctor, DoctorResponse, Patient, User } from "@/types";
+import {  DoctorResponse, Patient, User } from "@/types";
 import PersonalInformations from "./profile/PersonalInformations";
 import MedicalesInformations from "./profile/MedicalesInformations";
-import Pusher from "pusher-js";
 import MyAppointment from "./profile/MyAppointment";
 import clsx from "clsx";
 import {
@@ -37,19 +35,19 @@ const UserProfile = ({
   userId: string;
   patient: Patient;
   doctors: DoctorResponse[];
-  inactivesDates: { createdAt: Date }[];
+  inactivesDates: { schedule: string }[];
 }) => {
   const router = useRouter();
   const [isSlugActive, setIsSlugActive] = useState<string>(
     "informations-personnelles"
   );
 
-  // useUserPresence({
-  //   userId: patient._id,
-  //   onError: (error) => {
-  //     console.error("Erreur de présence:", error);
-  //   },
-  // });
+  useUserPresence({
+    userId: patient._id,
+    onError: (error) => {
+      console.error("Erreur de présence:", error);
+    },
+  });
 
   useEffect(() => {
     const hash =
@@ -127,7 +125,7 @@ const UserProfile = ({
       <main className="admin-main remove-scrollbar container my-auto">
         <section className="w-full space-y-4">
           <h1 className="header">Bienvenue 👋</h1>
-          <p className="font-extrabold text-14-regular text-green-500">
+          <p className="font-extrabold text-16-regular text-green-500">
             {patient.name}
           </p>
         </section>

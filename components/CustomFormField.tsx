@@ -32,7 +32,10 @@ import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 import { Textarea } from "./ui/textarea";
 import { Checkbox } from "./ui/checkbox";
 import { LucideIcon } from "lucide-react";
-import { formatDateTime } from "@/lib/utils";
+
+interface DateProps {
+  schedule: string;
+}
 
 interface CustomProps {
   control: Control<any>;
@@ -54,10 +57,6 @@ interface CustomProps {
   inactivesDates?: DateProps[];
   children?: React.ReactNode;
   renderSkeleton?: (field: any) => React.ReactNode;
-}
-
-interface DateProps {
-  createdAt: string;
 }
 
 interface CustomHeaderProps {
@@ -165,56 +164,35 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
     inactivesDates,
   } = props;
 
-  // const forrmattedDate = inactivesDates?.map((date) =>
-  //   date.createdAt.toString()
-  // );
-
-  // const excludedDatesStr = inactivesDates?.map((date) =>
-  //   parseISO(date.createdAt.toString().split("T")[0])
-  // );
-  // const excludedTimesStr = inactivesDates?.map(
-  //   (date) => date.createdAt.toString().split("T")[1].split(".")[0]
-  // );
-
-  // const result = excludedTimesStr?.map((hour) => {
-  //   const [h, m] = hour.split(":");
-  //   return [h, m].join(":");
-  // });
-
-  // console.log("forrmattedDate: " + forrmattedDate);
-
   const getExcludedTimesForDate = (
-    inactivesDates: DateProps[],
+    inactivesDates: { schedule: string }[] | undefined, // Assurez-vous que l'argument accepte `undefined`
     selectedDate: Date
   ) => {
-    if (inactivesDates !== undefined)
-      return inactivesDates
-        .filter((date) => {
-          // Convertir createdAt en objet Date en utilisant le format fourni
-          const inactiveDate = parse(
-            date.createdAt, // Format de date à parser
-            "yyyy-MM-dd'T'HH:mm:ss.SSSX", // Format ISO 8601
-            new Date()
-          );
-          // Vérifier si le jour correspond à la date sélectionnée
-          return isSameDay(inactiveDate, selectedDate);
-        })
-        .map((date) => {
-          // Extraire la partie "HH:mm:ss" depuis la chaîne ISO
-          const time = date.createdAt.split("T")[1].split(".")[0]; // "HH:mm:ss"
-          const [hour, minute] = time.split(":");
-          // Créer une Date avec uniquement les heures et minutes
-          return setHours(
-            setMinutes(setSeconds(new Date(), 0), Number(minute)),
-            Number(hour)
-          );
-        });
-  };
+    // Si inactivesDates est undefined, on retourne un tableau vide
+    if (!inactivesDates) return [];
 
-  console.log(inactivesDates);
+    return inactivesDates
+      .filter((date) => {
+        // Convertir le champ 'schedule' en objet Date en utilisant le format ISO
+        const inactiveDate = parseISO(date.schedule); // Utilisation de `parseISO` pour parser la date ISO
+        // Vérifier si le jour correspond à la date sélectionnée
+        return isSameDay(inactiveDate, selectedDate);
+      })
+      .map((date) => {
+        // Extraire la partie "HH:mm:ss" depuis la chaîne ISO
+        const time = date.schedule.split("T")[1].split(".")[0]; // "HH:mm:ss"
+        const [hour, minute] = time.split(":");
+        // Créer une Date avec uniquement les heures et minutes
+        return setHours(
+          setMinutes(setSeconds(new Date(), 0), Number(minute)),
+          Number(hour)
+        );
+      });
+  };
 
   const selectedDate = field.value || new Date();
 
+  // Appeler la fonction avec la valeur `inactivesDates`, qui peut être undefined
   const excludedTimes = getExcludedTimesForDate(inactivesDates, selectedDate);
 
   const [isView, setIsView] = useState<boolean>(false);

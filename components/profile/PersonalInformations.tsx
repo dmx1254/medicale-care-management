@@ -28,7 +28,6 @@ const PersonalInformations = ({ patient }: { patient: Patient }) => {
         <section className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           <div className="flex flex-col items-start gap-2 text-base">
             <span className="font-medium text-gray-300">Prénom et nom</span>
-
             {patient.name ? (
               <div className="flex items-center p-2 rounded gap-1 text-gray-400">
                 <Contact className="text-gray-600" size={19} />

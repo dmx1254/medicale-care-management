@@ -141,17 +141,17 @@ export async function getAllConfirmedApointmentDates() {
     const results = await AppointmentModel.aggregate([
       {
         $match: {
-          createdAt: { $gte: startOfMonth }, // Dates à partir du début du mois
+          schedule: { $gte: startOfMonth }, // Dates à partir du début du mois
         },
       },
       {
         $project: {
           _id: 0, // Exclure l'ID si vous ne souhaitez pas le voir
-          createdAt: 1, // Inclure uniquement le champ 'createdAt'
+          schedule: 1, // Inclure uniquement le champ 'createdAt'
         },
       },
     ]);
-    
+
     return JSON.parse(JSON.stringify(results));
   } catch (error) {
     console.log(error);

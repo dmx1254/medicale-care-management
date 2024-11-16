@@ -55,7 +55,7 @@ const AppointmentForm = ({
   name: string;
   phone: string;
   doctors: DoctorResponse[];
-  inactivesDates?: { createdAt: string }[];
+  inactivesDates?: { schedule: string }[];
 }) => {
   const translateStatusToFr = (status: string): string => {
     return status === "pending"
