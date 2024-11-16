@@ -31,6 +31,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Eye, EyeOff } from "lucide-react";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -151,6 +152,7 @@ const RegisterForm = ({ doctors }: { doctors: ActifRegisterDoctor[] }) => {
             control={form.control}
             name="birthDate"
             label="Date de naissance"
+            type="birthdate"
           />
           <CustomFormField
             fieldType={FormFieldType.SKELETON}
@@ -245,7 +247,7 @@ const RegisterForm = ({ doctors }: { doctors: ActifRegisterDoctor[] }) => {
                     <p>{doctor.name}</p>
                   </div>
                 </HoverCardTrigger>
-                <HoverCardContent className="w-full bg-dark-400 border-dark-500 ml-2">
+                <HoverCardContent className="w-full bg-dark-400 border-dark-500 ml-2 p-3">
                   <div className="flex justify-between space-x-2">
                     <Avatar>
                       <AvatarImage src={doctor.profile} />
@@ -377,7 +379,9 @@ const RegisterForm = ({ doctors }: { doctors: ActifRegisterDoctor[] }) => {
             name="password"
             label="Mot de passe"
             placeholder="Mot de passe"
-            iconSrc="/assets/icons/password.svg"
+            iconSrc="/assets/icons/locker.svg"
+            IconAbsView={Eye}
+            IconAbsOff={EyeOff}
           />
           <CustomFormField
             fieldType={FormFieldType.INPUT}
@@ -385,7 +389,9 @@ const RegisterForm = ({ doctors }: { doctors: ActifRegisterDoctor[] }) => {
             name="confirmPassword"
             label="Confirmer votre mot de passe"
             placeholder="Confirmer votre mot de passe"
-            iconSrc="/assets/icons/password.svg"
+            iconSrc="/assets/icons/locker.svg"
+            IconAbsView={Eye}
+            IconAbsOff={EyeOff}
           />
         </div>
         <section className="space-y-4">

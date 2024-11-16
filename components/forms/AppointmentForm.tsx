@@ -19,6 +19,12 @@ import {
 import { Appointment } from "@/types/appwrite.types";
 import { DoctorResponse, Status } from "@/types";
 import { toast } from "sonner";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "../ui/hover-card";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -39,15 +45,17 @@ const AppointmentForm = ({
   name,
   phone,
   doctors,
+  inactivesDates,
 }: {
   type: "create" | "cancel" | "schedule";
   userId: string;
   patientId: string;
-  appointment: Appointment;
-  setOpen: (open: boolean) => void;
+  appointment?: Appointment;
+  setOpen?: (open: boolean) => void;
   name: string;
   phone: string;
   doctors: DoctorResponse[];
+  inactivesDates?: { createdAt: string }[];
 }) => {
   const translateStatusToFr = (status: string): string => {
     return status === "pending"
@@ -66,9 +74,7 @@ const AppointmentForm = ({
     resolver: zodResolver(CreateAppointmentSchema),
     defaultValues: {
       primaryPhysician: appointment ? appointment.primaryPhysician : "",
-      schedule: appointment
-        ? new Date(appointment?.schedule)
-        : new Date(Date.now()),
+      schedule: appointment ? appointment?.schedule : new Date(Date.now()),
       reason: appointment ? appointment.reason : "",
       note: appointment?.note || "",
       cancellationReason: appointment?.cancellationReason || "",
@@ -133,7 +139,9 @@ const AppointmentForm = ({
 
         const updatedAppointment = await updateAppointment(appointmentToUpdate);
         if (updatedAppointment) {
-          setOpen(false);
+          if (setOpen) {
+            setOpen(false);
+          }
           form.reset();
           toast.success(
             `Le rendez-vous avec ${
@@ -199,16 +207,39 @@ const AppointmentForm = ({
             >
               {doctors?.map((doctor, i) => (
                 <SelectItem key={doctor.name + i} value={doctor.name}>
-                  <div className="flex cursor-pointer items-center gap-2">
-                    <Image
-                      src={doctor.profile}
-                      width={32}
-                      height={32}
-                      alt="doctor"
-                      className="rounded-full border border-dark-500"
-                    />
-                    <p>{doctor.name}</p>
-                  </div>
+                  <HoverCard>
+                    <HoverCardTrigger asChild>
+                      <div className="flex cursor-pointer items-center gap-2">
+                        <Image
+                          src={doctor.profile}
+                          width={32}
+                          height={32}
+                          alt="doctor"
+                          className="rounded-full border border-dark-500"
+                        />
+                        <p>{doctor.name}</p>
+                      </div>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-full bg-dark-400 border-dark-500 ml-2 p-3">
+                      <div className="flex justify-between space-x-2">
+                        <Avatar>
+                          <AvatarImage src={doctor.profile} />
+                          <AvatarFallback className="uppercase">
+                            {doctor.name.split(" ")[0][0]}
+                            {doctor.name.split(" ")[1][0]}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="space-y-1">
+                          <h4 className="text-sm font-semibold">
+                            {doctor.name}
+                          </h4>
+                          <p className="text-sm bg-dark-500 text-green-500 p-1 rounded-lg font-bold">
+                            {doctor.speciality}
+                          </p>
+                        </div>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
                 </SelectItem>
               ))}
             </CustomFormField>
@@ -218,7 +249,10 @@ const AppointmentForm = ({
               name="schedule"
               label="Date de rendez-vous prévue"
               showTimeSelect
+              timeCaption="Heure"
               dateFormat="dd/MM/yyyy - HH:mm aa"
+              type="appointment"
+              inactivesDates={inactivesDates}
             />
             <div className="flex flex-col gap-6 xl:flex-row">
               <CustomFormField

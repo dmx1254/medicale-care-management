@@ -1,7 +1,6 @@
 import { Doctors } from "@/constants";
-import { Doc, SESSIONAUTH } from "@/types";
+import { Doc } from "@/types";
 import { type ClassValue, clsx } from "clsx";
-import { redirect } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -22,6 +21,7 @@ export const formatDateTime = (dateString: Date | string) => {
     hour: "numeric", // numeric hour (e.g., '8')
     minute: "numeric", // numeric minute (e.g., '30')
     hour12: false, // use 12-hour clock (true) or 24-hour clock (false)
+    timeZone: "Africa/Dakar",
   };
 
   const dateDayOptions: Intl.DateTimeFormatOptions = {

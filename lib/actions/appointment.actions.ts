@@ -1,6 +1,6 @@
 "use server";
 
-import { client, pusher } from "../db";
+import { client } from "../db";
 
 import { formatDateTime, parseStringify } from "../utils";
 import { revalidatePath } from "next/cache";
@@ -10,6 +10,7 @@ import {
   deleteSingleAppointment,
   fiveRecentAppointments,
   getAllAppointmentList,
+  getAllConfirmedApointmentDates,
   getPatientApppointment,
   getUserPatientAppointment,
   updateSingleAppointment,
@@ -20,11 +21,9 @@ export const createAppointment = async (
 ) => {
   try {
     const newAppointment = await createPatientAppointment(appointment);
-    pusher.trigger("notifications", "appointment", { message: newAppointment });
+    // pusher.trigger("notifications", "appointment", { message: newAppointment });
     return parseStringify(newAppointment);
-  } catch (error: any) {
-    console.error(error);
-  }
+  } catch (error: any) {}
 };
 
 export const getAppointment = async (appointmentId: string) => {
@@ -40,56 +39,14 @@ export const getUserAppointments = async (userId: string) => {
   try {
     const userAppointment = await getUserPatientAppointment(userId);
     return parseStringify(userAppointment);
-  } catch (error: any) {
-    console.error(error);
-  }
+  } catch (error: any) {}
 };
-
-// export const getRecentAppointmentList = async () => {
-//   try {
-//     const appointments = await databases.listDocuments(
-//       "668ac4440030872f1ffc",
-//       "668ac5130005ffa78400",
-//       [Query.orderDesc("$createdAt")]
-//     );
-
-//     const initialCounts = {
-//       scheduledCount: 0,
-//       pendingCount: 0,
-//       cancelledCount: 0,
-//     };
-
-//     const counts = (appointments.documents as Appointment[]).reduce(
-//       (acc, appointment) => {
-//         if (appointment.status === "scheduled") {
-//           acc.scheduledCount += 1;
-//         } else if (appointment.status === "pending") {
-//           acc.pendingCount += 1;
-//         } else if (appointment.status === "cancelled") {
-//           acc.cancelledCount += 1;
-//         }
-//         return acc;
-//       },
-//       initialCounts
-//     );
-//     const data = {
-//       totalCount: appointments.total,
-//       ...counts,
-//       documents: appointments.documents,
-//     };
-//     return parseStringify(data);
-//   } catch (error: any) {
-//     throw new Error(error.message);
-//   }
-// };
 
 export const getAppointmentList = async () => {
   try {
     const appointments = await getAllAppointmentList();
     return parseStringify(appointments);
-  } catch (error: any) {
-    console.error(error);
-  }
+  } catch (error: any) {}
 };
 
 export const updateAppointment = async ({
@@ -128,7 +85,6 @@ export const updateAppointment = async ({
   } catch (error: any) {
     // Utiliser console.error pour une meilleure visibilité des erreurs
     console.error("Erreur lors de la mise à jour du rendez-vous:", error);
-    console.error(error);
   }
 };
 
@@ -137,9 +93,7 @@ export const deleteAppointment = async (appointmentId: string) => {
     const appointmentDeleted = await deleteSingleAppointment(appointmentId);
     revalidatePath("/admin");
     return parseStringify(appointmentDeleted);
-  } catch (error: any) {
-    console.error(error);
-  }
+  } catch (error: any) {}
 };
 
 export const sendSMSNotification = async (
@@ -167,7 +121,6 @@ export const sendSMSNotification = async (
     return messageR;
   } catch (error: any) {
     console.log(error);
-    console.error(error);
   }
 };
 
@@ -177,6 +130,14 @@ export const getFiveRecentAppointments = async () => {
     return parseStringify(fiveRecentApps);
   } catch (error: any) {
     console.log(error);
-    console.error(error);
+  }
+};
+
+export const getScheduledDate = async () => {
+  try {
+    const results = await getAllConfirmedApointmentDates();
+    return parseStringify(results);
+  } catch (error: any) {
+    console.log(error);
   }
 };

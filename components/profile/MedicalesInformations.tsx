@@ -84,7 +84,13 @@ const MedicalInformations = ({ patient }: { patient: Patient }) => {
                 alt="doctor"
                 className="size-8"
               />
-              <p className="whitespace-nowrap">Dr. {doctor?.name}</p>
+
+              <div className="flex flex-col items-start gap-1">
+                <p className="whitespace-nowrap">Dr. {doctor?.name}</p>
+                <p className="bg-dark-500 text-green-700 p-1 rounded-[10px] text-xs font-semibold">
+                  {doctor?.speciality}
+                </p>
+              </div>
             </div>
           </div>
 

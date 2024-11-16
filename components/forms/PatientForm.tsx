@@ -97,7 +97,7 @@ const PatientForm = () => {
           name="password"
           label="Mot de passe"
           placeholder="mot de passe"
-          iconSrc="/assets/icons/password.svg"
+          iconSrc="/assets/icons/locker.svg"
           iconAlt="password"
         />
         <SubmitButton isLoading={isLoading}>Commencer</SubmitButton>

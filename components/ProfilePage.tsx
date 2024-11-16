@@ -32,58 +32,24 @@ const UserProfile = ({
   userId,
   patient,
   doctors,
+  inactivesDates,
 }: {
   userId: string;
   patient: Patient;
   doctors: DoctorResponse[];
+  inactivesDates: { createdAt: Date }[];
 }) => {
   const router = useRouter();
   const [isSlugActive, setIsSlugActive] = useState<string>(
     "informations-personnelles"
   );
 
-  useUserPresence({
-    userId: patient._id,
-    onError: (error) => {
-      console.error("Erreur de présence:", error);
-    },
-  });
-
-  useEffect(() => {
-    const updatePresence = async () => {
-      try {
-        await axios.post("/api/users-status-changed", {
-          userId: patient._id,
-          online: true,
-        });
-      } catch (error) {
-        console.error("Erreur lors de la mise à jour de la présence:", error);
-      }
-    };
-
-    updatePresence();
-    const interval = setInterval(updatePresence, 60000); // Heartbeat toutes les 30 secondes
-
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        updatePresence();
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    return () => {
-      clearInterval(interval);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-      // Mettre le statut à 'offline' lors de la déconnexion
-      axios
-        .post("/api/users-status-changed", {
-          userId: patient._id,
-          online: false,
-        })
-        .catch((error: any) => console.log(error));
-    };
-  }, [patient._id]);
+  // useUserPresence({
+  //   userId: patient._id,
+  //   onError: (error) => {
+  //     console.error("Erreur de présence:", error);
+  //   },
+  // });
 
   useEffect(() => {
     const hash =
@@ -212,6 +178,7 @@ const UserProfile = ({
                   name={patient.name}
                   phone={patient.phone}
                   doctors={doctors}
+                  inactivesDates={inactivesDates}
                 />
               </div>
             </section>
