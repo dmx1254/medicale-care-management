@@ -72,28 +72,24 @@ const CustomHeader = ({
   changeMonth,
   type = "default",
 }: CustomHeaderProps) => {
-  // Pour les rendez-vous, on n'affiche que le mois actuel
   if (type === "appointment") {
-    const currentMonth = new Date().getMonth(); // 0-11
+    const currentMonth = new Date().getMonth();
     const remainingMonths = 12 - currentMonth;
 
     return (
-      <div className="w-full flex items-center justify-center px-2 py-2">
-        <div className="flex-full bg-dark-400 border-dark-500 space-x-2">
+      <div className="w-full flex items-center justify-center">
+        <div className="flex space-x-2">
           <select
-            value={format(date, "M")} // "M" retourne 1-12
+            value={format(date, "M")}
             onChange={({ target: { value } }) =>
               changeMonth(parseInt(value) - 1)
             }
-            className="bg-dark-400 border-dark-500"
+            className="px-2 py-2 text-base bg-white dark:bg-dark-400 border dark:border-dark-500 rounded-md"
           >
             {Array.from({ length: remainingMonths }, (_, i) => {
               const monthIndex = currentMonth + i;
               return (
-                <option
-                  key={monthIndex}
-                  value={monthIndex + 1} // Les valeurs doivent être 1-12
-                >
+                <option key={monthIndex} value={monthIndex + 1}>
                   {format(new Date(2024, monthIndex, 1), "MMMM", {
                     locale: fr,
                   })}
@@ -106,19 +102,18 @@ const CustomHeader = ({
     );
   }
 
-  // Pour la date de naissance, on ajoute plus d'années dans le passé
   if (type === "birthdate") {
     const currentYear = new Date().getFullYear();
-    const startYear = currentYear - 100; // On remonte à 100 ans en arrière
+    const startYear = currentYear - 100;
     const yearRange = currentYear - startYear;
 
     return (
-      <div className="w-full flex items-center justify-center px-2 py-2">
-        <div className="flex-full bg-dark-400 border-dark-500 space-x-2">
+      <div className="w-full flex items-center justify-center p-4">
+        <div className="flex space-x-2">
           <select
             value={format(date, "yyyy")}
             onChange={({ target: { value } }) => changeYear(Number(value))}
-            className="bg-dark-400 border-dark-500"
+            className="px-2 py-2 text-base bg-white dark:bg-dark-400 border dark:border-dark-500 rounded-md"
           >
             {Array.from({ length: yearRange }, (_, i) => (
               <option key={i} value={startYear + i}>
@@ -131,7 +126,7 @@ const CustomHeader = ({
             onChange={({ target: { value } }) =>
               changeMonth(parseInt(value) - 1)
             }
-            className="bg-dark-400 border-dark-500"
+            className="px-4 py-2 text-lg bg-white dark:bg-dark-400 border dark:border-dark-500 rounded-md"
           >
             {Array.from({ length: 12 }, (_, i) => (
               <option key={i} value={i + 1}>
@@ -144,7 +139,6 @@ const CustomHeader = ({
     );
   }
 
-  // Pour le type default, on ne retourne rien
   return null;
 };
 
@@ -163,6 +157,18 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
     type,
     inactivesDates,
   } = props;
+
+  const filterTime = (time: Date) => {
+    const hour = time.getHours();
+    const minute = time.getMinutes();
+
+    // Autoriser les heures entre 8h00 et 20h30
+    if (hour < 8) return false; // Avant 8h
+    if (hour > 20) return false; // Après 20h
+    if (hour === 20 && minute > 30) return false; // Après 20h30
+
+    return true;
+  };
 
   const getExcludedTimesForDate = (
     inactivesDates: { schedule: string }[] | undefined, // Assurez-vous que l'argument accepte `undefined`
@@ -191,6 +197,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
   };
 
   const selectedDate = field.value || new Date();
+  // console.log(timeFiltered);
 
   // Appeler la fonction avec la valeur `inactivesDates`, qui peut être undefined
   const excludedTimes = getExcludedTimesForDate(inactivesDates, selectedDate);
@@ -200,7 +207,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
   switch (fieldType) {
     case FormFieldType.INPUT:
       return (
-        <div className="relative flex rounded-md border border-dark-500 bg-dark-400">
+        <div className="w-full relative flex rounded-md border border-dark-500 bg-dark-400">
           {iconSrc && (
             <Image
               src={iconSrc}
@@ -265,7 +272,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
 
     case FormFieldType.DATE_PICKER:
       return (
-        <div className="flex rounded-md border border-dark-500 bg-dark-400">
+        <div className="w-full flex rounded-md border border-dark-500 bg-dark-400">
           <Image
             src="/assets/icons/calendar.svg"
             height={24}
@@ -274,25 +281,28 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
             className="ml-2"
           />
           <FormControl>
-            <DatePicker
-              selected={field.value || new Date()}
-              onChange={(date) => field.onChange(date)}
-              dateFormat={dateFormat ?? "dd-MM-yyyy"}
-              showTimeSelect={showTimeSelect ?? false}
-              timeInputLabel="Heure:"
-              wrapperClassName="date-picker"
-              excludeTimes={excludedTimes}
-              locale={fr}
-              timeIntervals={30}
-              timeCaption={timeCaption || ""}
-              renderCustomHeader={(props) => (
-                <CustomHeader {...props} type={type} />
-              )}
-              showYearDropdown
-              className="w-full border-0 bg-transparent px-2 py-1 outline-none"
-              yearDropdownItemNumber={40}
-              scrollableYearDropdown
-            />
+            <div className="large-datepicker-wrapper">
+              <DatePicker
+                selected={field.value || new Date()}
+                onChange={(date) => field.onChange(date)}
+                dateFormat={dateFormat ?? "dd-MM-yyyy"}
+                showTimeSelect={showTimeSelect ?? false}
+                timeInputLabel="Heure:"
+                wrapperClassName="date-picker"
+                excludeTimes={excludedTimes}
+                locale={fr}
+                timeIntervals={30}
+                filterTime={filterTime}
+                timeCaption={timeCaption || ""}
+                renderCustomHeader={(props) => (
+                  <CustomHeader {...props} type={type} />
+                )}
+                showYearDropdown
+                className="w-full border-0 bg-transparent px-2 py-1 outline-none"
+                yearDropdownItemNumber={40}
+                scrollableYearDropdown
+              />
+            </div>
           </FormControl>
         </div>
       );

@@ -4,6 +4,19 @@ import { connectDB } from "@/lib/db";
 import PatientModel from "@/lib/models/patient.model";
 import bcrypt from "bcrypt";
 
+import Pusher from "pusher";
+
+
+
+export const pusher = new Pusher({
+  appId: process.env.PUSHER_APP_ID!,
+  key: process.env.PUSHER_KEY!,
+  secret: process.env.PUSHER_SECRET!,
+  cluster: process.env.PUSHER_CLUSTER!,
+  useTLS: true
+});
+
+
 connectDB();
 
 export const options: NextAuthOptions = {
@@ -43,6 +56,7 @@ export const options: NextAuthOptions = {
           if (!isCorrectPassword) {
             throw new Error("Mot de passe incorrect");
           }
+
 
           return {
             id: user._id.toString(),

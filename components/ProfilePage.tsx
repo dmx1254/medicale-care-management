@@ -76,7 +76,7 @@ const UserProfile = ({
   };
 
   return (
-    <div className="flex space-y-14" id="informations-personnelles">
+    <div className="w-full flex space-y-14" id="informations-personnelles">
       <div className="admin-profile-cop h-screen max-h-screen">
         <div className="flex flex-col items-start gap-4">
           {profileInfo.map((profil) => (
@@ -166,9 +166,9 @@ const UserProfile = ({
             </AccordionItem>
           </Accordion>
 
-          <div className="flex">
+          <div className="w-full flex">
             <section className="w-full max-w-[860px] remove-scrollbar my-auto -mt-6">
-              <div className="sub-p-container flex-1 justify-between">
+              <div className="w-full sub-p-container flex-1 justify-between">
                 <AppointmentForm
                   type="create"
                   userId={userId}

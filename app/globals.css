@@ -379,6 +379,33 @@
   .shad-select-trigger::-webkit-scrollbar {
     display: none;
   }
+
+  .large-datepicker-wrapper .react-datepicker {
+    font-size: 1.05rem;
+  }
+  .large-datepicker-wrapper .react-datepicker__day {
+    margin: 0.3rem;
+  }
+  .large-datepicker-wrapper .react-datepicker__day-name {
+    margin: 0.3rem;
+  }
+  /* 
+  .large-datepicker-wrapper .react-datepicker__header {
+    padding-top: 1rem;
+  }
+ 
+  
+  .large-datepicker-wrapper .react-datepicker__time-container {
+    width: 80px;
+  }
+  .large-datepicker-wrapper .react-datepicker__time-box {
+    width: 80px !important;
+  }
+  .large-datepicker-wrapper .react-datepicker__time-list-item {
+    height: 40px !important;
+    line-height: 40px !important;
+    font-size: 0.9rem;
+  } */
 }
 
 /* =====  REACT-DATEPICKER OVERRIDES */
