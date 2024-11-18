@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import { UAParser } from "ua-parser-js";
 
 import Pusher from "pusher";
+import { detectDeviceType } from "@/lib/utils";
 
 export const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID!,
@@ -56,9 +57,12 @@ export const options: NextAuthOptions = {
           }
 
           const userAgent = req.headers && req.headers["user-agent"];
-          const { browser } = UAParser(userAgent);
+          // const { browser } = UAParser(userAgent);
+          const { os } = UAParser(userAgent);
 
-          const deviceType = browser.type || "Desktop";
+          const deviceType = detectDeviceType(os.name || "");
+          // console.log("deviceType: " + deviceType);
+          // console.log("os.name: " + os.name);
           const isoDate = new Date().toISOString();
           const ip = req.headers && req.headers["x-forwarded-for"];
 
