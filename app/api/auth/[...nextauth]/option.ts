@@ -2,6 +2,7 @@ import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectDB } from "@/lib/db";
 import PatientModel from "@/lib/models/patient.model";
+import VisitModel from "@/lib/models/visit.model";
 import bcrypt from "bcrypt";
 import { UAParser } from "ua-parser-js";
 
@@ -80,6 +81,11 @@ export const options: NextAuthOptions = {
               runValidators: true,
             }
           );
+
+          await VisitModel.create({
+            userId: user._id,
+            ipAdress: ip,
+          });
 
           return {
             id: user._id.toString(),
