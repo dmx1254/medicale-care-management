@@ -3,19 +3,17 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { connectDB } from "@/lib/db";
 import PatientModel from "@/lib/models/patient.model";
 import bcrypt from "bcrypt";
+import { UAParser } from "ua-parser-js";
 
 import Pusher from "pusher";
-
-
 
 export const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID!,
   key: process.env.PUSHER_KEY!,
   secret: process.env.PUSHER_SECRET!,
   cluster: process.env.PUSHER_CLUSTER!,
-  useTLS: true
+  useTLS: true,
 });
-
 
 connectDB();
 
@@ -57,6 +55,27 @@ export const options: NextAuthOptions = {
             throw new Error("Mot de passe incorrect");
           }
 
+          const userAgent = req.headers && req.headers["user-agent"];
+          const { browser } = UAParser(userAgent);
+
+          const deviceType = browser.type || "Desktop";
+          const isoDate = new Date().toISOString();
+          const ip = req.headers && req.headers["x-forwarded-for"];
+
+          await PatientModel.findByIdAndUpdate(
+            user._id,
+            {
+              $set: {
+                deviceUsed: deviceType,
+                lastConnexion: isoDate,
+                lastIpUsed: ip,
+              },
+            },
+            {
+              new: true,
+              runValidators: true,
+            }
+          );
 
           return {
             id: user._id.toString(),
