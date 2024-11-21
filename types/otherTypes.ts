@@ -1,11 +1,11 @@
-import { LucideIcon } from "lucide-react";
+import { ClipboardPlus, LucideIcon } from "lucide-react";
 import {
   UserRound,
   HeartPulse,
   Calendar,
   House,
   CalendarCheck,
-  BriefcaseMedical
+  BriefcaseMedical,
 } from "lucide-react";
 
 type profilePerso = {
@@ -35,6 +35,12 @@ export const profileInfo: profilePerso[] = [
     slug: "mes-rendez-vous",
     icon: Calendar,
   },
+  {
+    id: "jzpkq81",
+    title: "Mes ordonnances",
+    slug: "mes-ordonnances",
+    icon: ClipboardPlus,
+  },
 ];
 
 export const sidebarInfo: profilePerso[] = [
@@ -63,5 +69,4 @@ export const sidebarInfo: profilePerso[] = [
     slug: "/dashboard/docteurs",
     icon: BriefcaseMedical,
   },
-  
 ];

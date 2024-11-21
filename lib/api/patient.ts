@@ -4,6 +4,7 @@ import { connectDB } from "../db";
 import PatientModel from "../models/patient.model";
 import bcrypt from "bcrypt";
 import { parseStringify } from "../utils";
+import PrescriptionModel from "../models/prescriptions.models";
 connectDB();
 
 export async function createPatient(patient: UserRegister) {
@@ -37,7 +38,7 @@ export async function createPatient(patient: UserRegister) {
       message: "Inscription réussie ! Bienvenue parmi nous.",
     };
   } catch (error: any) {
-    throw new Error(error);
+    console.log(error);
   }
 }
 
@@ -56,7 +57,7 @@ export async function getOnePatient(userId: string) {
     const patient = parseStringify(patientGeting);
     return patient;
   } catch (error: any) {
-    throw new Error(error);
+    console.log(error);
   }
 }
 
@@ -130,7 +131,7 @@ export async function iSEmailVerified(codeVerif: string, userId: string) {
       };
     }
   } catch (error: any) {
-    throw new Error(error);
+    console.log(error);
   }
 }
 
@@ -360,6 +361,21 @@ export async function resetUserPassword(
       };
     }
   } catch (error: any) {
-    throw new Error(error);
+    console.log(error);
+  }
+}
+
+export async function getAllPatientPrescriptions(userId: string) {
+  try {
+    const prescriptions = await PrescriptionModel.find({ patientId: userId });
+    const unreadPrescriptions = await PrescriptionModel.countDocuments({
+      read: false,
+    });
+
+    const patientPrescriptions = parseStringify(prescriptions);
+    const unread = parseStringify(unreadPrescriptions);
+    return { prescriptions: patientPrescriptions, unreadPrescriptions: unread };
+  } catch (error: any) {
+    console.log(error);
   }
 }

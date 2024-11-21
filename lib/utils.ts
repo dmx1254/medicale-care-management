@@ -131,3 +131,26 @@ export function detectDeviceType(os: string): string {
   if (desktopOS.includes(osLower)) return "Desktop";
   return "unknown";
 }
+
+export interface Medication {
+  name: string;
+  dosage: string;
+  frequency: string;
+  duration: string;
+  instructions: string;
+}
+
+interface PatientPrescription {
+  name: string;
+  age: number;
+}
+
+export interface Prescription {
+  _id: string;
+  patient: PatientPrescription;
+  medications: Medication[];
+  patientId: string;
+  read: boolean;
+  createdAt: string;
+  updatedAt: string;
+}

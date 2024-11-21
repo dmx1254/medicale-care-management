@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Link, scroller } from "react-scroll";
 import { Button } from "./ui/button";
 import { LogOut } from "lucide-react";
-import {  DoctorResponse, Patient, User } from "@/types";
+import { DoctorResponse, Patient, User } from "@/types";
 import PersonalInformations from "./profile/PersonalInformations";
 import MedicalesInformations from "./profile/MedicalesInformations";
 import MyAppointment from "./profile/MyAppointment";
@@ -21,6 +21,9 @@ import { useRouter } from "next/navigation";
 
 import { signOut } from "next-auth/react";
 import { useUserPresence } from "@/app/hooks/userPresence";
+import Prescriptions from "./profile/Prescriptions";
+import { Prescription } from "@/lib/utils";
+import FloatingActionButtons from "./FloatingActionButtons";
 
 // const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
 //   cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
@@ -31,23 +34,29 @@ const UserProfile = ({
   patient,
   doctors,
   inactivesDates,
+  prescriptions,
+  unreadPrescriptions,
 }: {
   userId: string;
   patient: Patient;
   doctors: DoctorResponse[];
   inactivesDates: { schedule: string }[];
+  prescriptions: Prescription[];
+  unreadPrescriptions: number;
 }) => {
   const router = useRouter();
   const [isSlugActive, setIsSlugActive] = useState<string>(
     "informations-personnelles"
   );
 
-  useUserPresence({
-    userId: patient._id,
-    onError: (error) => {
-      console.error("Erreur de présence:", error);
-    },
-  });
+  // console.log(prescriptions);
+
+  // useUserPresence({
+  //   userId: patient._id,
+  //   onError: (error) => {
+  //     console.error("Erreur de présence:", error);
+  //   },
+  // });
 
   useEffect(() => {
     const hash =
@@ -100,7 +109,11 @@ const UserProfile = ({
                 smooth={true}
                 offset={-50}
                 duration={500}
-                style={{ display: "block", width: "100%" }}
+                style={{
+                  display: "block",
+                  width: "100%",
+                  position: "relative",
+                }}
                 // onSetActive={handleSetActive}
               >
                 <p className="flex items-center gap-2">
@@ -109,6 +122,12 @@ const UserProfile = ({
                     {profil.title}
                   </span>
                 </p>
+                {unreadPrescriptions > 0 &&
+                  profil.slug === "mes-ordonnances" && (
+                    <span className="absolute w-4 h-4 text-center bg-[#dc2626] text-white rounded-full text-xs top-[4%] left-[68%]">
+                      {unreadPrescriptions}
+                    </span>
+                  )}
               </Link>
             </Button>
           ))}
@@ -119,7 +138,7 @@ const UserProfile = ({
           onClick={logout}
         >
           <LogOut />
-          <span className="max-md:hidden">Logout</span>
+          <span className="max-md:hidden">Déconnexion</span>
         </Button>
       </div>
       <main className="admin-main remove-scrollbar container my-auto">
@@ -181,8 +200,16 @@ const UserProfile = ({
               </div>
             </section>
           </div>
+          <section className="space-y-4" id="mes-ordonnances">
+            <div className="mb-3 space-y-1 relative">
+              <h2 className="sub-header">Mes ordonnances</h2>
+            </div>
+          </section>
+
+          <Prescriptions patient={patient} prescriptions={prescriptions} />
         </section>
       </main>
+      <FloatingActionButtons />
     </div>
   );
 };

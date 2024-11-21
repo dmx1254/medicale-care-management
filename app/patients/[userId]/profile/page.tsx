@@ -1,6 +1,9 @@
 import { SearchParamProps } from "@/types";
 import ProfilePage from "@/components/ProfilePage";
-import { getPatient } from "@/lib/actions/patient.actions";
+import {
+  getPatient,
+  getPatientPrescription,
+} from "@/lib/actions/patient.actions";
 import { getDoctorsInService } from "@/lib/actions/doctor.actions";
 import { getScheduledDate } from "@/lib/actions/appointment.actions";
 import { Suspense } from "react";
@@ -10,7 +13,10 @@ const Profile = async ({ params: { userId } }: SearchParamProps) => {
   const patient = await getPatient(userId);
   const actifsDoctors = await getDoctorsInService();
   const inactivesDates = await getScheduledDate();
+  const result = await getPatientPrescription(userId);
   // console.log(inactivesDates);
+  const prescriptions = result?.prescriptions;
+  const unreadPrescriptions = result?.unreadPrescriptions;
 
   return (
     <Suspense key={userId} fallback={<ProfileSkeletons />}>
@@ -19,6 +25,8 @@ const Profile = async ({ params: { userId } }: SearchParamProps) => {
         patient={patient}
         userId={userId}
         doctors={actifsDoctors}
+        prescriptions={prescriptions}
+        unreadPrescriptions={unreadPrescriptions}
       />
     </Suspense>
   );
