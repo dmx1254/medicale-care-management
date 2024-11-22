@@ -25,22 +25,23 @@ export default async function Home({ searchParams }: SearchParamProps) {
           />
           <PatientForm />
           <div className="text-14-regular my-2 text-right text-dark-600">
-            Vous avez oublié votre mot de passe ?
             <Link
               href={`/mot-de-passe-oublie?isVerifiedEmail=true`}
               className="text-green-500 my-1"
             >
               {" "}
-              Cliquez ici
+              Mot de passe oublié ?
             </Link>
           </div>
-          <div className="text-14-regular mt-20 flex justify-between">
-            <p className="justify-items-end text-dark-600 xl:text-left">
-              &copy; 2024 MedicaleCare
-            </p>
-            <Link href="/register" className="text-green-500">
-              s'inscrire
-            </Link>
+          <div className="relative">
+            <div className="relative flex justify-center text-sm">
+              <span className="flex items-center gap-2 px-2 text-sm bg-dark-300 text-gray-500">
+                Vous n'avez pas de compte ?
+                <Link href="/register" className="text-green-500">
+                  s'inscrire
+                </Link>
+              </span>
+            </div>
           </div>
         </div>
       </section>
